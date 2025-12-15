@@ -3,70 +3,175 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Grove | Cut Length Calculator</title>
+  <title>GROVE | Pipe Cut Length Calculator</title>
+
   <style>
-    body{margin:0;font-family:Arial,system-ui;background:#f5f7fb;color:#0b1220}
-    .wrap{max-width:980px;margin:0 auto;padding:22px}
-    .card{background:#fff;border:1px solid #e6e8ef;border-radius:18px;padding:18px;box-shadow:0 10px 24px rgba(10,20,40,.06)}
-    .top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-    .badge{background:#0b1220;color:#fff;padding:8px 12px;border-radius:999px;font-weight:800;font-size:12px}
-    h1{margin:10px 0 4px;font-size:22px}
-    .row{display:grid;grid-template-columns:1fr;gap:12px;margin-top:14px}
-    @media(min-width:760px){.row{grid-template-columns:1fr 1fr}}
-    label{display:block;font-weight:800;margin-bottom:6px}
-    select,input,button{width:100%;padding:12px;border-radius:14px;border:1px solid #d8dbe6;font-size:16px}
-    button{background:#2dd4bf;border:none;font-weight:900;cursor:pointer}
-    .result{margin-top:14px;background:#f0fffb;border:1px solid #b7f3e6;padding:14px;border-radius:16px}
-    .big{font-size:28px;font-weight:900;margin-top:6px}
-    .muted{opacity:.75;font-size:13px;margin-top:6px;line-height:1.4}
-    .mini{display:flex;gap:10px;flex-wrap:wrap;font-size:13px;opacity:.8;margin-top:10px}
+    :root{
+      --bg:#f5f7fb;
+      --panel:#ffffff;
+      --line:#e6e8ef;
+      --text:#0b1220;
+      --muted:#6b7280;
+      --red:#ef2a1f;
+      --radius:16px;
+      --shadow:0 10px 26px rgba(10,20,40,.08);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background:var(--bg);
+      color:var(--text);
+    }
+    .wrap{
+      max-width:1000px;
+      margin:0 auto;
+      padding:22px;
+    }
+    .top{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:14px;
+    }
+    .badge{
+      background:var(--text);
+      color:#fff;
+      padding:8px 14px;
+      border-radius:999px;
+      font-weight:800;
+      font-size:12px;
+    }
+    button.exit{
+      background:#fff;
+      border:1px solid var(--line);
+      padding:8px 14px;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:700;
+    }
+
+    .card{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      padding:20px;
+      box-shadow:var(--shadow);
+    }
+    h1{
+      margin:0 0 6px;
+      font-size:22px;
+    }
+    .sub{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr;
+      gap:14px;
+      margin-top:16px;
+    }
+    @media(min-width:760px){
+      .grid.two{grid-template-columns:1fr 1fr}
+    }
+
+    label{
+      font-weight:800;
+      font-size:13px;
+      margin-bottom:6px;
+      display:block;
+    }
+    select,input,button.calc{
+      width:100%;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      font-size:16px;
+    }
+    button.calc{
+      background:var(--red);
+      color:#fff;
+      border:none;
+      font-weight:900;
+      cursor:pointer;
+    }
+
+    .result{
+      margin-top:16px;
+      background:#f0fffb;
+      border:1px solid #b7f3e6;
+      border-radius:16px;
+      padding:16px;
+    }
+    .big{
+      font-size:30px;
+      font-weight:900;
+      margin-top:6px;
+    }
+    .muted{
+      color:#555;
+      font-size:13px;
+      margin-top:6px;
+    }
+    .meta{
+      margin-top:10px;
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      font-size:13px;
+      color:#333;
+    }
   </style>
 </head>
+
 <body>
-  <div class="wrap">
-    <div class="top">
-      <div class="badge">GROVE • INTERNAL</div>
-      <button onclick="logout()" style="padding:10px 14px;border-radius:999px">Exit</button>
+<div class="wrap">
+
+  <div class="top">
+    <div class="badge">GROVE • INTERNAL</div>
+    <button class="exit" onclick="logout()">Exit</button>
+  </div>
+
+  <div class="card">
+    <h1>Pipe Cut Length</h1>
+    <div class="sub">Based on standard GROVE offset table</div>
+
+    <div class="grid two">
+      <div>
+        <label>Pipe Size</label>
+        <select id="size"></select>
+      </div>
+      <div>
+        <label>Centre-to-centre (mm)</label>
+        <input id="ctc" type="number" placeholder="e.g. 1200">
+      </div>
     </div>
 
-    <div class="card" style="margin-top:14px">
-      <h1>Pipe Cut Length</h1>
-      <div class="muted">Uses standard offsets: Flange (A), 90° Elbow (C), Tee (D/E).</div>
-
-      <div class="row">
-        <div>
-          <label>Pipe Size (inch)</label>
-          <select id="size"></select>
-        </div>
-        <div>
-          <label>Centre-to-centre (mm)</label>
-          <input id="ctc" type="number" placeholder="e.g. 1200" inputmode="decimal"/>
-        </div>
+    <div class="grid two">
+      <div>
+        <label>End A</label>
+        <select id="endA"></select>
       </div>
-
-      <div class="row">
-        <div>
-          <label>End A fitting</label>
-          <select id="endA"></select>
-        </div>
-        <div>
-          <label>End B fitting</label>
-          <select id="endB"></select>
-        </div>
+      <div>
+        <label>End B</label>
+        <select id="endB"></select>
       </div>
+    </div>
 
-      <div class="row">
-        <button onclick="calc()">Calculate</button>
-      </div>
+    <div class="grid">
+      <button class="calc" onclick="calculate()">Calculate</button>
+    </div>
 
-      <div class="result" id="out" style="display:none">
-        <div class="muted">Cut length</div>
-        <div class="big" id="cut">—</div>
-        <div class="muted" id="why"></div>
-        <div class="mini" id="meta"></div>
-      </div>
+    <div id="resultBox" class="result" style="display:none">
+      <div class="muted">Cut length</div>
+      <div id="cut" class="big"></div>
+      <div id="formula" class="muted"></div>
+      <div id="meta" class="meta"></div>
     </div>
   </div>
+</div>
 
 <script>
   if(sessionStorage.getItem("cutcalc_ok") !== "1"){
@@ -77,33 +182,32 @@
     window.location.href = "index.html";
   }
 
-  // From your PDF table :contentReference[oaicite:2]{index=2}
   const DATA = {
-    '1/2"': { pipeIdMm:15, pipeOdMm:21.3, flangeA:null, elbowC:38, teeD:25, teeE:50 },
-    '3/4"': { pipeIdMm:20, pipeOdMm:26.9, flangeA:null, elbowC:38, teeD:29, teeE:58 },
-    '1"':   { pipeIdMm:25, pipeOdMm:33.7, flangeA:null, elbowC:38, teeD:38, teeE:76 },
-    '1 1/4"': { pipeIdMm:32, pipeOdMm:42.4, flangeA:null, elbowC:48, teeD:48, teeE:96 },
-    '1 1/2"': { pipeIdMm:40, pipeOdMm:48.3, flangeA:null, elbowC:57, teeD:57, teeE:114 },
-    '2"':   { pipeIdMm:50, pipeOdMm:60.3, flangeA:null, elbowC:76, teeD:64, teeE:128 },
-    '2 1/2"': { pipeIdMm:65, pipeOdMm:76.1, flangeA:20, elbowC:95, teeD:76, teeE:152 },
-    '3"':   { pipeIdMm:80, pipeOdMm:88.9, flangeA:20, elbowC:114, teeD:86, teeE:172 },
-    '4"':   { pipeIdMm:100, pipeOdMm:114.3, flangeA:20, elbowC:152, teeD:105, teeE:210 },
-    '5"':   { pipeIdMm:125, pipeOdMm:139.7, flangeA:20, elbowC:190, teeD:124, teeE:248 },
-    '6"':   { pipeIdMm:150, pipeOdMm:168.3, flangeA:20, elbowC:229, teeD:143, teeE:286 },
-    '8"':   { pipeIdMm:200, pipeOdMm:219.1, flangeA:25, elbowC:305, teeD:178, teeE:356 },
-    '10"':  { pipeIdMm:250, pipeOdMm:273, flangeA:25, elbowC:381, teeD:216, teeE:432 },
-    '12"':  { pipeIdMm:300, pipeOdMm:323.9, flangeA:25, elbowC:457, teeD:254, teeE:508 },
-    '14"':  { pipeIdMm:350, pipeOdMm:355.6, flangeA:25, elbowC:533, teeD:279, teeE:558 },
-    '16"':  { pipeIdMm:400, pipeOdMm:406.4, flangeA:25, elbowC:610, teeD:305, teeE:610 },
-    '18"':  { pipeIdMm:450, pipeOdMm:457, flangeA:25, elbowC:686, teeD:343, teeE:686 },
-    '20"':  { pipeIdMm:500, pipeOdMm:508, flangeA:25, elbowC:762, teeD:381, teeE:762 }
+    '1/2"': {id:15, od:21.3, flange:null, elbow:38, teeD:25, teeE:50},
+    '3/4"': {id:20, od:26.9, flange:null, elbow:38, teeD:29, teeE:58},
+    '1"': {id:25, od:33.7, flange:null, elbow:38, teeD:38, teeE:76},
+    '1 1/4"': {id:32, od:42.4, flange:null, elbow:48, teeD:48, teeE:96},
+    '1 1/2"': {id:40, od:48.3, flange:null, elbow:57, teeD:57, teeE:114},
+    '2"': {id:50, od:60.3, flange:null, elbow:76, teeD:64, teeE:128},
+    '2 1/2"': {id:65, od:76.1, flange:20, elbow:95, teeD:76, teeE:152},
+    '3"': {id:80, od:88.9, flange:20, elbow:114, teeD:86, teeE:172},
+    '4"': {id:100, od:114.3, flange:20, elbow:152, teeD:105, teeE:210},
+    '5"': {id:125, od:139.7, flange:20, elbow:190, teeD:124, teeE:248},
+    '6"': {id:150, od:168.3, flange:20, elbow:229, teeD:143, teeE:286},
+    '8"': {id:200, od:219.1, flange:25, elbow:305, teeD:178, teeE:356},
+    '10"': {id:250, od:273, flange:25, elbow:381, teeD:216, teeE:432},
+    '12"': {id:300, od:323.9, flange:25, elbow:457, teeD:254, teeE:508},
+    '14"': {id:350, od:355.6, flange:25, elbow:533, teeD:279, teeE:558},
+    '16"': {id:400, od:406.4, flange:25, elbow:610, teeD:305, teeE:610},
+    '18"': {id:450, od:457, flange:25, elbow:686, teeD:343, teeE:686},
+    '20"': {id:500, od:508, flange:25, elbow:762, teeD:381, teeE:762}
   };
 
   const FITTINGS = [
-    { key:"flangeA", label:"Flange Offset (A)" },
-    { key:"elbowC",  label:"90° Elbow (C)" },
-    { key:"teeD",    label:"Tee (D)" },
-    { key:"teeE",    label:"Tee (E)" }
+    {key:"flange", label:"Flange (A)"},
+    {key:"elbow", label:"90° Elbow (C)"},
+    {key:"teeD", label:"Tee (D)"},
+    {key:"teeE", label:"Tee (E)"}
   ];
 
   const sizeSel = document.getElementById("size");
@@ -111,18 +215,18 @@
   const endB = document.getElementById("endB");
 
   function loadSizes(){
-    sizeSel.innerHTML = "";
     Object.keys(DATA).forEach(sz=>{
-      const o=document.createElement("option");
-      o.value=sz; o.textContent=sz;
+      const r = DATA[sz];
+      const o = document.createElement("option");
+      o.value = sz;
+      o.textContent = `${sz} (ID ${r.id}mm / OD ${r.od}mm)`;
       sizeSel.appendChild(o);
     });
     sizeSel.value='2"';
   }
 
-  function loadFittings(){
+  function loadEnds(){
     [endA,endB].forEach(sel=>{
-      sel.innerHTML="";
       FITTINGS.forEach(f=>{
         const o=document.createElement("option");
         o.value=f.key;
@@ -130,46 +234,40 @@
         sel.appendChild(o);
       });
     });
-    endA.value="elbowC";
-    endB.value="elbowC";
+    endA.value="elbow";
+    endB.value="elbow";
   }
 
   loadSizes();
-  loadFittings();
+  loadEnds();
 
-  function calc(){
-    const sz = sizeSel.value;
-    const row = DATA[sz];
+  function calculate(){
+    const size = sizeSel.value;
     const ctc = Number(document.getElementById("ctc").value);
+    if(!ctc){ alert("Enter centre-to-centre"); return; }
 
-    if(!ctc || ctc <= 0){
-      alert("Enter centre-to-centre (mm)");
-      return;
-    }
-
-    const aKey = endA.value;
-    const bKey = endB.value;
-
-    const a = row[aKey];
-    const b = row[bKey];
+    const row = DATA[size];
+    const a = row[endA.value];
+    const b = row[endB.value];
 
     if(a === null || b === null){
-      alert('Flange Offset (A) is not defined for this size in the table.');
+      alert("Flange offset not defined for this size");
       return;
     }
 
     const cut = ctc - (a + b);
 
-    document.getElementById("out").style.display = "block";
+    document.getElementById("resultBox").style.display="block";
     document.getElementById("cut").innerText = `${cut} mm`;
-    document.getElementById("why").innerText =
-      `Cut = CTC − (End A + End B) = ${ctc} − (${a} + ${b})`;
+    document.getElementById("formula").innerText =
+      `CTC − (${a} + ${b})`;
 
     document.getElementById("meta").innerHTML =
-      `<span><b>Pipe ID:</b> ${row.pipeIdMm}mm</span>`+
-      `<span><b>Pipe OD:</b> ${row.pipeOdMm}mm</span>`+
-      `<span><b>Size:</b> ${sz}</span>`;
+      `<div><b>ID:</b> ${row.id}mm</div>
+       <div><b>OD:</b> ${row.od}mm</div>
+       <div><b>Size:</b> ${size}</div>`;
   }
 </script>
+
 </body>
 </html>
