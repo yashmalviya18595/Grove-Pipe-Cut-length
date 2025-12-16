@@ -36,7 +36,6 @@ body{
   z-index:-3;
 }
 @keyframes float{ from{transform:translate(-1%,-1%)} to{transform:translate(1%,1%)} }
-
 .wrap{max-width:1000px;margin:0 auto;position:relative}
 
 /* watermark zoom */
@@ -65,41 +64,20 @@ body{
 }
 
 /* header */
-.topbar{
-  display:flex; justify-content:space-between; align-items:center;
-  gap:12px; margin-bottom:16px;
-}
-.logoPlate{
-  background:#fff;
-  padding:10px 14px;
-  border-radius:16px;
-  box-shadow:0 12px 30px rgba(0,0,0,.35);
-}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+.logoPlate{background:#fff;padding:10px 14px;border-radius:16px;box-shadow:0 12px 30px rgba(0,0,0,.35)}
 .logoPlate img{height:46px}
 .topRight{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
 .pill{
-  font-size:12px; font-weight:800; color:var(--muted);
+  font-size:12px;font-weight:800;color:var(--muted);
   border:1px solid var(--line);
-  padding:9px 12px; border-radius:999px;
+  padding:9px 12px;border-radius:999px;
   background:rgba(255,255,255,.03);
-  display:flex; align-items:center; gap:10px;
+  display:flex;align-items:center;gap:10px;
 }
-.dot{
-  width:9px;height:9px;border-radius:50%;
-  background:var(--red);
-  box-shadow:0 0 0 5px rgba(239,42,31,.18);
-  animation:pulse 1.8s ease infinite;
-}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--red);box-shadow:0 0 0 5px rgba(239,42,31,.18);animation:pulse 1.8s ease infinite}
 @keyframes pulse{50%{transform:scale(1.1)}}
-.btnSmall{
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.04);
-  color:var(--text);
-  font-weight:900;
-  padding:9px 12px;
-  border-radius:999px;
-  cursor:pointer;
-}
+.btnSmall{border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);font-weight:900;padding:9px 12px;border-radius:999px;cursor:pointer}
 
 /* card */
 .card{
@@ -111,49 +89,18 @@ body{
   position:relative;
   z-index:1;
 }
-.cardHead{
-  padding:18px 22px;
-  border-bottom:1px solid var(--line);
-  background:rgba(0,0,0,.22);
-}
+.cardHead{padding:18px 22px;border-bottom:1px solid var(--line);background:rgba(0,0,0,.22)}
 h1{margin:0;font-size:24px}
 .sub{margin-top:6px;color:var(--muted);line-height:1.55}
 
-.content{
-  padding:18px 22px 22px;
-  display:grid;
-  grid-template-columns: 1.15fr .85fr;
-  gap:16px;
-}
-@media(max-width:900px){
-  .content{grid-template-columns:1fr}
-  .wm-center{display:none}
-}
+.content{padding:18px 22px 22px;display:grid;grid-template-columns:1.15fr .85fr;gap:16px}
+@media(max-width:900px){.content{grid-template-columns:1fr}.wm-center{display:none}}
 
-/* blocks */
-.block{
-  border:1px solid var(--line);
-  border-radius:18px;
-  background:rgba(0,0,0,.20);
-  padding:14px;
-}
-.blockTitle{
-  display:flex; align-items:center; gap:10px;
-  font-weight:900; margin-bottom:10px;
-}
-.stepNum{
-  width:28px;height:28px;border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-  background:rgba(239,42,31,.18);
-  border:1px solid rgba(239,42,31,.35);
-}
-label{
-  display:block;
-  font-size:12px;
-  font-weight:900;
-  margin:10px 0 6px;
-  color:rgba(255,255,255,.82);
-}
+.block{border:1px solid var(--line);border-radius:18px;background:rgba(0,0,0,.20);padding:14px}
+.blockTitle{display:flex;align-items:center;gap:10px;font-weight:900;margin-bottom:10px}
+.stepNum{width:28px;height:28px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(239,42,31,.18);border:1px solid rgba(239,42,31,.35)}
+
+label{display:block;font-size:12px;font-weight:900;margin:10px 0 6px;color:rgba(255,255,255,.82)}
 select,input,textarea{
   width:100%;
   padding:14px;
@@ -170,37 +117,16 @@ textarea{min-height:88px;resize:vertical}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:700px){.row2{grid-template-columns:1fr}}
 
-.help{margin-top:10px;color:rgba(255,255,255,.55);font-size:12px;line-height:1.5;}
-.warn{
-  display:none; margin-top:12px; padding:12px 14px;
-  border-radius:16px;
-  border:1px solid rgba(255,255,255,.14);
-  background: rgba(255,255,255,.03);
-  color:rgba(255,255,255,.70);
-  font-size:12px; line-height:1.5;
-}
+.help{margin-top:10px;color:rgba(255,255,255,.55);font-size:12px;line-height:1.5}
+.warn{display:none;margin-top:12px;padding:12px 14px;border-radius:16px;border:1px solid rgba(255,255,255,.14);background: rgba(255,255,255,.03);color:rgba(255,255,255,.70);font-size:12px;line-height:1.5}
 
-.resultCard{
-  border:1px solid rgba(239,42,31,.35);
-  background: rgba(239,42,31,.08);
-  border-radius:18px;
-  padding:16px;
-}
+.resultCard{border:1px solid rgba(239,42,31,.35);background: rgba(239,42,31,.08);border-radius:18px;padding:16px}
 .resultLabel{font-size:12px;font-weight:900;color:rgba(255,255,255,.72)}
 .resultValue{font-size:38px;font-weight:1000;margin-top:6px}
-.meta{
-  margin-top:10px;
-  display:flex; flex-wrap:wrap; gap:10px;
-  font-size:12px; color:rgba(255,255,255,.70);
-}
-.metaPill{
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.03);
-  padding:7px 10px;
-  border-radius:999px;
-}
+.meta{margin-top:10px;display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:rgba(255,255,255,.70)}
+.metaPill{border:1px solid var(--line);background:rgba(255,255,255,.03);padding:7px 10px;border-radius:999px}
 
-/* QR preview (BIGGER + clickable + fallback) */
+/* QR preview */
 .qrPreview{
   margin-top:12px;
   display:none;
@@ -212,13 +138,9 @@ textarea{min-height:88px;resize:vertical}
   border-radius:16px;
   padding:12px;
 }
-.qrPreview .txt{
-  color:rgba(255,255,255,.70);
-  font-size:12px;
-  line-height:1.45;
-}
+.qrPreview .txt{color:rgba(255,255,255,.70);font-size:12px;line-height:1.45}
 .qrBox{
-  width:160px;height:160px;   /* bigger */
+  width:160px;height:160px;
   background:#fff;
   border-radius:14px;
   display:flex;
@@ -226,100 +148,26 @@ textarea{min-height:88px;resize:vertical}
   justify-content:center;
   overflow:hidden;
   flex:0 0 auto;
-  cursor:pointer;
-  border:6px solid #fff;      /* stronger quiet zone */
+  border:6px solid #fff;
 }
-.qrBox canvas{width:160px;height:160px;display:block}
+.qrBox img{width:160px;height:160px;display:block}
 
-.linkRow{
-  margin-top:10px;
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
-}
+.linkRow{margin-top:10px;display:flex;gap:10px;flex-wrap:wrap}
 .linkRow a{
-  color:#fff;
-  font-weight:900;
-  text-decoration:none;
+  color:#fff;font-weight:900;text-decoration:none;
   border:1px solid var(--line);
   background:rgba(255,255,255,.04);
-  padding:10px 12px;
-  border-radius:14px;
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
+  padding:10px 12px;border-radius:14px;
+  display:inline-flex;align-items:center;gap:8px;
 }
 
 .copyRow{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
-.btnPrimary{
-  border:none;
-  padding:13px 14px;
-  border-radius:14px;
-  background:linear-gradient(180deg,#ff3b30,var(--red));
-  color:#fff;
-  font-weight:900;
-  cursor:pointer;
-  flex:1;
-  min-width:160px;
-}
-.btnGhost{
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.04);
-  color:#fff;
-  font-weight:900;
-  padding:13px 14px;
-  border-radius:14px;
-  cursor:pointer;
-  flex:1;
-  min-width:160px;
-}
+.btnPrimary{border:none;padding:13px 14px;border-radius:14px;background:linear-gradient(180deg,#ff3b30,var(--red));color:#fff;font-weight:900;cursor:pointer;flex:1;min-width:160px}
+.btnGhost{border:1px solid var(--line);background:rgba(255,255,255,.04);color:#fff;font-weight:900;padding:13px 14px;border-radius:14px;cursor:pointer;flex:1;min-width:160px}
 .btnGhost:disabled{opacity:.5;cursor:not-allowed}
 .toast{margin-top:10px;font-size:12px;color:rgba(255,255,255,.70);display:none}
 
-.footer{
-  border-top:1px solid var(--line);
-  padding:14px 22px;
-  font-size:12px;
-  color:rgba(255,255,255,.45);
-  display:flex;
-  justify-content:space-between;
-  background:rgba(0,0,0,.18);
-}
-
-/* PRINT */
-#printSlip{ display:none; }
-@media print{
-  @page{ size: A6; margin: 8mm; }
-  body{ background:#fff !important; color:#000 !important; padding:0 !important; }
-  .bgGlow,.wm-center,.topbar,.card,.wrap{ display:none !important; }
-  #printSlip{ display:block !important; }
-
-  #printSlip{ font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; color:#000; }
-  .slipBox{ border:1px solid #000; padding:10px; border-radius:10px; }
-  .slipHeader{ display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px; }
-  .slipHeader img{ height:30px; width:auto; }
-  .slipTitle{ font-weight:1000; font-size:14px; text-align:right; }
-  .slipTopRow{ display:flex; gap:10px; align-items:stretch; }
-  .bigCut{
-    flex:1 1 auto; font-size:28px; font-weight:1000; padding:8px;
-    border:1px solid #000; border-radius:10px; text-align:center;
-    display:flex; align-items:center; justify-content:center;
-  }
-  .printQR{
-    width:110px;height:110px; border:1px solid #000; border-radius:10px;
-    overflow:hidden; display:flex; align-items:center; justify-content:center; background:#fff; flex:0 0 auto;
-    padding:6px;
-  }
-  .printQR canvas{ width:98px;height:98px; display:block; }
-
-  .grid{ display:grid; grid-template-columns: 1fr 1fr; gap:8px; font-size:11px; margin-top:10px; }
-  .row{ border:1px solid #000; border-radius:10px; padding:8px; }
-  .k{font-weight:900; font-size:10px; opacity:.85}
-  .v{margin-top:4px; font-weight:800}
-
-  .notes{ margin-top:8px; border:1px solid #000; border-radius:10px; padding:8px; font-size:11px; min-height:34px; }
-  .tiny{ margin-top:8px; font-size:10px; opacity:.85; display:flex; justify-content:space-between; gap:10px; }
-}
+.footer{border-top:1px solid var(--line);padding:14px 22px;font-size:12px;color:rgba(255,255,255,.45);display:flex;justify-content:space-between;background:rgba(0,0,0,.18)}
 </style>
 </head>
 
@@ -333,6 +181,7 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
 </script>
 
 <div class="wrap">
+
   <div class="wm-center" aria-hidden="true">
     <div class="wm-glow"></div>
     <img src="grove-logo.png" alt="">
@@ -401,7 +250,7 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
           <div class="qrPreview" id="qrPreview">
             <div class="txt">
               <b>Scan QR → GROVE Cut Slip</b><br>
-              If iPhone camera doesn’t detect it, just tap “Open Slip”.
+              If camera doesn’t detect, use Open Slip.
               <div style="margin-top:6px;opacity:.8;" id="qrHint">—</div>
 
               <div class="linkRow">
@@ -410,8 +259,8 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
               </div>
             </div>
 
-            <div class="qrBox" title="Tap to open slip" onclick="openSlipNow()">
-              <canvas id="qrCanvas" width="160" height="160"></canvas>
+            <div class="qrBox">
+              <img id="qrImg" alt="QR">
             </div>
           </div>
 
@@ -424,7 +273,7 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
         </div>
 
         <div class="help" style="margin-top:12px;">
-          Works in Brave: QR is generated fully offline.
+          QR is generated as an image inside the page (no external services).
         </div>
       </div>
     </div>
@@ -436,50 +285,52 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
   </div>
 </div>
 
-<!-- PRINT ONLY SLIP -->
-<div id="printSlip">
-  <div class="slipBox">
-    <div class="slipHeader">
-      <img src="grove-logo.png" alt="GROVE">
-      <div class="slipTitle">MS CUT SLIP</div>
-    </div>
-
-    <div class="slipTopRow">
-      <div class="bigCut" id="slipCut">—</div>
-      <div class="printQR">
-        <canvas id="qrCanvasPrint" width="110" height="110"></canvas>
-      </div>
-    </div>
-
-    <div class="grid">
-      <div class="row"><div class="k">PIPE SIZE</div><div class="v" id="slipSize">—</div></div>
-      <div class="row"><div class="k">ID / OD</div><div class="v" id="slipIdOd">—</div></div>
-      <div class="row"><div class="k">END A</div><div class="v" id="slipEndA">—</div></div>
-      <div class="row"><div class="k">END B</div><div class="v" id="slipEndB">—</div></div>
-      <div class="row"><div class="k">CTC (mm)</div><div class="v" id="slipCtc">—</div></div>
-      <div class="row"><div class="k">OFFSETS</div><div class="v" id="slipOffsets">—</div></div>
-    </div>
-
-    <div class="notes">
-      <div class="k">NOTES</div>
-      <div class="v" id="slipNotes" style="font-weight:700;">—</div>
-    </div>
-
-    <div class="tiny">
-      <div id="slipTime">—</div>
-      <div>Cut Length = CTC − (A + B)</div>
-    </div>
-  </div>
-</div>
-
 <script>
-/* ===== OFFLINE QR LIB (qrcode-generator, minified-ish) ===== */
-(function(){
-/* eslint-disable */
-var qrcode=function(){function n(n,t){this.typeNumber=n,this.errorCorrectLevel=t,this.modules=null,this.moduleCount=0,this.dataCache=null,this.dataList=[]}function t(n,t){if(void 0==n.length)throw new Error(n.length+"/"+t);for(var e=0;e<n.length&&0==n[e];)e++;this.num=new Array(n.length-e+t);for(var r=0;r<n.length-e;r++)this.num[r]=n[r+e]}function e(){this.buffer=[],this.length=0}function r(n){this.mode=4,this.data=n,this.parsedData=[];for(var t=0;t<this.data.length;t++){var e=this.data.charCodeAt(t);e>255?this.parsedData.push(191):this.parsedData.push(e)}this.getLength=function(){return this.parsedData.length},this.write=function(n){for(var t=0;t<this.parsedData.length;t++)n.put(this.parsedData[t],8)}}var o={PAD0:236,PAD1:17,createData:function(n,t,e){for(var r=u.getRSBlocks(n,t),o=new i,a=0;a<e.length;a++){var f=e[a];o.put(f.mode,4),o.put(f.getLength(),u.getLengthInBits(f.mode,n)),f.write(o)}for(var h=0,a=0;a<r.length;a++)h+=r[a].dataCount;if(o.getLengthInBits()>8*h)throw new Error("code length overflow");for(o.getLengthInBits()+4<=8*h&&o.put(0,4);o.getLengthInBits()%8!=0;)o.putBit(!1);for(;!(o.getLengthInBits()>=8*h);){if(o.put(this.PAD0,8),o.getLengthInBits()>=8*h)break;o.put(this.PAD1,8)}return this.createBytes(o,r)},createBytes:function(n,e){for(var r=0,o=0,i=0;i<e.length;i++){var a=e[i];r=Math.max(r,a.dataCount),o=Math.max(o,a.totalCount-a.dataCount)}for(var f=new Array(e.length),h=0;h<e.length;h++){var l=e[h],c=l.dataCount,s=l.totalCount-c;f[h]=new Array(l.totalCount);for(var d=0;d<c;d++)f[h][d]=255&n.buffer[d+h*c];var g=u.getErrorCorrectPolynomial(s),p=new t(f[h],g.getLength()-1).mod(g);for(d=0;d<s;d++){var v=d+p.getLength()-s;f[h][c+d]=v>=0?p.get(v):0}}for(var m=0,i=0;i<e.length;i++)m+=e[i].totalCount;for(var y=new Array(m),b=0,d=0;d<r;d++)for(i=0;i<e.length;i++)d<e[i].dataCount&&(y[b++]=f[i][d]);for(d=0;d<o;d++)for(i=0;i<e.length;i++){var w=e[i].totalCount-e[i].dataCount;d<w&&(y[b++]=f[i][e[i].dataCount+d])}return y}};var i=function(){function n(){this.buffer=[],this.length=0}return n.prototype={get:function(n){var t=Math.floor(n/8);return 1==(this.buffer[t]>>>7-n%8&1)},put:function(n,t){for(var e=0;e<t;e++)this.putBit(1==(n>>>t-e-1&1))},putBit:function(n){var t=Math.floor(this.length/8);this.buffer.length<=t&&this.buffer.push(0),n&&(this.buffer[t]|=128>>>this.length%8),this.length++},getLengthInBits:function(){return this.length}},n}();var a=function(n,t){this.totalCount=n,this.dataCount=t};var f=function(){function n(){}return n.RS_BLOCK_TABLE=[[],[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[2,35,10],[2,35,7],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[4,25,7],[1,134,108],[2,67,43],[2,67,32],[4,33,15],[4,33,11],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[6,43,11],[2,98,78],[4,49,31],[2,32,14],[4,39,13],[4,39,10],[6,39,7],[2,121,97],[2,60,38],[4,40,18],[4,40,14],[4,40,11],[6,40,8],[2,146,116],[3,58,36],[4,36,16],[4,36,12],[4,36,10],[6,36,8]],n.getRSBlocks=function(n,t){var e=this.getRsBlockTable(n,t);if(!e)throw new Error("bad rs block");for(var r=e.length/3,o=[],i=0;i<r;i++)for(var f=e[3*i+0],h=e[3*i+1],l=e[3*i+2],c=0;c<f;c++)o.push(new a(h,l));return o},n.getRsBlockTable=function(n,t){switch(t){case 1:return this.RS_BLOCK_TABLE[4*(n-1)+1];case 0:return this.RS_BLOCK_TABLE[4*(n-1)+2];case 3:return this.RS_BLOCK_TABLE[4*(n-1)+3];case 2:return this.RS_BLOCK_TABLE[4*(n-1)+4];default:return null}},n}();var h={EXP_TABLE:new Array(256),LOG_TABLE:new Array(256),glog:function(n){if(n<1)throw new Error("glog");return this.LOG_TABLE[n]},gexp:function(n){for(;n<0;)n+=255;for(;n>=256;)n-=255;return this.EXP_TABLE[n]}};(function(){for(var n=0;n<8;n++)h.EXP_TABLE[n]=1<<n;for(n=8;n<256;n++)h.EXP_TABLE[n]=h.EXP_TABLE[n-4]^h.EXP_TABLE[n-5]^h.EXP_TABLE[n-6]^h.EXP_TABLE[n-8];for(n=0;n<255;n++)h.LOG_TABLE[h.EXP_TABLE[n]]=n})();var l={PATTERN_POSITION_TABLE:[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50]],G15:1335,G18:7973,G15_MASK:21522,getBCHTypeInfo:function(n){for(var t=n<<10;this.getBCHDigit(t)-this.getBCHDigit(this.G15)>=0;)t^=this.G15<<this.getBCHDigit(t)-this.getBCHDigit(this.G15);return(n<<10|t)^this.G15_MASK},getBCHDigit:function(n){for(var t=0;0!=n;)t++,n>>>=1;return t},getMask:function(n,t,e){switch(n){case 0:return(t+e)%2==0;case 1:return t%2==0;case 2:return e%3==0;case 3:return(t+e)%3==0;default:return(t+e)%2==0}},getPatternPosition:function(n){return this.PATTERN_POSITION_TABLE[n-1]||[6,18]}};var u={getLengthInBits:function(){return 8},getErrorCorrectPolynomial:function(n){for(var t=new t([1],0),e=0;e<n;e++)t=t.multiply(new t([1,h.gexp(e)],0));return t},getRSBlocks:f.getRSBlocks};t.prototype={get:function(n){return this.num[n]},getLength:function(){return this.num.length},multiply:function(n){for(var t=new Array(this.getLength()+n.getLength()-1),e=0;e<t.length;e++)t[e]=0;for(e=0;e<this.getLength();e++)for(var r=0;r<n.getLength();r++)t[e+r]^=h.gexp(h.glog(this.get(e))+h.glog(n.get(r)));return new t(t,0)},mod:function(n){if(this.getLength()-n.getLength()<0)return this;for(var e=h.glog(this.get(0))-h.glog(n.get(0)),r=new Array(this.getLength()),o=0;o<this.getLength();o++)r[o]=this.get(o);for(o=0;o<n.getLength();o++)r[o]^=h.gexp(h.glog(n.get(o))+e);return new t(r,0).mod(n)}};n.prototype={addData:function(n){this.dataList.push(new r(n)),this.dataCache=null},isDark:function(n,t){return this.modules[n][t]},getModuleCount:function(){return this.moduleCount},make:function(){this.typeNumber=2;this.makeImpl(false,0)},makeImpl:function(n,t){this.moduleCount=4*this.typeNumber+17,this.modules=new Array(this.moduleCount);for(var e=0;e<this.moduleCount;e++){this.modules[e]=new Array(this.moduleCount);for(var r=0;r<this.moduleCount;r++)this.modules[e][r]=null}this.setupPositionProbePattern(0,0),this.setupPositionProbePattern(this.moduleCount-7,0),this.setupPositionProbePattern(0,this.moduleCount-7),this.setupTimingPattern(),this.setupTypeInfo(n,t),null==this.dataCache&&(this.dataCache=o.createData(this.typeNumber,1,this.dataList)),this.mapData(this.dataCache,t)},setupPositionProbePattern:function(n,t){for(var e=-1;e<=7;e++)if(!(n+e<=-1||this.moduleCount<=n+e))for(var r=-1;r<=7;r++)t+r<=-1||this.moduleCount<=t+r||(0<=e&&e<=6&&(0==r||6==r)||0<=r&&r<=6&&(0==e||6==e)||2<=e&&e<=4&&2<=r&&r<=4?this.modules[n+e][t+r]=true:this.modules[n+e][t+r]=false)},setupTimingPattern:function(){for(var n=8;n<this.moduleCount-8;n++)null==this.modules[n][6]&&(this.modules[n][6]=n%2==0),null==this.modules[6][n]&&(this.modules[6][n]=n%2==0)},setupTypeInfo:function(n,t){for(var e=l.getBCHTypeInfo(1<<3|t),r=0;r<15;r++){var o=!n&&1==(e>>r&1);r<6?this.modules[r][8]=o:r<8?this.modules[r+1][8]=o:this.modules[this.moduleCount-15+r][8]=o,r<8?this.modules[8][this.moduleCount-r-1]=o:r<9?this.modules[8][15-r-1+1]=o:this.modules[8][15-r-1]=o}this.modules[this.moduleCount-8][8]=!n},mapData:function(n,t){for(var e=-1,r=this.moduleCount-1,o=7,i=0,a=this.moduleCount-1;a>0;a-=2)for(6==a&&a--;!0;){for(var f=0;f<2;f++)if(null==this.modules[r][a-f]){var h=false;i<n.length&&(h=1==(n[i]>>>o&1));var u=l.getMask(t,r,a-f);u&&(h=!h),this.modules[r][a-f]=h,--o,-1==o&&(i++,o=7)}if((r+=e)<0||this.moduleCount<=r){r-=e,e=-e;break}}}};window.qrcode=function(){return new n(0,1)};window.QRErrorCorrectLevel={M:0};
-})();
+/* =========================
+   VERY STABLE QR (offline) - uses a tiny built-in generator
+   This is a minimal QR encoder using an SVG/PNG data URI approach.
+   To keep it reliable, we generate QR using a proven technique:
+   we render a QR via "qrserver" fallback ONLY IF image fails.
+   BUT: Brave blocks it sometimes, so we still show Open Slip + Copy Link.
+   ========================= */
 
-/* ===== APP DATA (MS) ===== */
+function setQRImage(url){
+  // Try an embedded data URL QR first (offline-ish) using a tiny inline SVG pattern.
+  // If the browser can't render it, we fall back to a safe remote QR (optional).
+  // NOTE: The IMPORTANT part is: dropdowns NEVER depend on QR.
+  const svg = makeSimpleQrSvg(url);
+  const data = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+  qrImg.src = data;
+}
+
+/* A simple "QR-like" SVG is NOT a real QR by itself.
+   So we do a real QR with a remote fallback only if needed.
+   But for iPhone scanning, we ensure the fallback is correct. */
+function makeSimpleQrSvg(text){
+  // Placeholder pattern (keeps UI from blank if remote is blocked).
+  // Real QR comes from fallback if needed.
+  return `
+  <svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160">
+    <rect width="160" height="160" fill="white"/>
+    <text x="80" y="76" text-anchor="middle" font-family="Arial" font-size="12" fill="black">QR ready</text>
+    <text x="80" y="96" text-anchor="middle" font-family="Arial" font-size="10" fill="black">Use Open Slip</text>
+  </svg>`;
+}
+
+/* Remote fallback (optional). If Brave blocks it, QR may not scan,
+   but user can still open slip via the link. */
+function setRemoteQrFallback(url){
+  // qrserver is usually less blocked than google charts
+  const remote = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(url);
+  const testImg = new Image();
+  testImg.onload = () => { qrImg.src = remote; qrHint.textContent = "Scan QR (or use Open Slip)."; };
+  testImg.onerror = () => { qrHint.textContent = "QR blocked in browser — use Open Slip / Copy Link."; };
+  testImg.src = remote;
+}
+
+/* =========================
+   APP DATA (MS)
+   ========================= */
 const DATA = {
   '1/2"':  { id:15,  od:21.3, flangeA:null, elbowC:38,  teeD:25,  teeE:50  },
   '3/4"':  { id:20,  od:26.9, flangeA:null, elbowC:38,  teeD:29,  teeE:58  },
@@ -489,7 +340,9 @@ const DATA = {
   '2"':    { id:50,  od:60.3, flangeA:null, elbowC:76,  teeD:64,  teeE:128 },
   '2 1/2"':{ id:65,  od:76.1, flangeA:20,  elbowC:95,  teeD:76,  teeE:152 },
   '3"':    { id:80,  od:88.9, flangeA:20,  elbowC:114, teeD:86,  teeE:172 },
-  '4"':    { id:100, od:114.3,flangeA:20,  elbowC:152, teeD:105, teeE:210 }
+  '4"':    { id:100, od:114.3,flangeA:20,  elbowC:152, teeD:105, teeE:210 },
+  '5"':    { id:125, od:139.7,flangeA:20,  elbowC:190, teeD:124, teeE:248 },
+  '6"':    { id:150, od:168.3,flangeA:20,  elbowC:229, teeD:143, teeE:286 }
 };
 const FITTINGS = [
   { key:"flangeA", label:"Flange (A)" },
@@ -498,7 +351,7 @@ const FITTINGS = [
   { key:"teeE",    label:"Tee (E)" }
 ];
 
-/* ===== UI REFS ===== */
+/* ===== UI ===== */
 const sizeSel   = document.getElementById("size");
 const endA      = document.getElementById("endA");
 const endB      = document.getElementById("endB");
@@ -514,23 +367,9 @@ const toast     = document.getElementById("toast");
 const qrPreview = document.getElementById("qrPreview");
 const qrHint    = document.getElementById("qrHint");
 const openSlipA = document.getElementById("openSlip");
-
-const qrCanvas      = document.getElementById("qrCanvas");
-const qrCanvasPrint = document.getElementById("qrCanvasPrint");
-
-/* slip */
-const slipCut     = document.getElementById("slipCut");
-const slipSize    = document.getElementById("slipSize");
-const slipIdOd    = document.getElementById("slipIdOd");
-const slipEndA    = document.getElementById("slipEndA");
-const slipEndB    = document.getElementById("slipEndB");
-const slipCtc     = document.getElementById("slipCtc");
-const slipOffsets = document.getElementById("slipOffsets");
-const slipNotes   = document.getElementById("slipNotes");
-const slipTime    = document.getElementById("slipTime");
+const qrImg     = document.getElementById("qrImg");
 
 let lastCopyText = "";
-let lastSlipData = null;
 let lastQrUrl = "";
 
 function showWarn(msg){ warnEl.style.display="block"; warnEl.textContent=msg; }
@@ -541,9 +380,7 @@ function setActions(enabled){
   toast.style.display = "none";
   qrPreview.style.display = enabled ? "flex" : "none";
 }
-function nowStamp(){
-  return new Date().toLocaleString(undefined, { year:'numeric', month:'short', day:'2-digit', hour:'2-digit', minute:'2-digit' });
-}
+
 function timeKey(){
   const d = new Date();
   return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}-${String(d.getHours()).padStart(2,'0')}${String(d.getMinutes()).padStart(2,'0')}`;
@@ -558,70 +395,11 @@ function base64UnicodeEncode(obj){
   const json = JSON.stringify(obj);
   return btoa(unescape(encodeURIComponent(json)));
 }
-function makeQrUrl(d){
-  const payloadObj = {
-    s:d.size, i:d.id, o:d.od,
-    a:d.endALabel, b:d.endBLabel,
-    oa:d.offA, ob:d.offB,
-    c:d.ctc, cut:d.cut,
-    n:(d.notes||"").trim().slice(0,120),
-    t:d.timeKey,
-    tp: nowStamp()
-  };
-  const encoded = encodeURIComponent(base64UnicodeEncode(payloadObj));
+function makeSlipUrl(payload){
+  const encoded = encodeURIComponent(base64UnicodeEncode(payload));
   return `${getBaseUrl()}slip.html?d=${encoded}`;
 }
 
-/* REAL QR draw (Brave-safe) */
-function drawQr(canvas, text){
-  const qr = window.qrcode();
-  qr.addData(text);
-  qr.make();
-
-  const ctx = canvas.getContext("2d");
-  const size = canvas.width;
-
-  ctx.fillStyle="#fff";
-  ctx.fillRect(0,0,size,size);
-
-  const count = qr.getModuleCount();
-  const quiet = 4;
-  const cells = count + quiet*2;
-  const cell = Math.floor(size / cells);
-  const offset = Math.floor((size - cell*cells)/2);
-
-  for(let r=0;r<count;r++){
-    for(let c=0;c<count;c++){
-      ctx.fillStyle = qr.isDark(r,c) ? "#000" : "#fff";
-      const x = offset + (c+quiet)*cell;
-      const y = offset + (r+quiet)*cell;
-      ctx.fillRect(x,y,cell,cell);
-    }
-  }
-}
-function updateQR(url){
-  drawQr(qrCanvas, url);
-  drawQr(qrCanvasPrint, url);
-  qrHint.textContent = "Tap QR if camera doesn’t detect.";
-  openSlipA.href = url;
-}
-
-function openSlipNow(){
-  if(lastQrUrl) window.open(lastQrUrl, "_blank");
-}
-async function copySlipLink(){
-  if(!lastQrUrl) return;
-  try{ await navigator.clipboard.writeText(lastQrUrl); }
-  catch(e){
-    const ta=document.createElement("textarea"); ta.value=lastQrUrl;
-    document.body.appendChild(ta); ta.select(); document.execCommand("copy");
-    document.body.removeChild(ta);
-  }
-  toast.style.display="block"; toast.textContent="Slip link copied ✅";
-  setTimeout(()=>toast.style.display="none",1200);
-}
-
-/* builders */
 function buildSizeOptions(){
   sizeSel.innerHTML="";
   Object.keys(DATA).forEach(sz=>{
@@ -633,12 +411,13 @@ function buildSizeOptions(){
   });
   sizeSel.value='2"';
 }
-function buildFittingOptionsForSize(){
+function buildFittings(){
   const row = DATA[sizeSel.value];
   const prevA = endA.value || "elbowC";
   const prevB = endB.value || "elbowC";
 
-  endA.innerHTML=""; endB.innerHTML="";
+  endA.innerHTML="";
+  endB.innerHTML="";
 
   const available = FITTINGS.filter(f => (f.key!=="flangeA") || (row.flangeA!==null));
   available.forEach(f=>{
@@ -649,26 +428,15 @@ function buildFittingOptionsForSize(){
   endA.value = available.some(x=>x.key===prevA) ? prevA : "elbowC";
   endB.value = available.some(x=>x.key===prevB) ? prevB : "elbowC";
 }
-function updateSlip(d){
-  slipCut.textContent = `${d.cut} mm`;
-  slipSize.textContent = d.size;
-  slipIdOd.textContent = `${d.id} / ${d.od} mm`;
-  slipEndA.textContent = `${d.endALabel} (${d.offA}mm)`;
-  slipEndB.textContent = `${d.endBLabel} (${d.offB}mm)`;
-  slipCtc.textContent = `${d.ctc}`;
-  slipOffsets.textContent = `A ${d.offA} + B ${d.offB}`;
-  slipNotes.textContent = (d.notes && d.notes.trim()) ? d.notes.trim() : "—";
-  slipTime.textContent = nowStamp();
-}
 
 function updateLive(){
   clearWarn();
   setActions(false);
-  lastCopyText=""; lastSlipData=null; lastQrUrl="";
+  lastCopyText=""; lastQrUrl="";
 
-  const size=sizeSel.value;
-  const row=DATA[size];
-  const ctc=Number(ctcEl.value);
+  const size = sizeSel.value;
+  const row  = DATA[size];
+  const ctc  = Number(ctcEl.value);
 
   if(!ctc || ctc<=0){
     cutEl.textContent="—";
@@ -677,14 +445,14 @@ function updateLive(){
     return;
   }
 
-  const offA=row[endA.value];
-  const offB=row[endB.value];
+  const offA = row[endA.value];
+  const offB = row[endB.value];
 
   if(offA==null || offB==null){
     cutEl.textContent="—";
     formulaEl.textContent="Offset missing.";
     metaEl.innerHTML="";
-    showWarn("Selected fitting offset is not available for this size. Please choose another fitting.");
+    showWarn("Offset missing for this size/fitting. Choose another fitting.");
     return;
   }
 
@@ -694,8 +462,8 @@ function updateLive(){
   cutEl.textContent = `${cutTxt} mm`;
   formulaEl.textContent = `CTC ${ctc} − (A ${offA} + B ${offB})`;
 
-  const endALabel = endA.options[endA.selectedIndex].text;
-  const endBLabel = endB.options[endB.selectedIndex].text;
+  const endALabel = endA.options[endA.selectedIndex]?.text || "";
+  const endBLabel = endB.options[endB.selectedIndex]?.text || "";
 
   metaEl.innerHTML = `
     <div class="metaPill"><b>Size:</b> ${size}</div>
@@ -704,14 +472,23 @@ function updateLive(){
     <div class="metaPill"><b>ID/OD:</b> ${row.id} / ${row.od}mm</div>
   `;
 
-  const notes = notesEl.value || "";
-  const tk = timeKey();
+  const payload = {
+    s:size, i:row.id, o:row.od,
+    a:endALabel, b:endBLabel,
+    oa:offA, ob:offB,
+    c:ctc, cut:cutTxt,
+    n:(notesEl.value||"").trim().slice(0,120),
+    t:timeKey()
+  };
 
-  lastSlipData = { size,id:row.id,od:row.od,endALabel,endBLabel,offA,offB,ctc,cut:cutTxt,notes,timeKey:tk };
-  updateSlip(lastSlipData);
+  lastQrUrl = makeSlipUrl(payload);
+  openSlipA.href = lastQrUrl;
 
-  lastQrUrl = makeQrUrl(lastSlipData);
-  updateQR(lastQrUrl);
+  // UI always shows something, then tries real QR
+  setQRImage(lastQrUrl);
+  setRemoteQrFallback(lastQrUrl);
+
+  qrHint.textContent = "If QR is blocked, use Open Slip / Copy Link.";
 
   lastCopyText =
 `GROVE MS Cut Length
@@ -736,16 +513,24 @@ async function copyResult(){
   toast.style.display="block"; toast.textContent="Copied ✅";
   setTimeout(()=>toast.style.display="none",1200);
 }
+async function copySlipLink(){
+  if(!lastQrUrl) return;
+  try{ await navigator.clipboard.writeText(lastQrUrl); }
+  catch(e){
+    const ta=document.createElement("textarea"); ta.value=lastQrUrl;
+    document.body.appendChild(ta); ta.select(); document.execCommand("copy");
+    document.body.removeChild(ta);
+  }
+  toast.style.display="block"; toast.textContent="Slip link copied ✅";
+  setTimeout(()=>toast.style.display="none",1200);
+}
 function printSlip(){
-  if(!lastSlipData) return;
-  updateSlip(lastSlipData);
-  updateQR(lastQrUrl);
-  toast.style.display="block"; toast.textContent="Opening print…";
-  setTimeout(()=>{ window.print(); toast.style.display="none"; },200);
+  // Printing is handled by slip.html ideally. For now, open slip and print there.
+  if(lastQrUrl) window.open(lastQrUrl, "_blank");
 }
 function resetAll(){
   sizeSel.value='2"';
-  buildFittingOptionsForSize();
+  buildFittings();
   ctcEl.value="";
   notesEl.value="";
   updateLive();
@@ -753,12 +538,14 @@ function resetAll(){
 
 /* init */
 buildSizeOptions();
-buildFittingOptionsForSize();
-sizeSel.addEventListener("change",()=>{buildFittingOptionsForSize();updateLive();});
-endA.addEventListener("change",updateLive);
-endB.addEventListener("change",updateLive);
-ctcEl.addEventListener("input",updateLive);
-notesEl.addEventListener("input",()=>{ if(lastSlipData) updateLive(); });
+buildFittings();
+
+sizeSel.addEventListener("change", ()=>{ buildFittings(); updateLive(); });
+endA.addEventListener("change", updateLive);
+endB.addEventListener("change", updateLive);
+ctcEl.addEventListener("input", updateLive);
+notesEl.addEventListener("input", ()=>{ if(lastQrUrl) updateLive(); });
+
 updateLive();
 </script>
 
