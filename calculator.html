@@ -1,272 +1,233 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>GROVE | Pipe Cut Length Calculator</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>GROVE | MS Pipe Cut Length Calculator</title>
 
-  <style>
-    :root{
-      --bg:#f5f7fb;
-      --panel:#ffffff;
-      --line:#e6e8ef;
-      --text:#0b1220;
-      --muted:#6b7280;
-      --red:#ef2a1f;
-      --radius:16px;
-      --shadow:0 10px 26px rgba(10,20,40,.08);
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      background:var(--bg);
-      color:var(--text);
-    }
-    .wrap{
-      max-width:1000px;
-      margin:0 auto;
-      padding:22px;
-    }
-    .top{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:14px;
-    }
-    .badge{
-      background:var(--text);
-      color:#fff;
-      padding:8px 14px;
-      border-radius:999px;
-      font-weight:800;
-      font-size:12px;
-    }
-    button.exit{
-      background:#fff;
-      border:1px solid var(--line);
-      padding:8px 14px;
-      border-radius:999px;
-      cursor:pointer;
-      font-weight:700;
-    }
+<style>
+:root{
+  --bg:#070707;
+  --panel:#0f1012;
+  --line:rgba(255,255,255,.12);
+  --text:#f5f5f5;
+  --muted:rgba(255,255,255,.65);
+  --red:#ef2a1f;
+  --radius:18px;
+  --shadow:0 18px 50px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
 
-    .card{
-      background:var(--panel);
-      border:1px solid var(--line);
-      border-radius:var(--radius);
-      padding:20px;
-      box-shadow:var(--shadow);
-    }
-    h1{
-      margin:0 0 6px;
-      font-size:22px;
-    }
-    .sub{
-      color:var(--muted);
-      font-size:14px;
-    }
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  color:var(--text);
+  background:var(--bg);
+  min-height:100vh;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding:24px;
+}
 
-    .grid{
-      display:grid;
-      grid-template-columns:1fr;
-      gap:14px;
-      margin-top:16px;
-    }
-    @media(min-width:760px){
-      .grid.two{grid-template-columns:1fr 1fr}
-    }
+/* header */
+.header{
+  width:100%;
+  max-width:980px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:18px;
+}
+.logoPlate{
+  background:#fff;
+  padding:10px 14px;
+  border-radius:14px;
+  box-shadow:0 10px 28px rgba(0,0,0,.35);
+}
+.logoPlate img{
+  height:46px;
+  width:auto;
+}
 
-    label{
-      font-weight:800;
-      font-size:13px;
-      margin-bottom:6px;
-      display:block;
-    }
-    select,input,button.calc{
-      width:100%;
-      padding:12px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      font-size:16px;
-    }
-    button.calc{
-      background:var(--red);
-      color:#fff;
-      border:none;
-      font-weight:900;
-      cursor:pointer;
-    }
+.headerRight{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.badge{
+  font-size:12px;
+  font-weight:800;
+  padding:8px 12px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.03);
+  color:var(--muted);
+}
+.version{
+  font-size:11px;
+  font-weight:700;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.03);
+  color:rgba(255,255,255,.55);
+}
+.back{
+  border:none;
+  cursor:pointer;
+  font-weight:900;
+  padding:8px 12px;
+  border-radius:999px;
+  background:rgba(255,255,255,.06);
+  color:var(--text);
+}
 
-    .result{
-      margin-top:16px;
-      background:#f0fffb;
-      border:1px solid #b7f3e6;
-      border-radius:16px;
-      padding:16px;
-    }
-    .big{
-      font-size:30px;
-      font-weight:900;
-      margin-top:6px;
-    }
-    .muted{
-      color:#555;
-      font-size:13px;
-      margin-top:6px;
-    }
-    .meta{
-      margin-top:10px;
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-      font-size:13px;
-      color:#333;
-    }
-  </style>
+/* card */
+.card{
+  width:100%;
+  max-width:980px;
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+  box-shadow:var(--shadow);
+  padding:22px;
+}
+
+/* title */
+h1{
+  margin:0 0 6px;
+  font-size:26px;
+}
+.sub{
+  margin:0 0 18px;
+  color:var(--muted);
+}
+
+/* grid */
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+@media(max-width:760px){
+  .grid{grid-template-columns:1fr}
+}
+
+/* inputs */
+label{
+  font-size:12px;
+  font-weight:800;
+  color:rgba(255,255,255,.75);
+  display:block;
+  margin-bottom:6px;
+}
+select,input{
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.05);
+  color:var(--text);
+  font-size:15px;
+}
+select option{background:#111;color:#fff}
+
+/* result */
+.result{
+  margin-top:18px;
+  padding:16px;
+  border-radius:16px;
+  background:rgba(255,255,255,.05);
+  border:1px solid var(--line);
+  font-size:18px;
+  font-weight:900;
+}
+
+/* footer note */
+.note{
+  margin-top:14px;
+  font-size:12px;
+  color:rgba(255,255,255,.55);
+}
+</style>
 </head>
 
 <body>
-<div class="wrap">
 
-  <div class="top">
-    <div class="badge">GROVE • INTERNAL</div>
-    <button class="exit" onclick="logout()">Exit</button>
+<script>
+if(sessionStorage.getItem("cutcalc_ok")!=="1"){
+  window.location.href="index.html";
+}
+</script>
+
+<div class="header">
+  <div class="logoPlate">
+    <img src="grove-logo.png" alt="GROVE">
   </div>
 
-  <div class="card">
-    <h1>Pipe Cut Length</h1>
-    <div class="sub">Based on standard GROVE offset table</div>
+  <div class="headerRight">
+    <div class="badge">MS Pipes Calculator</div>
+    <div class="version">Standard v1.0 • Sep 2025</div>
+    <button class="back" onclick="window.location.href='pipe-type.html'">← Pipe Type</button>
+  </div>
+</div>
 
-    <div class="grid two">
-      <div>
-        <label>Pipe Size</label>
-        <select id="size"></select>
-      </div>
-      <div>
-        <label>Centre-to-centre (mm)</label>
-        <input id="ctc" type="number" placeholder="e.g. 1200">
-      </div>
+<div class="card">
+  <h1>Pipe Cut Length Calculator</h1>
+  <p class="sub">Use standard GROVE offsets for MS pipe fabrication.</p>
+
+  <div class="grid">
+    <div>
+      <label>Pipe Size</label>
+      <select id="pipeSize">
+        <option value="0">Select size</option>
+        <option value="25">25 mm</option>
+        <option value="32">32 mm</option>
+        <option value="40">40 mm</option>
+        <option value="50">50 mm</option>
+      </select>
     </div>
 
-    <div class="grid two">
-      <div>
-        <label>End A</label>
-        <select id="endA"></select>
-      </div>
-      <div>
-        <label>End B</label>
-        <select id="endB"></select>
-      </div>
+    <div>
+      <label>Fitting Type</label>
+      <select id="fitting">
+        <option value="0">Select fitting</option>
+        <option value="52">90° Elbow</option>
+        <option value="32">45° Elbow</option>
+      </select>
     </div>
 
-    <div class="grid">
-      <button class="calc" onclick="calculate()">Calculate</button>
+    <div>
+      <label>Centre to Centre (mm)</label>
+      <input type="number" id="ctc" placeholder="Enter distance">
     </div>
 
-    <div id="resultBox" class="result" style="display:none">
-      <div class="muted">Cut length</div>
-      <div id="cut" class="big"></div>
-      <div id="formula" class="muted"></div>
-      <div id="meta" class="meta"></div>
+    <div>
+      <label>Cut Length (mm)</label>
+      <input type="text" id="result" readonly>
     </div>
+  </div>
+
+  <div class="note">
+    Calculation: Centre-to-centre minus standard fitting allowances.
   </div>
 </div>
 
 <script>
-  if(sessionStorage.getItem("cutcalc_ok") !== "1"){
-    window.location.href = "index.html";
+function calculate(){
+  const fit = Number(document.getElementById("fitting").value);
+  const ctc = Number(document.getElementById("ctc").value);
+  if(fit>0 && ctc>0){
+    document.getElementById("result").value = (ctc - fit).toFixed(1);
+  }else{
+    document.getElementById("result").value = "";
   }
-  function logout(){
-    sessionStorage.removeItem("cutcalc_ok");
-    window.location.href = "index.html";
-  }
-
-  const DATA = {
-    '1/2"': {id:15, od:21.3, flange:null, elbow:38, teeD:25, teeE:50},
-    '3/4"': {id:20, od:26.9, flange:null, elbow:38, teeD:29, teeE:58},
-    '1"': {id:25, od:33.7, flange:null, elbow:38, teeD:38, teeE:76},
-    '1 1/4"': {id:32, od:42.4, flange:null, elbow:48, teeD:48, teeE:96},
-    '1 1/2"': {id:40, od:48.3, flange:null, elbow:57, teeD:57, teeE:114},
-    '2"': {id:50, od:60.3, flange:null, elbow:76, teeD:64, teeE:128},
-    '2 1/2"': {id:65, od:76.1, flange:20, elbow:95, teeD:76, teeE:152},
-    '3"': {id:80, od:88.9, flange:20, elbow:114, teeD:86, teeE:172},
-    '4"': {id:100, od:114.3, flange:20, elbow:152, teeD:105, teeE:210},
-    '5"': {id:125, od:139.7, flange:20, elbow:190, teeD:124, teeE:248},
-    '6"': {id:150, od:168.3, flange:20, elbow:229, teeD:143, teeE:286},
-    '8"': {id:200, od:219.1, flange:25, elbow:305, teeD:178, teeE:356},
-    '10"': {id:250, od:273, flange:25, elbow:381, teeD:216, teeE:432},
-    '12"': {id:300, od:323.9, flange:25, elbow:457, teeD:254, teeE:508},
-    '14"': {id:350, od:355.6, flange:25, elbow:533, teeD:279, teeE:558},
-    '16"': {id:400, od:406.4, flange:25, elbow:610, teeD:305, teeE:610},
-    '18"': {id:450, od:457, flange:25, elbow:686, teeD:343, teeE:686},
-    '20"': {id:500, od:508, flange:25, elbow:762, teeD:381, teeE:762}
-  };
-
-  const FITTINGS = [
-    {key:"flange", label:"Flange (A)"},
-    {key:"elbow", label:"90° Elbow (C)"},
-    {key:"teeD", label:"Tee (D)"},
-    {key:"teeE", label:"Tee (E)"}
-  ];
-
-  const sizeSel = document.getElementById("size");
-  const endA = document.getElementById("endA");
-  const endB = document.getElementById("endB");
-
-  function loadSizes(){
-    Object.keys(DATA).forEach(sz=>{
-      const r = DATA[sz];
-      const o = document.createElement("option");
-      o.value = sz;
-      o.textContent = `${sz} (ID ${r.id}mm / OD ${r.od}mm)`;
-      sizeSel.appendChild(o);
-    });
-    sizeSel.value='2"';
-  }
-
-  function loadEnds(){
-    [endA,endB].forEach(sel=>{
-      FITTINGS.forEach(f=>{
-        const o=document.createElement("option");
-        o.value=f.key;
-        o.textContent=f.label;
-        sel.appendChild(o);
-      });
-    });
-    endA.value="elbow";
-    endB.value="elbow";
-  }
-
-  loadSizes();
-  loadEnds();
-
-  function calculate(){
-    const size = sizeSel.value;
-    const ctc = Number(document.getElementById("ctc").value);
-    if(!ctc){ alert("Enter centre-to-centre"); return; }
-
-    const row = DATA[size];
-    const a = row[endA.value];
-    const b = row[endB.value];
-
-    if(a === null || b === null){
-      alert("Flange offset not defined for this size");
-      return;
-    }
-
-    const cut = ctc - (a + b);
-
-    document.getElementById("resultBox").style.display="block";
-    document.getElementById("cut").innerText = `${cut} mm`;
-    document.getElementById("formula").innerText =
-      `CTC − (${a} + ${b})`;
-
-    document.getElementById("meta").innerHTML =
-      `<div><b>ID:</b> ${row.id}mm</div>
-       <div><b>OD:</b> ${row.od}mm</div>
-       <div><b>Size:</b> ${size}</div>`;
-  }
+}
+document.getElementById("fitting").addEventListener("change",calculate);
+document.getElementById("ctc").addEventListener("input",calculate);
 </script>
 
 </body>
