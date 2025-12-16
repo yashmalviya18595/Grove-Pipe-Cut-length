@@ -4,40 +4,61 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>GROVE | Pipe Cut Length Calculator</title>
+
   <style>
     :root{
       --bg:#070707;
-      --panel:#0f0f10;
+      --panel:#0f1012;
       --line:rgba(255,255,255,.10);
       --text:#f5f5f5;
-      --muted:rgba(255,255,255,.65);
-      --red:#ef2a1f; /* GROVE red vibe */
+      --muted:rgba(255,255,255,.68);
+      --red:#ef2a1f;
       --shadow: 0 18px 60px rgba(0,0,0,.55);
-      --radius:18px;
+      --radius:22px;
     }
     *{box-sizing:border-box}
     body{
       margin:0;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
       color:var(--text);
-      background:
-        radial-gradient(900px 500px at 20% 10%, rgba(239,42,31,.12), transparent 55%),
-        radial-gradient(700px 450px at 80% 30%, rgba(255,255,255,.06), transparent 60%),
-        var(--bg);
+      background: var(--bg);
       min-height:100vh;
       display:flex;
       align-items:center;
       justify-content:center;
       padding:24px;
+      overflow:hidden;
     }
 
-    .wrap{width:100%; max-width:980px}
+    /* subtle animated background */
+    .bgGlow{
+      position:fixed; inset:-40%;
+      background:
+        radial-gradient(900px 500px at 20% 10%, rgba(239,42,31,.14), transparent 60%),
+        radial-gradient(700px 450px at 80% 30%, rgba(255,255,255,.06), transparent 62%),
+        radial-gradient(900px 600px at 70% 90%, rgba(239,42,31,.08), transparent 55%);
+      filter: blur(10px);
+      animation: drift 10s ease-in-out infinite alternate;
+      pointer-events:none;
+    }
+    @keyframes drift{
+      from{ transform: translate3d(-1.5%, -1%, 0) scale(1); }
+      to  { transform: translate3d( 1.5%,  1%, 0) scale(1.02); }
+    }
+
+    .wrap{width:100%; max-width:980px; position:relative;}
     .shell{
       border:1px solid var(--line);
       border-radius: var(--radius);
-      background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
       box-shadow: var(--shadow);
       overflow:hidden;
+      transform: translateY(10px);
+      opacity:0;
+      animation: enter .7s cubic-bezier(.2,.9,.2,1) forwards;
+    }
+    @keyframes enter{
+      to { transform: translateY(0); opacity:1; }
     }
 
     .top{
@@ -49,34 +70,47 @@
       border-bottom:1px solid var(--line);
       background: rgba(0,0,0,.20);
     }
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
-      min-width: 220px;
+
+    /* logo "plate" so black elements are visible */
+    .logoPlate{
+      display:flex; align-items:center; gap:12px;
+      background:#fff;
+      border-radius:16px;
+      padding:10px 14px;
+      border:1px solid rgba(0,0,0,.08);
+      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+      animation: pop 900ms cubic-bezier(.2,.9,.2,1) 120ms both;
     }
-    .brand img{
-      height:38px;
-      width:auto;
-      display:block;
+    @keyframes pop{
+      from{ transform: translateY(6px) scale(.98); opacity:0; }
+      to{ transform: translateY(0) scale(1); opacity:1; }
     }
+    .logoPlate img{
+      height:56px; width:auto; display:block;
+    }
+
     .tag{
       display:inline-flex;
       align-items:center;
-      gap:8px;
-      font-weight:700;
+      gap:10px;
+      font-weight:800;
       font-size:12px;
       color:var(--muted);
-      padding:8px 12px;
+      padding:9px 12px;
       border:1px solid var(--line);
       border-radius:999px;
       background: rgba(255,255,255,.03);
       white-space:nowrap;
     }
     .dot{
-      width:8px;height:8px;border-radius:50%;
+      width:9px;height:9px;border-radius:50%;
       background: var(--red);
-      box-shadow: 0 0 0 4px rgba(239,42,31,.18);
+      box-shadow: 0 0 0 5px rgba(239,42,31,.16);
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%,100%{ transform:scale(1); opacity:1; }
+      50%{ transform:scale(1.08); opacity:.85; }
     }
 
     .content{
@@ -87,7 +121,7 @@
     }
     @media (max-width: 860px){
       .content{grid-template-columns:1fr; padding:26px 18px}
-      .brand img{height:34px}
+      .logoPlate img{height:50px}
     }
 
     h1{
@@ -99,8 +133,15 @@
     .sub{
       margin:0;
       color:var(--muted);
-      line-height:1.6;
+      line-height:1.65;
       max-width: 60ch;
+      opacity:0;
+      transform: translateY(8px);
+      animation: rise .8s ease forwards;
+      animation-delay: .18s;
+    }
+    @keyframes rise{
+      to{ opacity:1; transform: translateY(0); }
     }
 
     .featureRow{
@@ -108,10 +149,14 @@
       display:flex;
       flex-wrap:wrap;
       gap:10px;
+      opacity:0;
+      transform: translateY(8px);
+      animation: rise .8s ease forwards;
+      animation-delay: .26s;
     }
     .pill{
       font-size:12px;
-      color:var(--muted);
+      color:rgba(255,255,255,.72);
       border:1px solid var(--line);
       background: rgba(255,255,255,.03);
       padding:8px 10px;
@@ -123,12 +168,16 @@
       background: rgba(0,0,0,.22);
       border-radius: var(--radius);
       padding:16px;
+      opacity:0;
+      transform: translateY(10px);
+      animation: rise .8s ease forwards;
+      animation-delay: .32s;
     }
     label{
       display:block;
       font-size:12px;
-      font-weight:800;
-      letter-spacing:.3px;
+      font-weight:900;
+      letter-spacing:.35px;
       color:rgba(255,255,255,.78);
       margin:0 0 8px;
     }
@@ -145,17 +194,20 @@
       color: var(--text);
     }
     input::placeholder{color:rgba(255,255,255,.35)}
+
     button{
       margin-top:12px;
       border:none;
       cursor:pointer;
       font-weight:900;
-      background: var(--red);
+      background: linear-gradient(180deg, #ff3b30, var(--red));
       color: #fff;
-      transition: transform .08s ease, filter .12s ease;
+      transition: transform .08s ease, filter .15s ease;
+      box-shadow: 0 16px 30px rgba(239,42,31,.22);
     }
-    button:active{transform: translateY(1px)}
-    button:hover{filter: brightness(1.05)}
+    button:hover{ filter: brightness(1.04); }
+    button:active{ transform: translateY(1px); }
+
     .hint{
       margin-top:10px;
       font-size:12px;
@@ -172,74 +224,16 @@
       border-top:1px solid var(--line);
       color:rgba(255,255,255,.45);
       font-size:12px;
-    }
-    .link{
-      color:rgba(255,255,255,.55);
-      text-decoration:none;
+      background: rgba(0,0,0,.18);
     }
   </style>
 </head>
+
 <body>
+  <div class="bgGlow"></div>
+
   <div class="wrap">
     <div class="shell">
 
       <div class="top">
-        <div class="brand">
-          <!-- Put your uploaded logo file name here -->
-          <img src="grove-logo.png" alt="GROVE Services Ltd." />
-        </div>
-
-        <div class="tag">
-          <span class="dot"></span>
-          Internal Tool • Cut Length Calculator
-        </div>
-      </div>
-
-      <div class="content">
-        <div>
-          <h1>Fast, consistent pipe cut lengths.</h1>
-          <p class="sub">
-            Select pipe size and fittings, enter centre-to-centre, and get the exact cut length using our standard offsets table.
-          </p>
-
-          <div class="featureRow">
-            <div class="pill">Dropdown selections</div>
-            <div class="pill">Site-friendly</div>
-            <div class="pill">Standardised results</div>
-            <div class="pill">No software needed</div>
-          </div>
-        </div>
-
-        <div class="panel">
-          <label for="code">Access code</label>
-          <input id="code" type="password" placeholder="Enter code to continue" />
-          <button onclick="enter()">Enter Calculator</button>
-          <div class="hint">
-            For GROVE team use only. If you need access, contact your supervisor.
-          </div>
-        </div>
-      </div>
-
-      <div class="footer">
-        <div>© GROVE Services Ltd.</div>
-        <div><a class="link" href="#" onclick="alert('Internal use only.'); return false;">Internal use only</a></div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // Change to your real code
-    const ACCESS_CODE = "GROVE123";
-
-    function enter(){
-      const v = document.getElementById("code").value.trim();
-      if(v !== ACCESS_CODE){
-        alert("Wrong code");
-        return;
-      }
-      sessionStorage.setItem("cutcalc_ok","1");
-      window.location.href = "calculator.html";
-    }
-  </script>
-</body>
-</html>
+        <div class
