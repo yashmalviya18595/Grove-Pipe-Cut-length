@@ -30,7 +30,7 @@
       overflow:hidden;
     }
 
-    /* background glow */
+    /* subtle background glow */
     .bgGlow{
       position:fixed; inset:-40%;
       background:
@@ -53,7 +53,7 @@
       border-radius:var(--radius);
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
       box-shadow:var(--shadow);
-      overflow:hidden; /* masks watermark */
+      overflow:hidden;
       opacity:0;
       transform: translateY(10px);
       animation: enter .7s ease forwards;
@@ -69,36 +69,50 @@
       to{ opacity:0; transform: scale(.985); }
     }
 
-    /* CENTER ROW WATERMARK */
+    /* ===== CENTER WATERMARK WITH GLOW ===== */
     .wm-center{
       position:absolute;
       left:50%;
       top:52%;
-      transform: translate(-50%, -50%);
       width:70%;
       max-width:720px;
-      opacity:.06;                 /* subtle */
-      filter: grayscale(100%) contrast(120%);
+      transform: translate(-50%, -50%);
       pointer-events:none;
-      animation: drift 18s ease-in-out infinite alternate;
       z-index:0;
+      animation: drift 18s ease-in-out infinite alternate;
     }
     .wm-center img{
       width:100%;
       height:auto;
+      position:relative;
+      z-index:2;
+      opacity:.14;
+      filter: grayscale(100%) contrast(115%);
+    }
+    .wm-glow{
+      position:absolute;
+      inset:-20%;
+      z-index:1;
+      background: radial-gradient(
+        circle at center,
+        rgba(255,255,255,.28),
+        rgba(255,255,255,0) 65%
+      );
+      filter: blur(14px);
     }
     @keyframes drift{
       from{ transform: translate(-50%, -52%) scale(1); }
       to  { transform: translate(-50%, -48%) scale(1.03); }
     }
 
-    /* content above watermark */
+    /* content layer */
     .layer{ position:relative; z-index:1; }
 
     .top{
       display:flex;
       justify-content:space-between;
       align-items:center;
+      gap:12px;
       padding:18px 22px;
       border-bottom:1px solid var(--line);
       background: rgba(0,0,0,.25);
@@ -117,6 +131,14 @@
       height:68px;
       width:auto;
       display:block;
+    }
+
+    .topRight{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
     }
 
     .tag{
@@ -139,6 +161,17 @@
       animation:pulse 1.8s ease infinite;
     }
     @keyframes pulse{ 50%{transform:scale(1.1)} }
+
+    .version{
+      font-size:11px;
+      font-weight:700;
+      color:rgba(255,255,255,.55);
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.03);
+      white-space:nowrap;
+    }
 
     .content{
       display:grid;
@@ -242,8 +275,9 @@
   <div class="wrap">
     <div class="card" id="card">
 
-      <!-- CENTER ROW WATERMARK -->
+      <!-- CENTER WATERMARK WITH GLOW -->
       <div class="wm-center" aria-hidden="true">
+        <div class="wm-glow"></div>
         <img src="grove-logo.png" alt="">
       </div>
 
@@ -252,9 +286,15 @@
           <div class="logoPlate">
             <img src="grove-logo.png" alt="GROVE Services Ltd">
           </div>
-          <div class="tag">
-            <span class="dot"></span>
-            Internal Tool • Cut Length
+
+          <div class="topRight">
+            <div class="tag">
+              <span class="dot"></span>
+              Internal Tool • Cut Length
+            </div>
+            <div class="version">
+              Standard v1.0 • Sep 2025
+            </div>
           </div>
         </div>
 
