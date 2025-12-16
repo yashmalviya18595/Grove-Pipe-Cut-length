@@ -29,7 +29,7 @@
       overflow:hidden;
     }
 
-    /* BACKGROUND LAYERS */
+    /* background glow + grid */
     .bgGlow{
       position:fixed; inset:-40%;
       background:
@@ -44,7 +44,6 @@
       from{ transform: translate(-1%, -1%) scale(1); }
       to  { transform: translate( 1%,  1%) scale(1.02); }
     }
-
     .bgGrid{
       position:fixed; inset:0;
       background-image:
@@ -55,37 +54,16 @@
       pointer-events:none;
     }
 
-    /* Moving watermark logo in the background */
-    .watermark{
-      position:fixed;
-      inset:-20%;
-      pointer-events:none;
-      opacity:.06;             /* adjust this: 0.04–0.09 looks good */
-      filter: grayscale(100%) contrast(110%);
-      mix-blend-mode: screen;  /* makes it feel “inked in” */
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      animation: drift 16s ease-in-out infinite alternate;
-    }
-    .watermark img{
-      width:min(980px, 110vw);
-      height:auto;
-      transform: rotate(-8deg);
-    }
-    @keyframes drift{
-      from{ transform: translate3d(-2%, -1%, 0) scale(1); }
-      to  { transform: translate3d( 2%,  1%, 0) scale(1.03); }
-    }
-
     .wrap{width:100%; max-width:1000px; position:relative;}
 
+    /* card */
     .card{
+      position:relative;
       border:1px solid var(--line);
       border-radius:var(--radius);
       background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
       box-shadow:var(--shadow);
-      overflow:hidden;
+      overflow:hidden;              /* IMPORTANT: masks watermark */
       opacity:0;
       transform: translateY(10px);
       animation: enter .7s ease forwards;
@@ -94,6 +72,30 @@
     @keyframes enter{ to{ opacity:1; transform: translateY(0);} }
     .card.exit{ animation: exit .35s ease forwards; }
     @keyframes exit{ to{ opacity:0; transform: scale(.985);} }
+
+    /* watermark is INSIDE the card, behind content */
+    .wm{
+      position:absolute;
+      inset:-30%;
+      z-index:0;
+      opacity:.08;                 /* subtle */
+      filter: grayscale(100%) contrast(120%);
+      mix-blend-mode: screen;
+      animation: drift 18s ease-in-out infinite alternate;
+      pointer-events:none;
+    }
+    .wm img{
+      width:min(1100px, 120%);
+      height:auto;
+      transform: rotate(-10deg);
+    }
+    @keyframes drift{
+      from{ transform: translate3d(-2%, -1%, 0) scale(1); }
+      to  { transform: translate3d( 2%,  1%, 0) scale(1.03); }
+    }
+
+    /* content stays above watermark */
+    .layer{ position:relative; z-index:1; }
 
     .top{
       display:flex;
@@ -104,6 +106,7 @@
       background: rgba(0,0,0,.25);
     }
 
+    /* logo plate so black elements show */
     .logoPlate{
       background:#fff;
       padding:12px 16px;
@@ -202,6 +205,7 @@
       color:rgba(255,255,255,.55);
       line-height:1.5;
     }
+
     .footer{
       border-top:1px solid var(--line);
       padding:14px 22px;
@@ -218,52 +222,54 @@
   <div class="bgGlow"></div>
   <div class="bgGrid"></div>
 
-  <!-- moving watermark -->
-  <div class="watermark" aria-hidden="true">
-    <img src="grove-logo.png" alt="">
-  </div>
-
   <div class="wrap">
     <div class="card" id="card">
 
-      <div class="top">
-        <div class="logoPlate">
-          <img src="grove-logo.png" alt="GROVE Services Ltd">
-        </div>
-        <div class="tag">
-          <span class="dot"></span>
-          Internal Tool • Cut Length
-        </div>
+      <!-- watermark stays inside card and is masked by edges -->
+      <div class="wm" aria-hidden="true">
+        <img src="grove-logo.png" alt="">
       </div>
 
-      <div class="content">
-        <div>
-          <h1>Fast, consistent pipe cut lengths.</h1>
-          <p class="sub">
-            Select pipe size and fittings, enter centre-to-centre, and get the exact cut length using GROVE’s standard offset table.
-          </p>
-
-          <div class="pills">
-            <div class="pill">Dropdown based</div>
-            <div class="pill">Site friendly</div>
-            <div class="pill">Standardised</div>
-            <div class="pill">No software</div>
+      <div class="layer">
+        <div class="top">
+          <div class="logoPlate">
+            <img src="grove-logo.png" alt="GROVE Services Ltd">
+          </div>
+          <div class="tag">
+            <span class="dot"></span>
+            Internal Tool • Cut Length
           </div>
         </div>
 
-        <div class="panel">
-          <label>Access code</label>
-          <input id="code" type="password" placeholder="Enter code to continue">
-          <button id="enterBtn" onclick="enter()">Enter Calculator</button>
-          <div class="hint">
-            GROVE internal use only. Contact your supervisor if access is required.
+        <div class="content">
+          <div>
+            <h1>Fast, consistent pipe cut lengths.</h1>
+            <p class="sub">
+              Select pipe size and fittings, enter centre-to-centre, and get the exact cut length using GROVE’s standard offset table.
+            </p>
+
+            <div class="pills">
+              <div class="pill">Dropdown based</div>
+              <div class="pill">Site friendly</div>
+              <div class="pill">Standardised</div>
+              <div class="pill">No software</div>
+            </div>
+          </div>
+
+          <div class="panel">
+            <label>Access code</label>
+            <input id="code" type="password" placeholder="Enter code to continue">
+            <button id="enterBtn" onclick="enter()">Enter Calculator</button>
+            <div class="hint">
+              GROVE internal use only. Contact your supervisor if access is required.
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="footer">
-        <div>© GROVE Services Ltd.</div>
-        <div>Internal use only</div>
+        <div class="footer">
+          <div>© GROVE Services Ltd.</div>
+          <div>Internal use only</div>
+        </div>
       </div>
 
     </div>
@@ -278,6 +284,7 @@
         alert("Wrong code");
         return;
       }
+
       const card = document.getElementById("card");
       const btn = document.getElementById("enterBtn");
 
