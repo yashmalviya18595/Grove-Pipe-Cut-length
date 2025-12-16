@@ -30,7 +30,7 @@
       overflow:hidden;
     }
 
-    /* subtle background glow */
+    /* soft background glow */
     .bgGlow{
       position:fixed; inset:-40%;
       background:
@@ -59,17 +59,11 @@
       animation: enter .7s ease forwards;
       backdrop-filter: blur(6px);
     }
-    @keyframes enter{
-      to{ opacity:1; transform: translateY(0); }
-    }
-    .card.exit{
-      animation: exit .35s ease forwards;
-    }
-    @keyframes exit{
-      to{ opacity:0; transform: scale(.985); }
-    }
+    @keyframes enter{ to{ opacity:1; transform: translateY(0); } }
+    .card.exit{ animation: exit .35s ease forwards; }
+    @keyframes exit{ to{ opacity:0; transform: scale(.985); } }
 
-    /* ===== CENTER WATERMARK WITH GLOW ===== */
+    /* ===== WATERMARK (ZOOM ONLY) ===== */
     .wm-center{
       position:absolute;
       left:50%;
@@ -79,7 +73,7 @@
       transform: translate(-50%, -50%);
       pointer-events:none;
       z-index:0;
-      animation: drift 18s ease-in-out infinite alternate;
+      animation: zoomBreath 16s ease-in-out infinite;
     }
     .wm-center img{
       width:100%;
@@ -93,19 +87,16 @@
       position:absolute;
       inset:-20%;
       z-index:1;
-      background: radial-gradient(
-        circle at center,
-        rgba(255,255,255,.28),
-        rgba(255,255,255,0) 65%
-      );
+      background: radial-gradient(circle at center, rgba(255,255,255,.28), rgba(255,255,255,0) 65%);
       filter: blur(14px);
+      opacity:.9;
     }
-    @keyframes drift{
-      from{ transform: translate(-50%, -52%) scale(1); }
-      to  { transform: translate(-50%, -48%) scale(1.03); }
+    @keyframes zoomBreath{
+      0%   { transform: translate(-50%, -50%) scale(1);    opacity:1; }
+      50%  { transform: translate(-50%, -50%) scale(1.05); opacity:1; }
+      100% { transform: translate(-50%, -50%) scale(1);    opacity:1; }
     }
 
-    /* content layer */
     .layer{ position:relative; z-index:1; }
 
     .top{
@@ -118,7 +109,6 @@
       background: rgba(0,0,0,.25);
     }
 
-    /* logo plate */
     .logoPlate{
       background:#fff;
       padding:12px 18px;
@@ -127,11 +117,7 @@
       display:flex;
       align-items:center;
     }
-    .logoPlate img{
-      height:68px;
-      width:auto;
-      display:block;
-    }
+    .logoPlate img{height:68px;width:auto;display:block;}
 
     .topRight{
       display:flex;
@@ -140,7 +126,6 @@
       flex-wrap:wrap;
       justify-content:flex-end;
     }
-
     .tag{
       display:flex;
       align-items:center;
@@ -185,24 +170,10 @@
       .wm-center{width:90%}
     }
 
-    h1{
-      margin:0 0 10px;
-      font-size:34px;
-      line-height:1.15;
-    }
-    .sub{
-      margin:0;
-      color:var(--muted);
-      line-height:1.6;
-      max-width:60ch;
-    }
+    h1{margin:0 0 10px;font-size:34px;line-height:1.15;}
+    .sub{margin:0;color:var(--muted);line-height:1.6;max-width:60ch;}
 
-    .pills{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-top:18px;
-    }
+    .pills{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;}
     .pill{
       font-size:12px;
       padding:8px 10px;
@@ -275,7 +246,6 @@
   <div class="wrap">
     <div class="card" id="card">
 
-      <!-- CENTER WATERMARK WITH GLOW -->
       <div class="wm-center" aria-hidden="true">
         <div class="wm-glow"></div>
         <img src="grove-logo.png" alt="">
@@ -288,13 +258,8 @@
           </div>
 
           <div class="topRight">
-            <div class="tag">
-              <span class="dot"></span>
-              Internal Tool • Cut Length
-            </div>
-            <div class="version">
-              Standard v1.0 • Dec 2025
-            </div>
+            <div class="tag"><span class="dot"></span>Internal Tool • Cut Length</div>
+            <div class="version">Standard v1.0 • Sep 2025</div>
           </div>
         </div>
 
@@ -302,21 +267,21 @@
           <div>
             <h1>Fast, consistent pipe cut lengths.</h1>
             <p class="sub">
-              Select pipe size and fittings, enter centre-to-centre, and get the exact cut length using GROVE’s standard offset table.
+              Enter your access code to continue. Next you’ll select the pipe type (MS / Stainless).
             </p>
 
             <div class="pills">
               <div class="pill">Dropdown based</div>
               <div class="pill">Site friendly</div>
-              <div class="pill">Standardised</div>
-              <div class="pill">No software</div>
+              <div class="pill">Version controlled</div>
+              <div class="pill">Internal use</div>
             </div>
           </div>
 
           <div class="panel">
             <label>Access code</label>
             <input id="code" type="password" placeholder="Enter code to continue">
-            <button id="enterBtn" onclick="enter()">Enter Calculator</button>
+            <button id="enterBtn" onclick="enter()">Continue</button>
             <div class="hint">
               GROVE internal use only. Contact your supervisor if access is required.
             </div>
@@ -341,19 +306,14 @@
         alert("Wrong code");
         return;
       }
-
       const card = document.getElementById("card");
       const btn = document.getElementById("enterBtn");
-
       btn.disabled = true;
       btn.textContent = "Opening…";
-
       sessionStorage.setItem("cutcalc_ok","1");
       card.classList.add("exit");
-
-      setTimeout(()=> window.location.href = "calculator.html", 350);
+      setTimeout(()=> window.location.href = "pipe-type.html", 350);
     }
-
     document.addEventListener("keydown", e=>{
       if(e.key === "Enter") enter();
     });
