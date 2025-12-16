@@ -6,610 +6,185 @@
 <title>GROVE | Cut Slip</title>
 
 <style>
-:root{
-  --bg:#070707;
-  --line:rgba(255,255,255,.14);
-  --text:#f7f7f7;
-  --muted:rgba(255,255,255,.68);
-  --red:#ef2a1f;
-  --radius:18px;
-  --shadow:0 18px 55px rgba(0,0,0,.55);
-}
-
-*{box-sizing:border-box}
 body{
   margin:0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-  color:var(--text);
-  background:var(--bg);
-  min-height:100vh;
-  padding:22px;
+  background:#070707;
+  color:#fff;
+  padding:20px;
 }
-.wrap{max-width:860px;margin:0 auto;position:relative}
-
-.bgGlow{
-  position:fixed; inset:-40%;
-  background:
-    radial-gradient(900px 500px at 18% 18%, rgba(239,42,31,.14), transparent 60%),
-    radial-gradient(700px 450px at 82% 35%, rgba(255,255,255,.05), transparent 60%);
-  filter: blur(14px);
-  pointer-events:none;
-  z-index:-3;
-}
-
-/* watermark zoom */
-.wm-center{
-  position:absolute; left:50%; top:54%;
-  width:min(740px, 88%);
-  transform:translate(-50%,-50%);
-  pointer-events:none;
-  z-index:-1;
-  animation: zoomBreath 16s ease-in-out infinite;
-}
-.wm-center img{
-  width:100%;
-  opacity:.10;
-  filter: grayscale(100%) contrast(115%);
-}
-.wm-glow{
-  position:absolute; inset:-20%;
-  background: radial-gradient(circle at center, rgba(255,255,255,.22), rgba(255,255,255,0) 65%);
-  filter: blur(14px);
-  z-index:-2;
-}
-@keyframes zoomBreath{
-  0%{transform:translate(-50%,-50%) scale(1)}
-  50%{transform:translate(-50%,-50%) scale(1.05)}
-  100%{transform:translate(-50%,-50%) scale(1)}
-}
-
-/* top bar */
-.topbar{
+.wrap{max-width:820px;margin:0 auto}
+.top{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  gap:12px;
   margin-bottom:14px;
 }
-.logoPlate{
+.logo{
   background:#fff;
   padding:10px 14px;
-  border-radius:16px;
-  box-shadow:0 12px 28px rgba(0,0,0,.35);
+  border-radius:14px;
 }
-.logoPlate img{height:44px}
-.actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.logo img{height:44px}
+.actions{display:flex;gap:10px}
 .btn{
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.04);
-  color:var(--text);
-  padding:10px 12px;
+  padding:10px 14px;
   border-radius:999px;
-  font-weight:900;
+  border:1px solid rgba(255,255,255,.25);
+  background:rgba(255,255,255,.05);
+  color:#fff;
+  font-weight:800;
   cursor:pointer;
 }
-.btnPrimary{
+.btn.primary{
+  background:#ef2a1f;
   border:none;
-  background:linear-gradient(180deg,#ff3b30,var(--red));
-  color:#fff;
 }
-.pill{
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.03);
-  padding:10px 12px;
-  border-radius:999px;
-  font-weight:900;
-  color:rgba(255,255,255,.75);
-  font-size:12px;
-}
-
-/* slip card */
 .card{
-  border:1px solid var(--line);
-  border-radius:24px;
-  background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.02));
-  box-shadow:var(--shadow);
-  overflow:hidden;
-  position:relative;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:22px;
+  background:rgba(255,255,255,.04);
+  padding:18px;
 }
-.head{
-  padding:18px 20px;
-  border-bottom:1px solid var(--line);
-  background:rgba(0,0,0,.22);
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  gap:14px;
-}
-.title{
-  font-size:20px;
+.big{
+  font-size:42px;
   font-weight:1000;
-  margin:0;
+  margin-bottom:10px;
 }
-.sub{
-  margin-top:6px;
-  color:var(--muted);
-  font-size:13px;
-  line-height:1.5;
-}
-.badge{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  border:1px solid rgba(239,42,31,.35);
-  background:rgba(239,42,31,.08);
-  padding:10px 12px;
-  border-radius:999px;
-  font-weight:1000;
-  white-space:nowrap;
-}
-.dot{
-  width:9px;height:9px;border-radius:50%;
-  background:var(--red);
-  box-shadow:0 0 0 5px rgba(239,42,31,.18);
-}
-.body{
-  padding:18px 20px 20px;
-  display:grid;
-  grid-template-columns: 1.15fr .85fr;
-  gap:14px;
-}
-@media(max-width:860px){
-  .body{grid-template-columns:1fr}
-  .wm-center{display:none}
-}
-
-.panel{
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(0,0,0,.20);
-  border-radius:18px;
-  padding:14px;
-}
-.bigCut{
-  border:1px solid rgba(239,42,31,.35);
-  background:rgba(239,42,31,.09);
-  border-radius:18px;
-  padding:14px;
-}
-.bigLabel{
-  font-size:12px;
-  font-weight:1000;
-  color:rgba(255,255,255,.72);
-}
-.bigValue{
-  margin-top:6px;
-  font-size:44px;
-  font-weight:1100;
-}
-.bigFormula{
-  margin-top:8px;
-  font-size:12px;
-  color:rgba(255,255,255,.65);
-  line-height:1.5;
-}
-
 .grid{
-  margin-top:12px;
   display:grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns:1fr 1fr;
   gap:10px;
 }
-@media(max-width:520px){ .grid{grid-template-columns:1fr} }
 .kv{
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.03);
-  border-radius:16px;
-  padding:12px;
-}
-.k{
-  font-size:11px;
-  font-weight:1000;
-  letter-spacing:.4px;
-  color:rgba(255,255,255,.68);
-}
-.v{
-  margin-top:6px;
-  font-size:14px;
-  font-weight:900;
-  color:rgba(255,255,255,.95);
-}
-
-.notesBox{
-  margin-top:12px;
-  border:1px dashed rgba(255,255,255,.22);
-  border-radius:18px;
-  padding:12px;
-  background:rgba(0,0,0,.14);
-}
-.notesBox .k{opacity:.85}
-.notesText{
-  margin-top:6px;
-  font-size:13px;
-  color:rgba(255,255,255,.88);
-  min-height:26px;
-  white-space:pre-wrap;
-}
-
-.rightTop{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-.qrCard{
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.03);
-  border-radius:18px;
-  padding:14px;
-}
-.qrWhite{
-  background:#fff;
-  border-radius:16px;
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:14px;
   padding:10px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
 }
-.qrWhite canvas{
-  width:180px;height:180px;display:block;
+.k{font-size:11px;opacity:.7;font-weight:900}
+.v{margin-top:6px;font-weight:900}
+.note{
+  margin-top:12px;
+  border:1px dashed rgba(255,255,255,.25);
+  padding:10px;
+  border-radius:14px;
 }
-.smallHint{
-  margin-top:10px;
-  font-size:12px;
-  color:rgba(255,255,255,.68);
-  line-height:1.45;
-}
-
-.footer{
-  padding:14px 20px;
-  border-top:1px solid var(--line);
-  background:rgba(0,0,0,.18);
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  color:rgba(255,255,255,.45);
-  font-size:12px;
+.toast{
+  margin-top:12px;
+  font-size:13px;
+  font-weight:800;
+  color:#9cff9c;
+  display:none;
 }
 
-/* Print */
+/* PRINT */
 @media print{
-  @page{ size: A6; margin: 8mm; }
-  body{ background:#fff !important; color:#000 !important; padding:0 !important; }
-  .bgGlow,.wm-center,.topbar{ display:none !important; }
-  .card{ box-shadow:none !important; border:1px solid #000 !important; background:#fff !important; }
-  .head{ background:#fff !important; border-bottom:1px solid #000 !important; }
-  .panel,.kv,.qrCard{ background:#fff !important; border:1px solid #000 !important; }
-  .bigCut{ background:#fff !important; border:2px solid #000 !important; }
-  .k,.sub,.bigLabel,.bigFormula,.smallHint,.footer{ color:#000 !important; opacity:1 !important; }
-  .qrWhite{ border:1px solid #000 !important; }
+  body{background:#fff;color:#000;padding:0}
+  .top,.actions,.toast{display:none}
+  .card{border:1px solid #000}
 }
 </style>
 </head>
 
 <body>
-<div class="bgGlow"></div>
-
 <div class="wrap">
-  <div class="wm-center" aria-hidden="true">
-    <div class="wm-glow"></div>
-    <img src="grove-logo.png" alt="">
-  </div>
 
-  <div class="topbar">
-    <div class="logoPlate">
+  <div class="top">
+    <div class="logo">
       <img src="grove-logo.png" alt="GROVE">
     </div>
     <div class="actions">
-      <div class="pill" id="stamp">—</div>
       <button class="btn" onclick="goBack()">← Back</button>
-      <button class="btn" onclick="copyAll()">Copy</button>
-      <button class="btn btnPrimary" onclick="window.print()">Print</button>
+      <button class="btn" onclick="copySlip()">Copy</button>
+      <button class="btn primary" onclick="printSlip()">Print</button>
     </div>
   </div>
 
-  <div class="card">
-    <div class="head">
-      <div>
-        <h1 class="title">GROVE Cut Slip</h1>
-        <div class="sub">For internal use. Please verify measurements on site before cutting.</div>
-      </div>
-      <div class="badge"><span class="dot"></span> MS PIPE</div>
+  <div class="card" id="slip">
+    <div class="big" id="cut">—</div>
+
+    <div class="grid">
+      <div class="kv"><div class="k">PIPE SIZE</div><div class="v" id="size">—</div></div>
+      <div class="kv"><div class="k">ID / OD</div><div class="v" id="idod">—</div></div>
+      <div class="kv"><div class="k">END A</div><div class="v" id="endA">—</div></div>
+      <div class="kv"><div class="k">END B</div><div class="v" id="endB">—</div></div>
+      <div class="kv"><div class="k">CTC (mm)</div><div class="v" id="ctc">—</div></div>
+      <div class="kv"><div class="k">OFFSETS</div><div class="v" id="offs">—</div></div>
     </div>
 
-    <div class="body">
-      <div class="panel">
-        <div class="bigCut">
-          <div class="bigLabel">CUT LENGTH</div>
-          <div class="bigValue" id="cut">—</div>
-          <div class="bigFormula" id="formula">—</div>
-        </div>
-
-        <div class="grid">
-          <div class="kv"><div class="k">PIPE SIZE</div><div class="v" id="size">—</div></div>
-          <div class="kv"><div class="k">ID / OD</div><div class="v" id="idod">—</div></div>
-          <div class="kv"><div class="k">END A</div><div class="v" id="endA">—</div></div>
-          <div class="kv"><div class="k">END B</div><div class="v" id="endB">—</div></div>
-          <div class="kv"><div class="k">CTC (mm)</div><div class="v" id="ctc">—</div></div>
-          <div class="kv"><div class="k">OFFSETS</div><div class="v" id="offs">—</div></div>
-        </div>
-
-        <div class="notesBox">
-          <div class="k">NOTES</div>
-          <div class="notesText" id="notes">—</div>
-        </div>
-      </div>
-
-      <div class="rightTop">
-        <div class="qrCard">
-          <div class="k" style="margin-bottom:8px;">QR (opens this slip)</div>
-          <div class="qrWhite">
-            <canvas id="qrCanvas" width="180" height="180"></canvas>
-          </div>
-          <div class="smallHint">
-            If iPhone camera doesn’t detect, open using the same link the calculator generated.
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="k">SAFETY</div>
-          <div class="v" style="margin-top:8px;font-weight:800;color:rgba(255,255,255,.88)">
-            Always confirm: size, fitting type, and orientation before cutting.
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer">
-      <div>© GROVE Services Ltd.</div>
-      <div id="tiny">—</div>
+    <div class="note">
+      <div class="k">NOTES</div>
+      <div class="v" id="notes">—</div>
     </div>
   </div>
+
+  <div class="toast" id="toast">Copied to clipboard ✅</div>
+
 </div>
 
 <script>
-/* ==========================================================
-   TRUE OFFLINE QR (same stable canvas approach)
-   ========================================================== */
-(function(){
-  // A compact, stable QR drawer (same as calculator: uses our internal qrcode wrapper)
-  // For slip page, we rebuild the same minimal engine used earlier.
-  // To keep this file fully independent, we include the same minimal engine.
-
-  // ---- Minimal QR core (same as calculator)
-  var qrcode = (function () {
-    var QRCode = function (typeNumber, errorCorrectLevel) {
-      this.typeNumber = typeNumber;
-      this.errorCorrectLevel = errorCorrectLevel;
-      this.modules = null;
-      this.moduleCount = 0;
-      this.dataCache = null;
-      this.dataList = [];
-    };
-
-    function QRBitBuffer(){ this.buffer = []; this.length = 0; }
-    QRBitBuffer.prototype = {
-      put: function(num, length){ for (var i=0;i<length;i++) this.putBit(((num >>> (length-i-1)) & 1) == 1); },
-      putBit: function(bit){
-        var bufIndex = Math.floor(this.length / 8);
-        if (this.buffer.length <= bufIndex) this.buffer.push(0);
-        if (bit) this.buffer[bufIndex] |= (0x80 >>> (this.length % 8));
-        this.length++;
-      },
-      getLengthInBits: function(){ return this.length; }
-    };
-
-    function QR8bitByte(data){ this.data = data; }
-    QR8bitByte.prototype = {
-      getLength: function(){ return this.data.length; },
-      write: function(buffer){ for (var i=0;i<this.data.length;i++) buffer.put(this.data.charCodeAt(i), 8); }
-    };
-
-    // Simple version choice
-    function pickTypeNumber(dataLen){
-      // safe buckets for our short URLs
-      if (dataLen <= 80) return 6;
-      if (dataLen <= 120) return 8;
-      if (dataLen <= 180) return 10;
-      return 12;
-    }
-
-    function createData(typeNumber, dataList){
-      var buffer = new QRBitBuffer();
-      for (var i=0;i<dataList.length;i++){
-        var data = dataList[i];
-        buffer.put(4,4);     // 8bit mode
-        buffer.put(data.getLength(), 8);
-        data.write(buffer);
-      }
-      // terminator + pad (simple)
-      buffer.put(0,4);
-      while (buffer.getLengthInBits() % 8 != 0) buffer.putBit(false);
-      while (buffer.buffer.length < (typeNumber*typeNumber)) buffer.buffer.push(0); // extra pad
-      return buffer.buffer;
-    }
-
-    QRCode.prototype = {
-      addData: function(data){ this.dataList.push(new QR8bitByte(data)); this.dataCache=null; },
-      make: function(){
-        if (this.typeNumber < 1) this.typeNumber = pickTypeNumber(this.dataList[0].getLength());
-        this.moduleCount = this.typeNumber * 4 + 17;
-        this.modules = new Array(this.moduleCount);
-        for (var r=0;r<this.moduleCount;r++){
-          this.modules[r] = new Array(this.moduleCount);
-          for (var c=0;c<this.moduleCount;c++) this.modules[r][c] = null;
-        }
-        setupFinder(this,0,0);
-        setupFinder(this,this.moduleCount-7,0);
-        setupFinder(this,0,this.moduleCount-7);
-        setupTiming(this);
-        if (this.dataCache==null) this.dataCache = createData(this.typeNumber, this.dataList);
-        mapData(this, this.dataCache);
-        for (r=0;r<this.moduleCount;r++) for (c=0;c<this.moduleCount;c++) if (this.modules[r][c]==null) this.modules[r][c]=false;
-      },
-      getModuleCount: function(){ return this.moduleCount; },
-      isDark: function(r,c){ return this.modules[r][c]; }
-    };
-
-    function setupFinder(qr,row,col){
-      for (var r=-1;r<=7;r++){
-        if (row+r<0||row+r>=qr.moduleCount) continue;
-        for (var c=-1;c<=7;c++){
-          if (col+c<0||col+c>=qr.moduleCount) continue;
-          if ((0<=r&&r<=6&&(c==0||c==6)) ||
-              (0<=c&&c<=6&&(r==0||r==6)) ||
-              (2<=r&&r<=4&&2<=c&&c<=4)){
-            qr.modules[row+r][col+c]=true;
-          }else{
-            qr.modules[row+r][col+c]=false;
-          }
-        }
-      }
-    }
-    function setupTiming(qr){
-      for (var i=8;i<qr.moduleCount-8;i++){
-        if (qr.modules[i][6]==null) qr.modules[i][6]=(i%2==0);
-        if (qr.modules[6][i]==null) qr.modules[6][i]=(i%2==0);
-      }
-    }
-    function mapData(qr,data){
-      var inc=-1;
-      var row=qr.moduleCount-1;
-      var bitIndex=7;
-      var byteIndex=0;
-
-      for (var col=qr.moduleCount-1; col>0; col-=2){
-        if (col==6) col--;
-        while(true){
-          for (var c=0;c<2;c++){
-            if (qr.modules[row][col-c]==null){
-              var dark=false;
-              if (byteIndex < data.length){
-                dark = (((data[byteIndex] >>> bitIndex) & 1) == 1);
-              }
-              qr.modules[row][col-c]=dark;
-              bitIndex--;
-              if (bitIndex==-1){ byteIndex++; bitIndex=7; }
-            }
-          }
-          row += inc;
-          if (row<0 || row>=qr.moduleCount){
-            row -= inc;
-            inc = -inc;
-            break;
-          }
-        }
-      }
-    }
-
-    return function(typeNumber, errorCorrectLevel){
-      return new QRCode(typeNumber, errorCorrectLevel);
-    };
-  })();
-
-  window.__SLIP_QR = { qrcode:qrcode };
-})();
-
-function drawQr(canvas, text){
-  const ctx = canvas.getContext("2d");
-  const size = canvas.width;
-  ctx.fillStyle="#fff";
-  ctx.fillRect(0,0,size,size);
-
-  const qr = window.__SLIP_QR.qrcode(0,'M');
-  qr.addData(text);
-  qr.make();
-
-  const count = qr.getModuleCount();
-  const quiet = 4;
-  const cells = count + quiet*2;
-  const cell = Math.floor(size / cells);
-  const offset = Math.floor((size - cell*cells)/2);
-
-  for(let r=0;r<count;r++){
-    for(let c=0;c<count;c++){
-      ctx.fillStyle = qr.isDark(r,c) ? "#000" : "#fff";
-      const x = offset + (c+quiet)*cell;
-      const y = offset + (r+quiet)*cell;
-      ctx.fillRect(x,y,cell,cell);
-    }
-  }
-}
-
-/* ==========================================================
-   Decode payload from ?d= (base64 utf-8 json)
-   ========================================================== */
-function decodePayload(){
-  const params = new URLSearchParams(window.location.search);
-  const d = params.get("d");
-  if(!d) return null;
-
+function decode(){
+  const p=new URLSearchParams(location.search).get("d");
+  if(!p) return null;
   try{
-    const json = decodeURIComponent(escape(atob(decodeURIComponent(d))));
-    return JSON.parse(json);
-  }catch(e){
-    return null;
-  }
+    return JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(p)))));
+  }catch(e){ return null; }
 }
 
-function setText(id, val){
-  document.getElementById(id).textContent = (val===undefined || val===null || val==="") ? "—" : String(val);
+function set(id,v){
+  document.getElementById(id).textContent = v ?? "—";
 }
 
 function goBack(){
-  // Prefer returning to calculator if exists
-  window.history.length > 1 ? window.history.back() : (window.location.href="calculator.html");
+  history.length>1 ? history.back() : location.href="calculator.html";
 }
 
-async function copyAll(){
-  const text =
-`GROVE Cut Slip
-Cut: ${document.getElementById("cut").textContent}
-Size: ${document.getElementById("size").textContent}
+/* ✅ SAFARI SAFE COPY */
+function copySlip(){
+  const text = `
+GROVE CUT SLIP
+CUT: ${document.getElementById("cut").textContent}
+SIZE: ${document.getElementById("size").textContent}
 ID/OD: ${document.getElementById("idod").textContent}
-End A: ${document.getElementById("endA").textContent}
-End B: ${document.getElementById("endB").textContent}
+END A: ${document.getElementById("endA").textContent}
+END B: ${document.getElementById("endB").textContent}
 CTC: ${document.getElementById("ctc").textContent}
-Offsets: ${document.getElementById("offs").textContent}
-Notes: ${document.getElementById("notes").textContent}
-Link: ${window.location.href}`;
+OFFSETS: ${document.getElementById("offs").textContent}
+NOTES: ${document.getElementById("notes").textContent}
+LINK: ${location.href}
+`;
 
-  try{ await navigator.clipboard.writeText(text); }
-  catch(e){
-    const ta=document.createElement("textarea"); ta.value=text;
-    document.body.appendChild(ta); ta.select(); document.execCommand("copy");
-    document.body.removeChild(ta);
-  }
+  const ta=document.createElement("textarea");
+  ta.value=text;
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand("copy");
+  document.body.removeChild(ta);
+
+  const t=document.getElementById("toast");
+  t.style.display="block";
+  setTimeout(()=>t.style.display="none",1500);
 }
 
-(function init(){
-  const payload = decodePayload();
+/* ✅ SAFARI SAFE PRINT */
+function printSlip(){
+  window.focus();
+  window.print();
+}
 
-  const stamp = new Date().toLocaleString(undefined, { year:'numeric', month:'short', day:'2-digit', hour:'2-digit', minute:'2-digit' });
-  setText("stamp", stamp);
-  setText("tiny", "Generated " + stamp);
+/* INIT */
+(function(){
+  const d=decode();
+  if(!d){ set("cut","INVALID SLIP"); return; }
 
-  if(!payload){
-    setText("cut","Invalid slip");
-    setText("formula","Missing or invalid QR data. Please generate again from calculator.");
-    return;
-  }
-
-  const cut = (payload.cut !== undefined) ? `${payload.cut} mm` : "—";
-  const ctc = (payload.c !== undefined) ? `${payload.c}` : "—";
-  const offA = payload.oa ?? "—";
-  const offB = payload.ob ?? "—";
-
-  setText("cut", cut);
-  setText("size", payload.s);
-  setText("idod", `${payload.i} / ${payload.o} mm`);
-  setText("endA", `${payload.a} (${offA}mm)`);
-  setText("endB", `${payload.b} (${offB}mm)`);
-  setText("ctc", ctc);
-  setText("offs", `A ${offA} + B ${offB}`);
-  setText("notes", payload.n || "—");
-  setText("formula", `CTC ${payload.c} − (A ${offA} + B ${offB})`);
-
-  // QR shows this exact slip link (so the paper can be re-opened)
-  drawQr(document.getElementById("qrCanvas"), window.location.href);
+  set("cut", `${d.cut} mm`);
+  set("size", d.s);
+  set("idod", `${d.i} / ${d.o} mm`);
+  set("endA", `${d.a} (${d.oa}mm)`);
+  set("endB", `${d.b} (${d.ob}mm)`);
+  set("ctc", d.c);
+  set("offs", `A ${d.oa} + B ${d.ob}`);
+  set("notes", d.n || "—");
 })();
 </script>
 
