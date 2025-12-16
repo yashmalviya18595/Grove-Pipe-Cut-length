@@ -120,15 +120,6 @@ body{
 }
 @keyframes pulse{50%{transform:scale(1.1)}}
 
-.version{
-  font-size:11px;
-  font-weight:700;
-  color:rgba(255,255,255,.55);
-  padding:6px 10px;
-  border-radius:999px;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.03);
-}
 .btnSmall{
   border:1px solid var(--line);
   background:rgba(255,255,255,.04);
@@ -215,7 +206,11 @@ select,input{
 }
 .resultValue{font-size:38px;font-weight:1000;margin-top:6px}
 
-.copyRow{display:flex;gap:10px;margin-top:12px}
+.copyRow{
+  display:flex;
+  gap:10px;
+  margin-top:12px;
+}
 .btnPrimary{
   border:none;
   padding:13px;
@@ -270,7 +265,6 @@ if(sessionStorage.getItem("cutcalc_ok")!=="1"){
     </div>
     <div class="topRight">
       <div class="pill"><span class="dot"></span>MS Pipes Calculator</div>
-      <div class="version">Standard v1.0 • Sep 2025</div>
       <button class="btnSmall" onclick="window.location.href='pipe-type.html'">← Pipe Type</button>
       <button class="btnSmall" onclick="sessionStorage.clear();location.href='index.html'">Exit</button>
     </div>
@@ -283,6 +277,7 @@ if(sessionStorage.getItem("cutcalc_ok")!=="1"){
     </div>
 
     <div class="content">
+      <!-- Inputs -->
       <div class="block">
         <div class="blockTitle"><div class="stepNum">1</div>Pipe Size</div>
         <select id="size"></select>
@@ -297,6 +292,7 @@ if(sessionStorage.getItem("cutcalc_ok")!=="1"){
         <input id="ctc" type="number" placeholder="e.g. 1200">
       </div>
 
+      <!-- Result -->
       <div class="block">
         <div class="blockTitle"><div class="stepNum">✓</div>Result</div>
         <div class="resultCard">
@@ -317,7 +313,12 @@ if(sessionStorage.getItem("cutcalc_ok")!=="1"){
 </div>
 
 <script>
-const DATA={'2"':{elbow:76,tee:64},'3"':{elbow:114,tee:86}};
+/* SIMPLE DEMO DATA – replace with full table if needed */
+const DATA={
+  '2"':{elbow:76,tee:64},
+  '3"':{elbow:114,tee:86}
+};
+
 const size=document.getElementById("size"),
       a=document.getElementById("endA"),
       b=document.getElementById("endB"),
@@ -329,7 +330,11 @@ size.innerHTML=`<option value="2">2"</option><option value="3">3"</option>`;
 a.innerHTML=b.innerHTML=`<option value="elbow">90° Elbow</option><option value="tee">Tee</option>`;
 
 function calc(){
-  if(!ctc.value){cut.textContent="—";copyBtn.disabled=true;return;}
+  if(!ctc.value){
+    cut.textContent="—";
+    copyBtn.disabled=true;
+    return;
+  }
   const r=DATA[size.value+'"'];
   const val=ctc.value-(r[a.value]+r[b.value]);
   cut.textContent=val.toFixed(1)+" mm";
