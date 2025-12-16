@@ -131,12 +131,10 @@
     .content{
       padding:18px 22px 22px;
       display:grid;
-      grid-template-columns: 1.2fr .8fr;
+      grid-template-columns: 1.15fr .85fr;
       gap:16px;
     }
-    @media(max-width:900px){
-      .content{grid-template-columns:1fr}
-    }
+    @media(max-width:900px){ .content{grid-template-columns:1fr} }
 
     /* step blocks */
     .block{
@@ -161,6 +159,7 @@
       font-weight:900;
       font-size:13px;
     }
+
     label{
       display:block;
       font-size:12px;
@@ -179,47 +178,23 @@
       outline:none;
     }
     select option{background:#111;color:#fff;}
+    input::placeholder{color:rgba(255,255,255,.35)}
 
     .row2{
       display:grid;
       grid-template-columns: 1fr 1fr;
       gap:12px;
     }
-    @media(max-width:700px){
-      .row2{grid-template-columns:1fr}
+    @media(max-width:700px){ .row2{grid-template-columns:1fr} }
+
+    .help{
+      margin-top:10px;
+      color:rgba(255,255,255,.55);
+      font-size:12px;
+      line-height:1.5;
     }
 
-    /* actions + result */
-    .actions{
-      display:flex;
-      gap:10px;
-      margin-top:12px;
-      flex-wrap:wrap;
-    }
-    .btnPrimary{
-      border:none;
-      cursor:pointer;
-      font-weight:900;
-      padding:13px 14px;
-      border-radius:14px;
-      background: linear-gradient(180deg, #ff3b30, var(--red));
-      color:#fff;
-      box-shadow:0 16px 30px rgba(239,42,31,.22);
-      flex:1;
-      min-width:180px;
-    }
-    .btnGhost{
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.04);
-      color:var(--text);
-      font-weight:900;
-      padding:13px 14px;
-      border-radius:14px;
-      cursor:pointer;
-      flex:1;
-      min-width:140px;
-    }
-
+    /* result */
     .resultCard{
       border:1px solid rgba(239,42,31,.35);
       background: rgba(239,42,31,.08);
@@ -234,7 +209,7 @@
     }
     .resultValue{
       margin-top:6px;
-      font-size:34px;
+      font-size:38px;
       font-weight:1000;
       line-height:1.1;
     }
@@ -253,9 +228,13 @@
       border-radius:999px;
     }
 
-    .help{
-      margin-top:10px;
-      color:rgba(255,255,255,.55);
+    .warn{
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.03);
+      color:rgba(255,255,255,.70);
       font-size:12px;
       line-height:1.5;
     }
@@ -303,30 +282,29 @@
     <div class="card">
       <div class="cardHead">
         <h1>Pipe Cut Length Calculator</h1>
-        <p class="sub">Select fitting types, enter centre-to-centre, and get the exact cut length using the standard MS offset table.</p>
+        <p class="sub">Select fitting types for both ends, enter centre-to-centre, and the cut length updates automatically.</p>
       </div>
 
       <div class="content">
-        <!-- LEFT: Steps -->
+        <!-- LEFT: Inputs -->
         <div class="block">
           <div class="blockTitle"><div class="stepNum">1</div> Pipe size</div>
-
           <label>Pipe Size</label>
           <select id="size"></select>
 
-          <div class="help">Pipe sizes show both inch + mm (ID & OD) to avoid mistakes on site.</div>
+          <div class="help">Sizes shown as inch + ID/OD (mm) for clarity.</div>
 
           <hr style="border:none;border-top:1px solid rgba(255,255,255,.10);margin:14px 0;">
 
-          <div class="blockTitle"><div class="stepNum">2</div> Select fittings</div>
+          <div class="blockTitle"><div class="stepNum">2</div> Fittings (Both Ends)</div>
 
           <div class="row2">
             <div>
-              <label>End A</label>
+              <label>End A Fitting</label>
               <select id="endA"></select>
             </div>
             <div>
-              <label>End B</label>
+              <label>End B Fitting</label>
               <select id="endB"></select>
             </div>
           </div>
@@ -334,34 +312,30 @@
           <hr style="border:none;border-top:1px solid rgba(255,255,255,.10);margin:14px 0;">
 
           <div class="blockTitle"><div class="stepNum">3</div> Measurement</div>
-
           <label>Centre-to-centre (mm)</label>
           <input id="ctc" type="number" inputmode="decimal" placeholder="e.g. 1200">
 
-          <div class="actions">
-            <button class="btnPrimary" onclick="calculate()">Calculate</button>
-            <button class="btnGhost" onclick="resetAll()">Reset</button>
+          <div class="help">
+            Auto-calculation is ON. Result updates as you select fittings or type the CTC.
           </div>
 
-          <div class="help">
-            Formula: <b>Cut Length = CTC − (Offset A + Offset B)</b>
-          </div>
+          <div class="warn" id="warn" style="display:none;"></div>
         </div>
 
         <!-- RIGHT: Result -->
         <div class="block">
           <div class="blockTitle"><div class="stepNum">✓</div> Result</div>
 
-          <div id="resultCard" class="resultCard" style="display:none">
+          <div class="resultCard">
             <div class="resultLabel">Cut length</div>
             <div id="cut" class="resultValue">—</div>
-            <div id="formula" class="help"></div>
+            <div id="formula" class="help">Select options to calculate.</div>
 
             <div id="meta" class="resultMeta"></div>
           </div>
 
-          <div id="resultEmpty" class="help">
-            Select options and enter CTC, then press <b>Calculate</b>.
+          <div class="help" style="margin-top:12px;">
+            Formula: <b>Cut Length = CTC − (Offset A + Offset B)</b>
           </div>
         </div>
       </div>
@@ -374,7 +348,12 @@
   </div>
 
 <script>
-  // Offset data (same as your working version)
+  /**
+   * Replace DATA + FITTINGS with your exact table if needed.
+   * Current example matches the structure you were using:
+   * - Each size has offsets for fitting types
+   * - Cut = CTC - (offsetA + offsetB)
+   */
   const DATA = {
     '1/2"': {id:15, od:21.3, flange:null, elbow:38, teeD:25, teeE:50},
     '3/4"': {id:20, od:26.9, flange:null, elbow:38, teeD:29, teeE:58},
@@ -406,84 +385,105 @@
   const sizeSel = document.getElementById("size");
   const endA = document.getElementById("endA");
   const endB = document.getElementById("endB");
+  const ctcEl = document.getElementById("ctc");
+  const cutEl = document.getElementById("cut");
+  const formulaEl = document.getElementById("formula");
+  const metaEl = document.getElementById("meta");
+  const warnEl = document.getElementById("warn");
 
-  function loadSizes(){
+  function populateSizes(){
+    sizeSel.innerHTML = "";
     Object.keys(DATA).forEach(sz=>{
       const r = DATA[sz];
-      const o = document.createElement("option");
-      o.value = sz;
-      // show inch + mm clearly
-      o.textContent = `${sz}  •  ID ${r.id}mm  •  OD ${r.od}mm`;
-      sizeSel.appendChild(o);
+      const opt = document.createElement("option");
+      opt.value = sz;
+      opt.textContent = `${sz}  •  ID ${r.id}mm  •  OD ${r.od}mm`;
+      sizeSel.appendChild(opt);
     });
+    // default
     sizeSel.value = '2"';
   }
 
-  function loadEnds(){
-    [endA, endB].forEach(sel=>{
-      FITTINGS.forEach(f=>{
-        const o = document.createElement("option");
-        o.value = f.key;
-        o.textContent = f.label;
-        sel.appendChild(o);
-      });
+  function populateFittings(selectEl){
+    selectEl.innerHTML = "";
+    FITTINGS.forEach(f=>{
+      const opt = document.createElement("option");
+      opt.value = f.key;
+      opt.textContent = f.label;
+      selectEl.appendChild(opt);
     });
-    endA.value = "elbow";
-    endB.value = "elbow";
   }
 
-  loadSizes();
-  loadEnds();
+  function showWarn(msg){
+    warnEl.style.display = "block";
+    warnEl.textContent = msg;
+  }
+  function clearWarn(){
+    warnEl.style.display = "none";
+    warnEl.textContent = "";
+  }
 
-  function showResult(cut, a, b, size){
+  function updateResultLive(){
+    clearWarn();
+
+    const size = sizeSel.value;
     const row = DATA[size];
 
-    document.getElementById("resultEmpty").style.display = "none";
-    document.getElementById("resultCard").style.display = "block";
+    const ctc = Number(ctcEl.value);
+    const aKey = endA.value;
+    const bKey = endB.value;
 
-    document.getElementById("cut").innerText = `${cut} mm`;
-    document.getElementById("formula").innerText = `CTC − (${a} + ${b})`;
-
-    document.getElementById("meta").innerHTML = `
-      <div class="metaPill"><b>Size:</b> ${size}</div>
-      <div class="metaPill"><b>ID:</b> ${row.id}mm</div>
-      <div class="metaPill"><b>OD:</b> ${row.od}mm</div>
-      <div class="metaPill"><b>End A:</b> ${endA.options[endA.selectedIndex].text}</div>
-      <div class="metaPill"><b>End B:</b> ${endB.options[endB.selectedIndex].text}</div>
-    `;
-  }
-
-  function calculate(){
-    const size = sizeSel.value;
-    const ctc = Number(document.getElementById("ctc").value);
-
+    // if ctc not entered yet, keep neutral
     if(!ctc || ctc <= 0){
-      alert("Enter a valid centre-to-centre value in mm.");
+      cutEl.textContent = "—";
+      formulaEl.textContent = "Enter centre-to-centre (mm) to calculate.";
+      metaEl.innerHTML = "";
       return;
     }
 
-    const row = DATA[size];
-    const a = row[endA.value];
-    const b = row[endB.value];
+    const a = row[aKey];
+    const b = row[bKey];
 
     if(a === null || b === null){
-      alert("Flange offset not defined for this size in the table.");
+      cutEl.textContent = "—";
+      formulaEl.textContent = "Offset missing for selected option.";
+      metaEl.innerHTML = "";
+      showWarn("Flange offset is not defined for this size in the table. Please choose another fitting or confirm table values.");
       return;
     }
 
     const cut = ctc - (a + b);
-    showResult(cut, a, b, size);
+
+    // if negative / too small, warn (still show value so they can sanity check)
+    if(cut <= 0){
+      showWarn("Cut length is zero/negative. Please re-check CTC and fittings selected.");
+    }
+
+    cutEl.textContent = `${cut.toFixed(1)} mm`;
+    formulaEl.textContent = `CTC ${ctc} − (A ${a} + B ${b})`;
+
+    metaEl.innerHTML = `
+      <div class="metaPill"><b>Size:</b> ${size}</div>
+      <div class="metaPill"><b>End A:</b> ${endA.options[endA.selectedIndex].text} (${a}mm)</div>
+      <div class="metaPill"><b>End B:</b> ${endB.options[endB.selectedIndex].text} (${b}mm)</div>
+    `;
   }
 
-  function resetAll(){
-    sizeSel.value = '2"';
-    endA.value = "elbow";
-    endB.value = "elbow";
-    document.getElementById("ctc").value = "";
+  // init
+  populateSizes();
+  populateFittings(endA);
+  populateFittings(endB);
+  endA.value = "elbow";
+  endB.value = "elbow";
 
-    document.getElementById("resultCard").style.display = "none";
-    document.getElementById("resultEmpty").style.display = "block";
-  }
+  // live auto-calc listeners
+  sizeSel.addEventListener("change", updateResultLive);
+  endA.addEventListener("change", updateResultLive);
+  endB.addEventListener("change", updateResultLive);
+  ctcEl.addEventListener("input", updateResultLive);
+
+  // compute once on load (shows guidance)
+  updateResultLive();
 </script>
 
 </body>
