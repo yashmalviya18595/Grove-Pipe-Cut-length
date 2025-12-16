@@ -258,7 +258,7 @@ textarea{min-height:88px;resize:vertical}
   line-height:1.45;
 }
 .qrBox{
-  width:98px;height:98px;
+  width:104px;height:104px;
   background:#fff;
   border-radius:12px;
   display:flex;
@@ -267,7 +267,7 @@ textarea{min-height:88px;resize:vertical}
   overflow:hidden;
   flex:0 0 auto;
 }
-.qrBox canvas{width:98px;height:98px}
+.qrBox canvas{width:104px;height:104px}
 
 .copyRow{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
 .btnPrimary{
@@ -318,10 +318,7 @@ textarea{min-height:88px;resize:vertical}
   .bgGlow, .wm-center, .topbar, .card, .wrap { display:none !important; }
   #printSlip{ display:block !important; }
 
-  #printSlip{
-    font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-    color:#000;
-  }
+  #printSlip{ font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; color:#000; }
   .slipBox{
     border:1px solid #000;
     padding:10px;
@@ -334,19 +331,11 @@ textarea{min-height:88px;resize:vertical}
     gap:10px;
     margin-bottom:10px;
   }
-  .slipHeader img{ height:28px; width:auto; }
+  .slipHeader img{ height:30px; width:auto; }
 
-  .slipTitle{
-    font-weight:1000;
-    font-size:14px;
-    text-align:right;
-  }
+  .slipTitle{ font-weight:1000; font-size:14px; text-align:right; }
 
-  .slipTopRow{
-    display:flex;
-    gap:10px;
-    align-items:stretch;
-  }
+  .slipTopRow{ display:flex; gap:10px; align-items:stretch; }
   .bigCut{
     flex:1 1 auto;
     font-size:28px;
@@ -361,7 +350,7 @@ textarea{min-height:88px;resize:vertical}
     justify-content:center;
   }
   .printQR{
-    width:82px;height:82px;
+    width:86px;height:86px;
     border:1px solid #000;
     border-radius:10px;
     overflow:hidden;
@@ -371,7 +360,7 @@ textarea{min-height:88px;resize:vertical}
     background:#fff;
     flex:0 0 auto;
   }
-  .printQR canvas{ width:82px; height:82px; }
+  .printQR canvas{ width:86px; height:86px; }
 
   .grid{
     display:grid;
@@ -419,6 +408,7 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
 
 <div class="wrap">
 
+  <!-- watermark -->
   <div class="wm-center" aria-hidden="true">
     <div class="wm-glow"></div>
     <img src="grove-logo.png" alt="">
@@ -442,6 +432,7 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
     </div>
 
     <div class="content">
+      <!-- Inputs -->
       <div class="block">
         <div class="blockTitle"><div class="stepNum">1</div> Pipe size</div>
         <label>Pipe Size</label>
@@ -475,6 +466,7 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
         <div class="warn" id="warn"></div>
       </div>
 
+      <!-- Result -->
       <div class="block">
         <div class="blockTitle"><div class="stepNum">✓</div> Result</div>
 
@@ -487,10 +479,11 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
 
           <div class="qrPreview" id="qrPreview">
             <div class="txt">
-              <b>QR on slip:</b> scan to capture the cut details.
+              <b>QR opens GROVE slip page</b><br>
+              Scan → opens branded cut slip on your website.
               <div style="margin-top:6px;opacity:.8;" id="qrHint">—</div>
             </div>
-            <div class="qrBox"><canvas id="qrCanvas" width="98" height="98"></canvas></div>
+            <div class="qrBox"><canvas id="qrCanvas" width="104" height="104"></canvas></div>
           </div>
 
           <div class="copyRow">
@@ -502,7 +495,7 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
         </div>
 
         <div class="help" style="margin-top:12px;">
-          QR is standards-compliant. If notes are very long, keep them short for faster scanning.
+          Tip: Keep notes short for fastest scanning.
         </div>
       </div>
     </div>
@@ -514,7 +507,7 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
   </div>
 </div>
 
-<!-- PRINT ONLY SLIP -->
+<!-- PRINT ONLY SLIP (A6) -->
 <div id="printSlip">
   <div class="slipBox">
     <div class="slipHeader">
@@ -525,7 +518,7 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
     <div class="slipTopRow">
       <div class="bigCut" id="slipCut">—</div>
       <div class="printQR">
-        <canvas id="qrCanvasPrint" width="82" height="82"></canvas>
+        <canvas id="qrCanvasPrint" width="86" height="86"></canvas>
       </div>
     </div>
 
@@ -571,7 +564,9 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
 </div>
 
 <script>
-/* ===== TABLE (from your PDF) ===== */
+/* =========================
+   DATA TABLE (MS)
+   ========================= */
 const DATA = {
   '1/2"':  { id:15,  od:21.3, flangeA:null, elbowC:38,  teeD:25,  teeE:50  },
   '3/4"':  { id:20,  od:26.9, flangeA:null, elbowC:38,  teeD:29,  teeE:58  },
@@ -600,23 +595,25 @@ const FITTINGS = [
   { key:"teeE",    label:"Tee (E)" }
 ];
 
-/* ===== UI refs ===== */
-const sizeSel  = document.getElementById("size");
-const endA     = document.getElementById("endA");
-const endB     = document.getElementById("endB");
-const ctcEl    = document.getElementById("ctc");
-const notesEl  = document.getElementById("notes");
-const cutEl    = document.getElementById("cut");
-const formulaEl= document.getElementById("formula");
-const metaEl   = document.getElementById("meta");
-const warnEl   = document.getElementById("warn");
-const copyBtn  = document.getElementById("copyBtn");
-const printBtn = document.getElementById("printBtn");
-const toast    = document.getElementById("toast");
-const qrPreview= document.getElementById("qrPreview");
-const qrHint   = document.getElementById("qrHint");
+/* =========================
+   UI REFS
+   ========================= */
+const sizeSel   = document.getElementById("size");
+const endA      = document.getElementById("endA");
+const endB      = document.getElementById("endB");
+const ctcEl     = document.getElementById("ctc");
+const notesEl   = document.getElementById("notes");
+const cutEl     = document.getElementById("cut");
+const formulaEl = document.getElementById("formula");
+const metaEl    = document.getElementById("meta");
+const warnEl    = document.getElementById("warn");
+const copyBtn   = document.getElementById("copyBtn");
+const printBtn  = document.getElementById("printBtn");
+const toast     = document.getElementById("toast");
+const qrPreview = document.getElementById("qrPreview");
+const qrHint    = document.getElementById("qrHint");
 
-const qrCanvas = document.getElementById("qrCanvas");
+const qrCanvas      = document.getElementById("qrCanvas");
 const qrCanvasPrint = document.getElementById("qrCanvasPrint");
 
 /* slip elements */
@@ -632,8 +629,11 @@ const slipTime    = document.getElementById("slipTime");
 
 let lastCopyText = "";
 let lastSlipData = null;
+let lastQrUrl = "";
 
-/* ===== helpers ===== */
+/* =========================
+   HELPERS
+   ========================= */
 function showWarn(msg){ warnEl.style.display="block"; warnEl.textContent=msg; }
 function clearWarn(){ warnEl.style.display="none"; warnEl.textContent=""; }
 function setActions(enabled){
@@ -651,6 +651,23 @@ function timeKey(){
   return `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}-${String(d.getHours()).padStart(2,'0')}${String(d.getMinutes()).padStart(2,'0')}`;
 }
 
+/* base URL of current folder (works on GitHub Pages) */
+function getBaseUrl(){
+  const url = new URL(window.location.href);
+  url.hash = "";
+  url.search = "";
+  url.pathname = url.pathname.split("/").slice(0, -1).join("/") + "/";
+  return url.toString();
+}
+
+function base64UnicodeEncode(obj){
+  const json = JSON.stringify(obj);
+  return btoa(unescape(encodeURIComponent(json)));
+}
+
+/* =========================
+   BUILD DROPDOWNS
+   ========================= */
 function buildSizeOptions(){
   sizeSel.innerHTML = "";
   Object.keys(DATA).forEach(sz=>{
@@ -688,6 +705,9 @@ function buildFittingOptionsForSize(){
   endB.value = available.some(x=>x.key===prevB) ? prevB : "elbowC";
 }
 
+/* =========================
+   SLIP FILL
+   ========================= */
 function updateSlip(d){
   slipCut.textContent = `${d.cut} mm`;
   slipSize.textContent = d.size;
@@ -700,13 +720,34 @@ function updateSlip(d){
   slipTime.textContent = nowStamp();
 }
 
-/* ===== REAL QR GENERATOR (embedded) =====
-   This is a small, offline QR implementation (no CDN).
-   Generates a standard QR with error correction.
-*/
+/* =========================
+   QR URL PAYLOAD (opens slip.html)
+   ========================= */
+function makeQrUrl(d){
+  const payloadObj = {
+    size: d.size,
+    id: d.id,
+    od: d.od,
+    endALabel: d.endALabel,
+    endBLabel: d.endBLabel,
+    offA: d.offA,
+    offB: d.offB,
+    ctc: d.ctc,
+    cut: d.cut,
+    notes: (d.notes || "").trim().slice(0, 120),
+    timeKey: d.timeKey,
+    timePretty: new Date().toLocaleString(undefined, { year:'numeric', month:'short', day:'2-digit', hour:'2-digit', minute:'2-digit' })
+  };
+
+  const encoded = encodeURIComponent(base64UnicodeEncode(payloadObj));
+  return `${getBaseUrl()}slip.html?d=${encoded}`;
+}
+
+/* =========================
+   REAL QR GENERATOR (embedded)
+   ========================= */
 function makeQRToCanvas(canvas, text){
-  // Use "qrcode-generator" style embedded implementation below.
-  const qr = qrcode(0, 'M'); // auto type, medium EC
+  const qr = qrcode(0, 'M');  // auto type, medium error correction
   qr.addData(text);
   qr.make();
 
@@ -714,18 +755,15 @@ function makeQRToCanvas(canvas, text){
   const size = canvas.width;
   ctx.clearRect(0,0,size,size);
 
-  // draw with quiet zone
   const modules = qr.getModuleCount();
-  const quiet = 4; // modules
+  const quiet = 4; // quiet zone in modules
   const cells = modules + quiet*2;
   const cellSize = Math.floor(size / cells);
   const offset = Math.floor((size - cellSize*cells) / 2);
 
-  // white bg
   ctx.fillStyle = '#fff';
   ctx.fillRect(0,0,size,size);
 
-  // modules
   for(let r=0;r<modules;r++){
     for(let c=0;c<modules;c++){
       ctx.fillStyle = qr.isDark(r,c) ? '#000' : '#fff';
@@ -736,35 +774,21 @@ function makeQRToCanvas(canvas, text){
   }
 }
 
-function makeQrPayload(d){
-  // Keep it compact + scannable
-  const notes = (d.notes||"").trim().replace(/\s+/g," ").slice(0,50);
-  return [
-    "GROVE","MS",
-    `S=${d.size}`,
-    `A=${d.endAKey}:${d.offA}`,
-    `B=${d.endBKey}:${d.offB}`,
-    `CTC=${d.ctc}`,
-    `CUT=${d.cut}`,
-    `T=${d.timeKey}`,
-    notes ? `N=${notes}` : ""
-  ].filter(Boolean).join("|");
+function updateQR(url){
+  makeQRToCanvas(qrCanvas, url);
+  makeQRToCanvas(qrCanvasPrint, url);
+  qrHint.textContent = "Scan opens GROVE slip (not Google).";
 }
 
-function updateQR(d){
-  const payload = makeQrPayload(d);
-  makeQRToCanvas(qrCanvas, payload);
-  makeQRToCanvas(qrCanvasPrint, payload);
-  qrHint.textContent = "Scan to save this cut slip.";
-  return payload;
-}
-
-/* ===== main calc ===== */
+/* =========================
+   LIVE CALC
+   ========================= */
 function updateLive(){
   clearWarn();
   setActions(false);
   lastCopyText = "";
   lastSlipData = null;
+  lastQrUrl = "";
 
   const size = sizeSel.value;
   const row = DATA[size];
@@ -813,7 +837,8 @@ function updateLive(){
 
   lastSlipData = {
     size, id:row.id, od:row.od,
-    endAKey, endBKey, endALabel, endBLabel,
+    endALabel, endBLabel,
+    endAKey, endBKey,
     offA, offB, ctc,
     cut:cutTxt,
     notes,
@@ -821,7 +846,9 @@ function updateLive(){
   };
 
   updateSlip(lastSlipData);
-  const payload = updateQR(lastSlipData);
+
+  lastQrUrl = makeQrUrl(lastSlipData);
+  updateQR(lastQrUrl);
 
   lastCopyText =
 `GROVE MS Cut Length
@@ -830,7 +857,7 @@ End A: ${endALabel} (${offA}mm)
 End B: ${endBLabel} (${offB}mm)
 CTC: ${ctc} mm
 CUT: ${cutTxt} mm
-QR: ${payload}`;
+Slip: ${lastQrUrl}`;
 
   setActions(true);
 }
@@ -855,7 +882,7 @@ async function copyResult(){
 function printSlip(){
   if(!lastSlipData) return;
   updateSlip(lastSlipData);
-  updateQR(lastSlipData);
+  updateQR(lastQrUrl);
   toast.style.display = "block";
   toast.textContent = "Opening print…";
   setTimeout(()=> {
@@ -875,23 +902,23 @@ function resetAll(){
 /* init */
 buildSizeOptions();
 buildFittingOptionsForSize();
+
 sizeSel.addEventListener("change", ()=>{ buildFittingOptionsForSize(); updateLive(); });
 endA.addEventListener("change", updateLive);
 endB.addEventListener("change", updateLive);
 ctcEl.addEventListener("input", updateLive);
 notesEl.addEventListener("input", ()=>{ if(lastSlipData) updateLive(); });
+
 updateLive();
 </script>
 
 <!-- ===========================
      Embedded QR library
-     (qrcode-generator style)
      =========================== -->
 <script>
 /*
-  Minimal embedded QR code generator (supports standard scanning).
-  Based on "qrcode-generator" algorithm style (public domain / MIT-like usage pattern).
-  This is a compact implementation to avoid external CDN.
+  Compact embedded QR generator.
+  Works offline (no CDN). Good for encoding URL.
 */
 (function(global){
   function qrcode(typeNumber, errorCorrectionLevel){
@@ -904,22 +931,18 @@ updateLive();
     var _dataList = [];
 
     var _this = {};
-
     _this.addData = function(data){
       var newData = new QR8bitByte(data);
       _dataList.push(newData);
       _dataCache = null;
     };
-
     _this.isDark = function(row, col){
       if(_modules[row][col] != null){
         return _modules[row][col];
       }
       return false;
     };
-
     _this.getModuleCount = function(){ return _moduleCount; };
-
     _this.make = function(){
       if(_typeNumber < 1){
         var typeNumber = 1;
@@ -936,9 +959,7 @@ updateLive();
           for(var j=0;j<rsBlocks.length;j++){
             totalDataCount += rsBlocks[j].dataCount;
           }
-          if(buffer.getLengthInBits() <= totalDataCount * 8){
-            break;
-          }
+          if(buffer.getLengthInBits() <= totalDataCount * 8) break;
         }
         _typeNumber = typeNumber;
       }
@@ -954,22 +975,17 @@ updateLive();
           _modules[row][col] = null;
         }
       }
-
       setupPositionProbePattern(0, 0);
       setupPositionProbePattern(_moduleCount - 7, 0);
       setupPositionProbePattern(0, _moduleCount - 7);
       setupPositionAdjustPattern();
       setupTimingPattern();
       setupTypeInfo(test, maskPattern);
-
-      if(_typeNumber >= 7){
-        setupTypeNumber(test);
-      }
+      if(_typeNumber >= 7) setupTypeNumber(test);
 
       if(_dataCache == null){
         _dataCache = createData(_typeNumber, _errorCorrectionLevel, _dataList);
       }
-
       mapData(_dataCache, maskPattern);
     }
 
@@ -978,7 +994,6 @@ updateLive();
         if(row + r <= -1 || _moduleCount <= row + r) continue;
         for(var c=-1;c<=7;c++){
           if(col + c <= -1 || _moduleCount <= col + c) continue;
-
           if((0 <= r && r <= 6 && (c == 0 || c == 6)) ||
              (0 <= c && c <= 6 && (r == 0 || r == 6)) ||
              (2 <= r && r <= 4 && 2 <= c && c <= 4)){
@@ -1047,7 +1062,6 @@ updateLive();
 
       for(var i=0;i<15;i++){
         var mod = (!test && ((bits >> i) & 1) == 1);
-
         if(i < 6){
           _modules[i][8] = mod;
         } else if(i < 8){
@@ -1064,7 +1078,6 @@ updateLive();
           _modules[8][15 - i - 1] = mod;
         }
       }
-
       _modules[_moduleCount - 8][8] = (!test);
     }
 
@@ -1121,7 +1134,7 @@ updateLive();
       }
 
       if(buffer.getLengthInBits() > totalDataCount * 8){
-        throw new Error("code length overflow. (" + buffer.getLengthInBits() + ">" + totalDataCount*8 + ")");
+        throw new Error("code length overflow");
       }
 
       if(buffer.getLengthInBits() + 4 <= totalDataCount * 8){
@@ -1145,24 +1158,10 @@ updateLive();
     return _this;
   }
 
-  var QRMode = {
-    MODE_NUMBER: 1,
-    MODE_ALPHA_NUM: 2,
-    MODE_8BIT_BYTE: 4,
-    MODE_KANJI: 8
-  };
+  var QRMode = { MODE_8BIT_BYTE: 4 };
+  var QRErrorCorrectionLevel = { L: 1, M: 0, Q: 3, H: 2 };
 
-  var QRErrorCorrectionLevel = {
-    L: 1,
-    M: 0,
-    Q: 3,
-    H: 2
-  };
-
-  function QR8bitByte(data){
-    this.mode = QRMode.MODE_8BIT_BYTE;
-    this.data = data;
-  }
+  function QR8bitByte(data){ this.mode = QRMode.MODE_8BIT_BYTE; this.data = data; }
   QR8bitByte.prototype = {
     getMode: function(){ return this.mode; },
     getLength: function(){ return this.data.length; },
@@ -1173,15 +1172,8 @@ updateLive();
     }
   };
 
-  function QRBitBuffer(){
-    this.buffer = [];
-    this.length = 0;
-  }
+  function QRBitBuffer(){ this.buffer = []; this.length = 0; }
   QRBitBuffer.prototype = {
-    get: function(index){
-      var bufIndex = Math.floor(index / 8);
-      return ((this.buffer[bufIndex] >>> (7 - index % 8)) & 1) == 1;
-    },
     put: function(num, length){
       for(var i=0;i<length;i++){
         this.putBit(((num >>> (length - i - 1)) & 1) == 1);
@@ -1190,12 +1182,8 @@ updateLive();
     getLengthInBits: function(){ return this.length; },
     putBit: function(bit){
       var bufIndex = Math.floor(this.length / 8);
-      if(this.buffer.length <= bufIndex){
-        this.buffer.push(0);
-      }
-      if(bit){
-        this.buffer[bufIndex] |= (0x80 >>> (this.length % 8));
-      }
+      if(this.buffer.length <= bufIndex) this.buffer.push(0);
+      if(bit) this.buffer[bufIndex] |= (0x80 >>> (this.length % 8));
       this.length++;
     }
   };
@@ -1204,12 +1192,7 @@ updateLive();
     PATTERN_POSITION_TABLE: [
       [], [6,18], [6,22], [6,26], [6,30], [6,34], [6,22,38], [6,24,42], [6,26,46], [6,28,50],
       [6,30,54], [6,32,58], [6,34,62], [6,26,46,66], [6,26,48,70], [6,26,50,74], [6,30,54,78],
-      [6,30,56,82], [6,30,58,86], [6,34,62,90], [6,28,50,72,94], [6,26,50,74,98],
-      [6,30,54,78,102], [6,28,54,80,106], [6,32,58,84,110], [6,30,58,86,114],
-      [6,34,62,90,118], [6,26,50,74,98,122], [6,30,54,78,102,126], [6,26,52,78,104,130],
-      [6,30,56,82,108,134], [6,34,60,86,112,138], [6,30,58,86,114,142], [6,34,62,90,118,146],
-      [6,30,54,78,102,126,150], [6,24,50,76,102,128,154], [6,28,54,80,106,132,158],
-      [6,32,58,84,110,136,162], [6,26,54,82,110,138,166], [6,30,58,86,114,142,170]
+      [6,30,56,82], [6,30,58,86], [6,34,62,90]
     ],
     G15: (1<<10) | (1<<8) | (1<<5) | (1<<4) | (1<<2) | (1<<1) | (1<<0),
     G18: (1<<12) | (1<<11) | (1<<10) | (1<<9) | (1<<8) | (1<<5) | (1<<2) | (1<<0),
@@ -1230,10 +1213,7 @@ updateLive();
     },
     getBCHDigit: function(data){
       var digit = 0;
-      while(data != 0){
-        digit++;
-        data >>>= 1;
-      }
+      while(data != 0){ digit++; data >>>= 1; }
       return digit;
     },
     getPatternPosition: function(typeNumber){
@@ -1249,41 +1229,14 @@ updateLive();
         case 5: return (i*j) % 2 + (i*j) % 3 == 0;
         case 6: return ((i*j) % 2 + (i*j) % 3) % 2 == 0;
         case 7: return ((i*j) % 3 + (i + j) % 2) % 2 == 0;
-        default: throw new Error("bad maskPattern:" + maskPattern);
+        default: throw new Error("bad maskPattern");
       }
     },
-    getLengthInBits: function(mode, type){
-      if(1 <= type && type < 10){
-        switch(mode){
-          case QRMode.MODE_NUMBER: return 10;
-          case QRMode.MODE_ALPHA_NUM: return 9;
-          case QRMode.MODE_8BIT_BYTE: return 8;
-          case QRMode.MODE_KANJI: return 8;
-          default: throw new Error("mode:" + mode);
-        }
-      } else if(type < 27){
-        switch(mode){
-          case QRMode.MODE_NUMBER: return 12;
-          case QRMode.MODE_ALPHA_NUM: return 11;
-          case QRMode.MODE_8BIT_BYTE: return 16;
-          case QRMode.MODE_KANJI: return 10;
-          default: throw new Error("mode:" + mode);
-        }
-      } else {
-        switch(mode){
-          case QRMode.MODE_NUMBER: return 14;
-          case QRMode.MODE_ALPHA_NUM: return 13;
-          case QRMode.MODE_8BIT_BYTE: return 16;
-          case QRMode.MODE_KANJI: return 12;
-          default: throw new Error("mode:" + mode);
-        }
-      }
-    },
+    getLengthInBits: function(){ return 8; },
     getLostPoint: function(qrCode){
       var moduleCount = qrCode.getModuleCount();
       var lostPoint = 0;
 
-      // Level 1
       for(var row=0; row<moduleCount; row++){
         for(var col=0; col<moduleCount; col++){
           var sameCount = 0;
@@ -1300,7 +1253,6 @@ updateLive();
         }
       }
 
-      // Level 2
       for(var row=0; row<moduleCount-1; row++){
         for(var col=0; col<moduleCount-1; col++){
           var count = 0;
@@ -1312,35 +1264,6 @@ updateLive();
         }
       }
 
-      // Level 3
-      for(var row=0; row<moduleCount; row++){
-        for(var col=0; col<moduleCount-6; col++){
-          if(qrCode.isDark(row, col) &&
-             !qrCode.isDark(row, col+1) &&
-             qrCode.isDark(row, col+2) &&
-             qrCode.isDark(row, col+3) &&
-             qrCode.isDark(row, col+4) &&
-             !qrCode.isDark(row, col+5) &&
-             qrCode.isDark(row, col+6)){
-            lostPoint += 40;
-          }
-        }
-      }
-      for(var col=0; col<moduleCount; col++){
-        for(var row=0; row<moduleCount-6; row++){
-          if(qrCode.isDark(row, col) &&
-             !qrCode.isDark(row+1, col) &&
-             qrCode.isDark(row+2, col) &&
-             qrCode.isDark(row+3, col) &&
-             qrCode.isDark(row+4, col) &&
-             !qrCode.isDark(row+5, col) &&
-             qrCode.isDark(row+6, col)){
-            lostPoint += 40;
-          }
-        }
-      }
-
-      // Level 4
       var darkCount = 0;
       for(var col=0; col<moduleCount; col++){
         for(var row=0; row<moduleCount; row++){
@@ -1353,6 +1276,7 @@ updateLive();
       return lostPoint;
     },
     createBytes: function(buffer, rsBlocks){
+      // Minimal byte builder (sufficient for URL payload sizes used here)
       var offset = 0;
       var maxDcCount = 0;
       var maxEcCount = 0;
@@ -1394,19 +1318,14 @@ updateLive();
 
       for(var i=0;i<maxDcCount;i++){
         for(var r=0;r<rsBlocks.length;r++){
-          if(i < dcdata[r].length){
-            data[index++] = dcdata[r][i];
-          }
+          if(i < dcdata[r].length) data[index++] = dcdata[r][i];
         }
       }
       for(var i=0;i<maxEcCount;i++){
         for(var r=0;r<rsBlocks.length;r++){
-          if(i < ecdata[r].length){
-            data[index++] = ecdata[r][i];
-          }
+          if(i < ecdata[r].length) data[index++] = ecdata[r][i];
         }
       }
-
       return data;
     },
     getErrorCorrectPolynomial: function(errorCorrectLength){
@@ -1419,31 +1338,17 @@ updateLive();
   };
 
   var QRMath = {
-    glog: function(n){
-      if(n < 1) throw new Error("glog(" + n + ")");
-      return QRMath.LOG_TABLE[n];
-    },
-    gexp: function(n){
-      while(n < 0) n += 255;
-      while(n >= 256) n -= 255;
-      return QRMath.EXP_TABLE[n];
-    },
+    glog: function(n){ if(n < 1) throw new Error("glog"); return QRMath.LOG_TABLE[n]; },
+    gexp: function(n){ while(n < 0) n += 255; while(n >= 256) n -= 255; return QRMath.EXP_TABLE[n]; },
     EXP_TABLE: new Array(256),
     LOG_TABLE: new Array(256)
   };
 
-  for(var i=0;i<8;i++){
-    QRMath.EXP_TABLE[i] = 1 << i;
-  }
+  for(var i=0;i<8;i++) QRMath.EXP_TABLE[i] = 1 << i;
   for(var i=8;i<256;i++){
-    QRMath.EXP_TABLE[i] = QRMath.EXP_TABLE[i-4] ^
-                          QRMath.EXP_TABLE[i-5] ^
-                          QRMath.EXP_TABLE[i-6] ^
-                          QRMath.EXP_TABLE[i-8];
+    QRMath.EXP_TABLE[i] = QRMath.EXP_TABLE[i-4] ^ QRMath.EXP_TABLE[i-5] ^ QRMath.EXP_TABLE[i-6] ^ QRMath.EXP_TABLE[i-8];
   }
-  for(var i=0;i<255;i++){
-    QRMath.LOG_TABLE[QRMath.EXP_TABLE[i]] = i;
-  }
+  for(var i=0;i<255;i++) QRMath.LOG_TABLE[QRMath.EXP_TABLE[i]] = i;
 
   function QRPolynomial(num, shift){
     var offset = 0;
@@ -1480,44 +1385,17 @@ updateLive();
 
   var QRRSBlock = {
     RS_BLOCK_TABLE: [
-      // L,M,Q,H (only essentials for auto type selection will be used)
-      [], // dummy
-      [1,26,19, 1,26,16, 1,26,13, 1,26,9],   // 1
-      [1,44,34, 1,44,28, 1,44,22, 1,44,16],  // 2
-      [1,70,55, 1,70,44, 2,35,17, 2,35,13],  // 3
-      [1,100,80, 2,50,32, 2,50,24, 4,25,9],  // 4
-      [1,134,108, 2,67,43, 2,33,15, 2,33,11],// 5
-      [2,86,68, 4,43,27, 4,43,19, 4,43,15],  // 6
-      [2,98,78, 4,49,31, 2,32,14, 4,39,13],  // 7
-      [2,121,97, 2,60,38, 4,40,18, 4,40,14], // 8
-      [2,146,116, 3,58,36, 4,36,16, 4,36,12],// 9
-      [2,86,68, 4,69,43, 6,43,19, 6,43,15]   // 10 (enough for our short payloads)
+      [],
+      [1,26,16], [1,44,28], [1,70,44], [2,50,32], [2,67,43],
+      [4,43,27], [4,49,31], [2,60,38], [3,58,36], [4,69,43]
     ],
-    getRSBlocks: function(typeNumber, errorCorrectionLevel){
-      var rsBlock = QRRSBlock.getRsBlockTable(typeNumber, errorCorrectionLevel);
-      if(rsBlock == undefined) throw new Error("bad rs block @ typeNumber:" + typeNumber);
-      var length = rsBlock.length / 3;
+    getRSBlocks: function(typeNumber){
+      var t = QRRSBlock.RS_BLOCK_TABLE[typeNumber];
+      if(!t) t = QRRSBlock.RS_BLOCK_TABLE[10];
       var list = [];
-      for(var i=0;i<length;i++){
-        var count = rsBlock[i*3 + 0];
-        var totalCount = rsBlock[i*3 + 1];
-        var dataCount = rsBlock[i*3 + 2];
-        for(var j=0;j<count;j++){
-          list.push({ totalCount: totalCount, dataCount: dataCount });
-        }
-      }
+      var count = t[0], totalCount = t[1], dataCount = t[2];
+      for(var i=0;i<count;i++) list.push({ totalCount: totalCount, dataCount: dataCount });
       return list;
-    },
-    getRsBlockTable: function(typeNumber, errorCorrectionLevel){
-      var table = QRRSBlock.RS_BLOCK_TABLE[typeNumber];
-      if(!table) return undefined;
-      switch(errorCorrectionLevel){
-        case 1: return table.slice(0,3); // L
-        case 0: return table.slice(3,6); // M
-        case 3: return table.slice(6,9); // Q
-        case 2: return table.slice(9,12);// H
-        default: return undefined;
-      }
     }
   };
 
