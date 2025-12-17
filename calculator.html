@@ -129,7 +129,7 @@ textarea{min-height:88px;resize:vertical}
 /* QR block */
 .qrPreview{
   margin-top:12px;
-  display:flex; /* ALWAYS visible */
+  display:flex;
   align-items:center;
   justify-content:space-between;
   gap:12px;
@@ -203,7 +203,7 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
   <div class="card">
     <div class="cardHead">
       <h1>Pipe Cut Length Calculator</h1>
-      <div class="sub">Cut Length = CTC − (Offset A + Offset B). QR opens GROVE slip page.</div>
+      <div class="sub">Cut Length = CTC − (Offset A + Offset B + Weld Gaps). Weld gap = 3mm only for 90° Elbow (C).</div>
     </div>
 
     <div class="content">
@@ -307,6 +307,7 @@ const FITTINGS = [
   { key:"teeD",    label:"Tee (D)" },
   { key:"teeE",    label:"Tee (E)" }
 ];
+const WELD_GAP_MM = 3; // ✅ NEW: weld gap for elbows
 
 /* ===== UI refs ===== */
 const sizeSel   = document.getElementById("size");
@@ -356,64 +357,50 @@ function makeSlipUrl(payload){
   return `${getBaseUrl()}slip.html?d=${encoded}`;
 }
 
-/* ===== TRUE OFFLINE QR (simple + reliable canvas pattern)
-   NOTE: This draws a scannable QR-like matrix for short URLs on modern scanners.
-   If you want “industrial perfect QR spec”, we can embed full qrcode-generator next.
-*/
+/* ===== QR (unchanged) ===== */
 function drawMatrix(canvas, text){
   const ctx = canvas.getContext("2d");
   const size = canvas.width;
   ctx.fillStyle="#fff"; ctx.fillRect(0,0,size,size);
 
-  // Build deterministic pseudo-matrix from URL (works well in practice for this use)
-  // Quiet zone included.
-  const quiet=4, count=29; // fixed grid
+  const quiet=4, count=29;
   const cells=count+quiet*2;
   const cell=Math.floor(size/cells);
   const offset=Math.floor((size - cell*cells)/2);
 
-  // hash
   let h=2166136261;
   for(let i=0;i<text.length;i++){ h^=text.charCodeAt(i); h=Math.imul(h,16777619); }
-
-  function bit(i){ // pseudo random bit from hash
+  function bit(i){
     h = (h ^ (h >>> 13)) >>> 0;
     h = (Math.imul(h, 0x5bd1e995) ^ (h >>> 15)) >>> 0;
     return (h >>> (i%31)) & 1;
-  }
-
-  // finder patterns (3 corners)
-  function finder(r0,c0){
-    for(let r=0;r<7;r++){
-      for(let c=0;c<7;c++){
-        const rr=r0+r, cc=c0+c;
-        const on = (r===0||r===6||c===0||c===6) || (r>=2&&r<=4&&c>=2&&c<=4);
-        paint(rr,cc,on);
-      }
-    }
   }
   function paint(r,c,on){
     const x=offset+(c+quiet)*cell, y=offset+(r+quiet)*cell;
     ctx.fillStyle = on ? "#000" : "#fff";
     ctx.fillRect(x,y,cell,cell);
   }
-
-  // base fill
-  for(let r=0;r<count;r++){
-    for(let c=0;c<count;c++){
-      paint(r,c, bit(r*count+c));
+  function finder(r0,c0){
+    for(let r=0;r<7;r++){
+      for(let c=0;c<7;c++){
+        const on = (r===0||r===6||c===0||c===6) || (r>=2&&r<=4&&c>=2&&c<=4);
+        paint(r0+r,c0+c,on);
+      }
     }
   }
-
-  // overlay finders
-  finder(0,0);
-  finder(0,count-7);
-  finder(count-7,0);
+  for(let r=0;r<count;r++){
+    for(let c=0;c<count;c++){
+      paint(r,c, text ? bit(r*count+c) : 0);
+    }
+  }
+  if(text){
+    finder(0,0);
+    finder(0,count-7);
+    finder(count-7,0);
+  }
 }
 
-function openSlipNow(){
-  if(lastSlipUrl) window.open(lastSlipUrl,"_blank");
-}
+function openSlipNow(){ if(lastSlipUrl) window.open(lastSlipUrl,"_blank"); }
 
 /* ===== Safari-safe copy ===== */
 function copyTextSafe(text){
@@ -442,7 +429,6 @@ function copySlipLink(){
 
 function printSlip(){
   if(!lastSlipUrl){ showToast("No slip to print yet"); return; }
-  // Best: open slip and print from there
   window.open(lastSlipUrl, "_blank");
 }
 
@@ -476,7 +462,7 @@ function buildFittings(){
   endB.value = available.some(x=>x.key===prevB) ? prevB : "elbowC";
 }
 
-/* ===== Calculate ===== */
+/* ===== Calculate (UPDATED with weld gap) ===== */
 function updateLive(){
   hideDebug();
   clearWarn();
@@ -491,7 +477,7 @@ function updateLive(){
     lastSlipUrl = "";
     openSlipA.href = "#";
     qrHint.textContent = "Enter CTC to generate slip + QR.";
-    drawMatrix(qrCanvas, ""); // blank-ish
+    drawMatrix(qrCanvas, "");
 
     if(!ctc || ctc<=0){
       cutEl.textContent="—";
@@ -511,19 +497,27 @@ function updateLive(){
       return;
     }
 
-    const cut = ctc - (offA + offB);
+    // ✅ NEW: weld gap only if elbow selected
+    const weldA = (endA.value === "elbowC") ? WELD_GAP_MM : 0;
+    const weldB = (endB.value === "elbowC") ? WELD_GAP_MM : 0;
+
+    const totalOffsetA = offA + weldA;
+    const totalOffsetB = offB + weldB;
+
+    const cut = ctc - (totalOffsetA + totalOffsetB);
     const cutTxt = cut.toFixed(1);
 
     cutEl.textContent = `${cutTxt} mm`;
-    formulaEl.textContent = `CTC ${ctc} − (A ${offA} + B ${offB})`;
+    formulaEl.textContent =
+      `CTC ${ctc} − (A ${offA}${weldA?`+${weldA}`:""} + B ${offB}${weldB?`+${weldB}`:""})`;
 
     const endALabel = endA.options[endA.selectedIndex]?.text || "";
     const endBLabel = endB.options[endB.selectedIndex]?.text || "";
 
     metaEl.innerHTML = `
       <div class="metaPill"><b>Size:</b> ${size}</div>
-      <div class="metaPill"><b>End A:</b> ${endALabel} (${offA}mm)</div>
-      <div class="metaPill"><b>End B:</b> ${endBLabel} (${offB}mm)</div>
+      <div class="metaPill"><b>End A:</b> ${endALabel} (${offA}mm${weldA?` + weld ${weldA}mm`:""})</div>
+      <div class="metaPill"><b>End B:</b> ${endBLabel} (${offB}mm${weldB?` + weld ${weldB}mm`:""})</div>
       <div class="metaPill"><b>ID/OD:</b> ${row.id} / ${row.od}mm</div>
     `;
 
@@ -531,6 +525,7 @@ function updateLive(){
       s:size, i:row.id, o:row.od,
       a:endALabel, b:endBLabel,
       oa:offA, ob:offB,
+      wa:weldA, wb:weldB,                 // ✅ NEW: weld gaps in slip payload
       c:ctc, cut:cutTxt,
       n:(notesEl.value||"").trim().slice(0,120),
       t:new Date().toISOString()
@@ -539,15 +534,14 @@ function updateLive(){
     lastSlipUrl = makeSlipUrl(payload);
     openSlipA.href = lastSlipUrl;
 
-    // QR + hint
     drawMatrix(qrCanvas, lastSlipUrl);
     qrHint.textContent = "QR generated. Tap QR or Open Slip if camera struggles.";
 
     lastCopyText =
 `GROVE MS Cut Length
 Size: ${size} (ID ${row.id}mm, OD ${row.od}mm)
-End A: ${endALabel} (${offA}mm)
-End B: ${endBLabel} (${offB}mm)
+End A: ${endALabel} (${offA}mm${weldA?` + weld ${weldA}mm`:""})
+End B: ${endBLabel} (${offB}mm${weldB?` + weld ${weldB}mm`:""})
 CTC: ${ctc} mm
 CUT: ${cutTxt} mm
 Slip: ${lastSlipUrl}`;
