@@ -64,6 +64,23 @@ body{
   100%{transform:translate(-50%,-50%) scale(1)}
 }
 
+/* ✅ Page transitions */
+.page{
+  opacity:0;
+  transform: translateY(6px);
+  transition: opacity 320ms ease, transform 320ms ease, filter 320ms ease;
+}
+.page.is-ready{
+  opacity:1;
+  transform:none;
+  filter:none;
+}
+.page.is-leaving{
+  opacity:0;
+  transform: translateY(10px) scale(.99);
+  filter: blur(1px);
+}
+
 /* header */
 .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
 .logoPlate{background:#fff;padding:10px 14px;border-radius:16px;box-shadow:0 12px 30px rgba(0,0,0,.35)}
@@ -182,7 +199,7 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
 }
 </script>
 
-<div class="wrap">
+<div class="wrap page" id="page">
 
   <div class="wm-center" aria-hidden="true">
     <div class="wm-glow"></div>
@@ -195,8 +212,8 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
     </div>
     <div class="topRight">
       <div class="pill"><span class="dot"></span>MS Pipes • Calculator</div>
-      <button class="btnSmall" onclick="window.location.href='pipe-type.html'">← Pipe Type</button>
-      <button class="btnSmall" onclick="sessionStorage.clear(); location.href='index.html'">Exit</button>
+      <button class="btnSmall" onclick="leaveTo('pipe-type.html')">← Pipe Type</button>
+      <button class="btnSmall" onclick="leaveTo('index.html', true)">Exit</button>
     </div>
   </div>
 
@@ -287,6 +304,21 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
 </div>
 
 <script>
+/* ✅ fade-in on load */
+requestAnimationFrame(()=> document.getElementById("page").classList.add("is-ready"));
+
+function leaveTo(url, clearSession){
+  const page=document.getElementById("page");
+  page.classList.remove("is-ready");
+  page.classList.add("is-leaving");
+  setTimeout(()=>{
+    if(clearSession) sessionStorage.clear();
+    window.location.href=url;
+  }, 260);
+}
+</script>
+
+<script>
 /* ===== DATA ===== */
 const DATA = {
   '1/2"':  { id:15,  od:21.3, flangeA:null, elbowC:38,  teeD:25,  teeE:50  },
@@ -307,7 +339,7 @@ const FITTINGS = [
   { key:"teeD",    label:"Tee (D)" },
   { key:"teeE",    label:"Tee (E)" }
 ];
-const WELD_GAP_MM = 3; // ✅ NEW: weld gap for elbows
+const WELD_GAP_MM = 3; // weld gap for elbows
 
 /* ===== UI refs ===== */
 const sizeSel   = document.getElementById("size");
@@ -462,7 +494,7 @@ function buildFittings(){
   endB.value = available.some(x=>x.key===prevB) ? prevB : "elbowC";
 }
 
-/* ===== Calculate (UPDATED with weld gap) ===== */
+/* ===== Calculate (with weld gap) ===== */
 function updateLive(){
   hideDebug();
   clearWarn();
@@ -472,7 +504,6 @@ function updateLive(){
     const row  = DATA[size];
     const ctc  = Number(ctcEl.value);
 
-    // default UI
     lastCopyText = "";
     lastSlipUrl = "";
     openSlipA.href = "#";
@@ -497,7 +528,6 @@ function updateLive(){
       return;
     }
 
-    // ✅ NEW: weld gap only if elbow selected
     const weldA = (endA.value === "elbowC") ? WELD_GAP_MM : 0;
     const weldB = (endB.value === "elbowC") ? WELD_GAP_MM : 0;
 
@@ -525,7 +555,7 @@ function updateLive(){
       s:size, i:row.id, o:row.od,
       a:endALabel, b:endBLabel,
       oa:offA, ob:offB,
-      wa:weldA, wb:weldB,                 // ✅ NEW: weld gaps in slip payload
+      wa:weldA, wb:weldB,
       c:ctc, cut:cutTxt,
       n:(notesEl.value||"").trim().slice(0,120),
       t:new Date().toISOString()
