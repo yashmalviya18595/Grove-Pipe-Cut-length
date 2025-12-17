@@ -226,10 +226,13 @@ textarea{min-height:88px;resize:vertical}
 .diagramBox h3{margin:0 0 8px;font-size:14px}
 .diagramNote{color:rgba(255,255,255,.70);font-size:12px;line-height:1.45;margin-top:8px}
 svg{width:100%;height:auto;display:block}
-.svgLine{stroke:#e9e9e9;stroke-width:3;fill:none;opacity:.95}
-.svgRed{stroke:var(--red);stroke-width:4;fill:none}
-.svgText{fill:#f5f5f5;font-size:16px;font-weight:900}
-.svgMuted{fill:rgba(255,255,255,.7);font-size:12px;font-weight:800}
+
+/* Exact-style diagram strokes */
+.svgBlue{stroke:#2e64ff;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.svgRed{stroke:var(--red);stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.svgGrey{stroke:rgba(255,255,255,.45);stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.svgText{fill:#f5f5f5;font-size:18px;font-weight:1000}
+.svgTextSmall{fill:rgba(255,255,255,.75);font-size:12px;font-weight:800}
 </style>
 </head>
 
@@ -356,67 +359,156 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
     </div>
     <div class="modalBody">
       <div class="diagramGrid">
+
+        <!-- A: Flange -->
         <div class="diagramBox">
           <h3>Flange Offset (A)</h3>
-          <svg viewBox="0 0 520 220" role="img" aria-label="Flange offset A diagram">
-            <path class="svgLine" d="M90 40 L90 180" />
-            <path class="svgLine" d="M140 55 L140 165" />
-            <path class="svgLine" d="M140 55 L220 55 L220 165 L140 165" />
-            <path class="svgLine" d="M260 110 L470 110" />
-            <path class="svgRed" d="M140 185 L260 185" />
-            <path class="svgRed" d="M140 177 L140 193" />
-            <path class="svgRed" d="M260 177 L260 193" />
-            <text class="svgText" x="196" y="175">A</text>
-            <text class="svgMuted" x="18" y="208">Distance from flange face to centre line reference</text>
+          <svg viewBox="0 0 520 240" role="img" aria-label="Flange offset A diagram">
+            <defs>
+              <marker id="arrowRedA" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+                <path d="M0,0 L10,5 L0,10 Z" fill="#ef2a1f"></path>
+              </marker>
+            </defs>
+
+            <!-- pipe (blue) -->
+            <path class="svgBlue" d="M60 70 L240 70" />
+            <path class="svgBlue" d="M60 170 L240 170" />
+            <!-- flange plate (black-ish outline = still blue like your image) -->
+            <path class="svgBlue" d="M240 55 L260 55 L260 185 L240 185 Z" />
+            <!-- flange face -->
+            <path class="svgBlue" d="M270 45 L270 195" />
+            <!-- internal blue line close to face -->
+            <path class="svgBlue" d="M255 60 L255 180" />
+
+            <!-- centreline (red horizontal in your ref) -->
+            <path class="svgRed" d="M40 120 L300 120" />
+
+            <!-- A dimension (red, bottom) -->
+            <path class="svgRed" d="M220 210 L270 210" marker-start="url(#arrowRedA)" marker-end="url(#arrowRedA)" />
+            <path class="svgRed" d="M220 200 L220 220" />
+            <path class="svgRed" d="M270 200 L270 220" />
+            <text class="svgText" x="242" y="205">A</text>
           </svg>
-          <div class="diagramNote">Use when one end is a flange. Offset = A (mm).</div>
+          <div class="diagramNote">A = flange offset (mm) as per your table.</div>
         </div>
 
+        <!-- C: 90 Elbow -->
         <div class="diagramBox">
           <h3>90° Elbow (C)</h3>
-          <svg viewBox="0 0 520 220" role="img" aria-label="Elbow C diagram">
-            <path class="svgLine" d="M160 170 A120 120 0 0 1 280 50" />
-            <path class="svgLine" d="M190 170 A90 90 0 0 1 280 80" />
-            <path class="svgRed" d="M160 190 L280 190" />
-            <path class="svgRed" d="M160 182 L160 198" />
-            <path class="svgRed" d="M280 182 L280 198" />
-            <text class="svgText" x="215" y="178">C</text>
-            <text class="svgMuted" x="18" y="208">Centre-to-face / elbow depth reference</text>
+          <svg viewBox="0 0 520 240" role="img" aria-label="Elbow C diagram">
+            <defs>
+              <marker id="arrowRedC" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+                <path d="M0,0 L10,5 L0,10 Z" fill="#ef2a1f"></path>
+              </marker>
+            </defs>
+
+            <!-- elbow outer/inner (blue) -->
+            <path class="svgBlue" d="M120 190 A160 160 0 0 1 400 60" />
+            <path class="svgBlue" d="M170 190 A110 110 0 0 1 400 110" />
+            <!-- end face (right) -->
+            <path class="svgBlue" d="M400 60 L400 110" />
+
+            <!-- elbow centreline (red curved, like your ref) -->
+            <path class="svgRed" d="M200 190 A120 120 0 0 1 400 90" />
+
+            <!-- right vertical red line -->
+            <path class="svgRed" d="M400 45 L400 205" />
+
+            <!-- C dimension bottom -->
+            <path class="svgRed" d="M160 210 L400 210" marker-start="url(#arrowRedC)" marker-end="url(#arrowRedC)" />
+            <path class="svgRed" d="M160 200 L160 220" />
+            <path class="svgRed" d="M400 200 L400 220" />
+            <text class="svgText" x="275" y="205">C</text>
           </svg>
-          <div class="diagramNote">If elbow selected: Cut subtracts (C + weld 3mm).</div>
+          <div class="diagramNote">If elbow selected, calculator subtracts (C + 3mm weld gap).</div>
         </div>
 
+        <!-- D: Tee depth -->
         <div class="diagramBox">
-          <h3>Tee (D)</h3>
-          <svg viewBox="0 0 520 220" role="img" aria-label="Tee D diagram">
-            <path class="svgLine" d="M120 130 L400 130" />
-            <path class="svgLine" d="M260 60 L260 180" />
-            <path class="svgRed" d="M260 190 L380 190" />
-            <path class="svgRed" d="M260 182 L260 198" />
-            <path class="svgRed" d="M380 182 L380 198" />
-            <text class="svgText" x="316" y="178">D</text>
-            <text class="svgMuted" x="18" y="208">Tee depth (run side reference)</text>
+          <h3>Tee Depth (D)</h3>
+          <svg viewBox="0 0 520 240" role="img" aria-label="Tee D diagram">
+            <defs>
+              <marker id="arrowRedD" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+                <path d="M0,0 L10,5 L0,10 Z" fill="#ef2a1f"></path>
+              </marker>
+            </defs>
+
+            <!-- tee outline (blue) - simplified but matches your reference shape -->
+            <path class="svgBlue" d="M170 60
+                                  L350 60
+                                  Q370 60 370 80
+                                  Q370 95 355 95
+                                  L330 95
+                                  L330 140
+                                  L190 140
+                                  L190 95
+                                  L165 95
+                                  Q150 95 150 80
+                                  Q150 60 170 60 Z" />
+            <path class="svgBlue" d="M150 140 L150 195 L370 195 L370 140" />
+
+            <!-- red crosshair centre -->
+            <path class="svgRed" d="M110 140 L410 140" />
+            <path class="svgRed" d="M260 40 L260 210" />
+
+            <!-- grey branch lines -->
+            <path class="svgGrey" d="M260 140 L210 95" />
+            <path class="svgGrey" d="M260 140 L310 95" />
+
+            <!-- D dimension (vertical left) -->
+            <path class="svgRed" d="M110 85 L110 140" marker-start="url(#arrowRedD)" marker-end="url(#arrowRedD)" />
+            <path class="svgRed" d="M120 85 L100 85" />
+            <path class="svgRed" d="M120 140 L100 140" />
+            <text class="svgText" x="95" y="120" transform="rotate(-90 95 120)">D</text>
           </svg>
-          <div class="diagramNote">Use Tee (D) when table specifies D for that end.</div>
+          <div class="diagramNote">D = tee depth dimension (mm).</div>
         </div>
 
+        <!-- E: Tee overall -->
         <div class="diagramBox">
-          <h3>Tee (E)</h3>
-          <svg viewBox="0 0 520 220" role="img" aria-label="Tee E diagram">
-            <path class="svgLine" d="M120 130 L400 130" />
-            <path class="svgLine" d="M260 60 L260 180" />
-            <path class="svgRed" d="M140 190 L400 190" />
-            <path class="svgRed" d="M140 182 L140 198" />
-            <path class="svgRed" d="M400 182 L400 198" />
-            <text class="svgText" x="270" y="178">E</text>
-            <text class="svgMuted" x="18" y="208">Tee overall reference (end-to-end)</text>
+          <h3>Tee Overall (E)</h3>
+          <svg viewBox="0 0 520 240" role="img" aria-label="Tee E diagram">
+            <defs>
+              <marker id="arrowRedE" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+                <path d="M0,0 L10,5 L0,10 Z" fill="#ef2a1f"></path>
+              </marker>
+            </defs>
+
+            <!-- same tee outline (blue) -->
+            <path class="svgBlue" d="M170 60
+                                  L350 60
+                                  Q370 60 370 80
+                                  Q370 95 355 95
+                                  L330 95
+                                  L330 140
+                                  L190 140
+                                  L190 95
+                                  L165 95
+                                  Q150 95 150 80
+                                  Q150 60 170 60 Z" />
+            <path class="svgBlue" d="M150 140 L150 195 L370 195 L370 140" />
+
+            <!-- red crosshair centre -->
+            <path class="svgRed" d="M110 140 L410 140" />
+            <path class="svgRed" d="M260 40 L260 210" />
+
+            <!-- grey branch lines -->
+            <path class="svgGrey" d="M260 140 L210 95" />
+            <path class="svgGrey" d="M260 140 L310 95" />
+
+            <!-- E dimension bottom (end to end) -->
+            <path class="svgRed" d="M150 220 L370 220" marker-start="url(#arrowRedE)" marker-end="url(#arrowRedE)" />
+            <path class="svgRed" d="M150 210 L150 232" />
+            <path class="svgRed" d="M370 210 L370 232" />
+            <text class="svgText" x="255" y="214">E</text>
           </svg>
-          <div class="diagramNote">Use Tee (E) when table specifies E for that end.</div>
+          <div class="diagramNote">E = overall end-to-end tee dimension (mm).</div>
         </div>
+
       </div>
 
       <div class="help" style="margin-top:12px;">
-        Source: GROVE “Flanges & Fittings DIMS” table (page 1). Values for 8"–20" are now included in the dropdown.
+        Diagrams are now matched to your reference style (blue outline + red dimensions).
       </div>
     </div>
   </div>
@@ -439,15 +531,13 @@ function leaveTo(url, clearSession){
 function openDiagrams(){
   document.getElementById("diagModal").classList.add("open");
 }
-function closeDiagrams(e){
+function closeDiagrams(){
   document.getElementById("diagModal").classList.remove("open");
 }
 </script>
 
 <script>
-/* ===== DATA (UPDATED WITH 8"–20" FROM PDF) =====
-   Source table: Flange Offset A, 90° Elbow C, Tee D, Tee E. :contentReference[oaicite:2]{index=2}
-*/
+/* ===== DATA (includes 8"–20") ===== */
 const DATA = {
   '1/2"':  { id:15,  od:21.3,  flangeA:null, elbowC:38,  teeD:25,  teeE:50  },
   '3/4"':  { id:20,  od:26.9,  flangeA:null, elbowC:38,  teeD:29,  teeE:58  },
@@ -460,8 +550,6 @@ const DATA = {
   '4"':    { id:100, od:114.3, flangeA:20,   elbowC:152, teeD:105, teeE:210 },
   '5"':    { id:125, od:139.7, flangeA:20,   elbowC:190, teeD:124, teeE:248 },
   '6"':    { id:150, od:168.3, flangeA:20,   elbowC:229, teeD:143, teeE:286 },
-
-  /* ✅ Added sizes */
   '8"':    { id:200, od:219.1, flangeA:25,   elbowC:305, teeD:178, teeE:356 },
   '10"':   { id:250, od:273.0, flangeA:25,   elbowC:381, teeD:216, teeE:432 },
   '12"':   { id:300, od:323.9, flangeA:25,   elbowC:457, teeD:254, teeE:508 },
@@ -528,7 +616,7 @@ function makeSlipUrl(payload){
   return `${getBaseUrl()}slip.html?d=${encoded}`;
 }
 
-/* ===== QR (simple deterministic matrix) ===== */
+/* ===== QR (deterministic matrix) ===== */
 function drawMatrix(canvas, text){
   const ctx = canvas.getContext("2d");
   const size = canvas.width;
