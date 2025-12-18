@@ -433,8 +433,6 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
           <div class="toast" id="toast">Done ✅</div>
           <div class="debug" id="debug"></div>
         </div>
-
-        <div class="help" style="margin-top:12px;">Tip: If iPhone camera struggles, tap QR or Open Slip.</div>
       </div>
     </div>
 
@@ -479,39 +477,33 @@ function closeDiagrams(){ document.getElementById("diagModal").classList.remove(
 
 <script>
 /* ===========================
-   CONFIG (SR warning threshold)
+   PDF-CORRECT VALUES
    =========================== */
-const SR_WARNING_FROM_INCH = 8;   // Warn when SR is used on 8" and above
-const WELD_GAP_MM = 3;            // Weld gap applies to ALL fittings except Flange
+const SR_WARNING_FROM_INCH = 8; // warn when SR chosen on 8" and above
+const WELD_GAP_MM = 3;          // applies to ALL fittings except flange
 
-/* ===========================
-   DATA (Full sizes, same as your working version)
-   NOTE: LR values use your original 90° Elbow (C).
-   SR and 45 values must match your revised PDF; if your PDF has different numbers,
-   update only those values (the rest stays the same).
-   =========================== */
+// From your revised PDF table (SR/LR/45/Tee/Flange) :contentReference[oaicite:2]{index=2}
 const DATA = {
-  '1/2"':   { id:15,  od:21.3,  flangeA:null, elbowLR:38,  elbowSR:null,  elbow45:16,  teeD:25,  teeE:50  },
-  '3/4"':   { id:20,  od:26.9,  flangeA:null, elbowLR:38,  elbowSR:null,  elbow45:19,  teeD:29,  teeE:58  },
-  '1"':     { id:25,  od:33.7,  flangeA:null, elbowLR:38,  elbowSR:25,  elbow45:22,  teeD:38,  teeE:76  },
-  '1 1/4"': { id:32,  od:42.4,  flangeA:null, elbowLR:48,  elbowSR:32,  elbow45:25,  teeD:48,  teeE:96  },
-  '1 1/2"': { id:40,  od:48.3,  flangeA:null, elbowLR:57,  elbowSR:38,  elbow45:29,  teeD:57,  teeE:114 },
-  '2"':     { id:50,  od:60.3,  flangeA:null, elbowLR:76,  elbowSR:61,  elbow45:35,  teeD:64,  teeE:128 },
-  '2 1/2"': { id:65,  od:76.1,  flangeA:20,   elbowLR:95,  elbowSR:64,  elbow45:44,  teeD:76,  teeE:152 },
-  '3"':     { id:80,  od:88.9,  flangeA:20,   elbowLR:114, elbowSR:76, elbow45:51,  teeD:86,  teeE:172 },
-  '4"':     { id:100, od:114.3, flangeA:20,   elbowLR:152, elbowSR:102, elbow45:64,  teeD:105, teeE:210 },
-  '5"':     { id:125, od:139.7, flangeA:20,   elbowLR:190, elbowSR:127, elbow45:79,  teeD:124, teeE:248 },
-  '6"':     { id:150, od:168.3, flangeA:20,   elbowLR:229, elbowSR:152, elbow45:95, teeD:143, teeE:286 },
-  '8"':     { id:200, od:219.1, flangeA:25,   elbowLR:305, elbowSR:203, elbow45:127, teeD:178, teeE:356 },
-  '10"':    { id:250, od:273.0, flangeA:25,   elbowLR:381, elbowSR:254, elbow45:159, teeD:216, teeE:432 },
-  '12"':    { id:300, od:323.9, flangeA:25,   elbowLR:457, elbowSR:305, elbow45:190, teeD:254, teeE:508 },
-  '14"':    { id:350, od:355.6, flangeA:25,   elbowLR:533, elbowSR:356, elbow45:222, teeD:279, teeE:558 },
-  '16"':    { id:400, od:406.4, flangeA:25,   elbowLR:610, elbowSR:406, elbow45:254, teeD:305, teeE:610 },
-  '18"':    { id:450, od:457.0, flangeA:25,   elbowLR:686, elbowSR:457, elbow45:286, teeD:343, teeE:686 },
-  '20"':    { id:500, od:508.0, flangeA:25,   elbowLR:762, elbowSR:508, elbow45:318, teeD:381, teeE:762 }
+  '1/2"':   { id:15,  od:21.3,  flangeA:null, elbowSR:null, elbowLR:38,  elbow45:16,  teeD:25,  teeE:50  },
+  '3/4"':   { id:20,  od:26.9,  flangeA:null, elbowSR:null, elbowLR:38,  elbow45:19,  teeD:29,  teeE:58  },
+  '1"':     { id:25,  od:33.7,  flangeA:null, elbowSR:25,   elbowLR:38,  elbow45:22,  teeD:38,  teeE:76  },
+  '1 1/4"': { id:32,  od:42.4,  flangeA:null, elbowSR:32,   elbowLR:48,  elbow45:25,  teeD:48,  teeE:96  },
+  '1 1/2"': { id:40,  od:48.3,  flangeA:null, elbowSR:38,   elbowLR:57,  elbow45:29,  teeD:57,  teeE:114 },
+  '2"':     { id:50,  od:60.3,  flangeA:null, elbowSR:61,   elbowLR:76,  elbow45:35,  teeD:64,  teeE:128 },
+  '2 1/2"': { id:65,  od:76.1,  flangeA:20,   elbowSR:64,   elbowLR:95,  elbow45:44,  teeD:76,  teeE:152 },
+  '3"':     { id:80,  od:88.9,  flangeA:20,   elbowSR:76,   elbowLR:114, elbow45:51,  teeD:86,  teeE:172 },
+  '4"':     { id:100, od:114.3, flangeA:20,   elbowSR:102,  elbowLR:152, elbow45:64,  teeD:105, teeE:210 },
+  '5"':     { id:125, od:139.7, flangeA:20,   elbowSR:127,  elbowLR:190, elbow45:79,  teeD:124, teeE:248 },
+  '6"':     { id:150, od:168.3, flangeA:20,   elbowSR:152,  elbowLR:229, elbow45:95,  teeD:143, teeE:286 },
+  '8"':     { id:200, od:219.1, flangeA:25,   elbowSR:203,  elbowLR:305, elbow45:127, teeD:178, teeE:356 },
+  '10"':    { id:250, od:273.0, flangeA:25,   elbowSR:254,  elbowLR:381, elbow45:159, teeD:216, teeE:432 },
+  '12"':    { id:300, od:323.9, flangeA:25,   elbowSR:305,  elbowLR:457, elbow45:190, teeD:254, teeE:508 },
+  '14"':    { id:350, od:355.6, flangeA:25,   elbowSR:356,  elbowLR:533, elbow45:222, teeD:279, teeE:558 },
+  '16"':    { id:400, od:406.4, flangeA:25,   elbowSR:406,  elbowLR:610, elbow45:254, teeD:305, teeE:610 },
+  '18"':    { id:450, od:457.0, flangeA:25,   elbowSR:457,  elbowLR:686, elbow45:286, teeD:343, teeE:686 },
+  '20"':    { id:500, od:508.0, flangeA:25,   elbowSR:508,  elbowLR:762, elbow45:318, teeD:381, teeE:762 }
 };
 
-/* Fitting list */
 const FITTINGS = [
   { key:"flangeA", label:"Flange (A)", weld:false },
   { key:"elbowSR", label:"90° Elbow – Short Radius (SR)", weld:true },
@@ -546,11 +538,7 @@ function showWarn(msg, urgent=false){
   warnEl.textContent=msg;
   warnEl.classList.toggle("urgent", !!urgent);
 }
-function clearWarn(){
-  warnEl.style.display="none";
-  warnEl.textContent="";
-  warnEl.classList.remove("urgent");
-}
+function clearWarn(){ warnEl.style.display="none"; warnEl.textContent=""; warnEl.classList.remove("urgent"); }
 function showToast(msg){ toast.style.display="block"; toast.textContent=msg; setTimeout(()=>toast.style.display="none",1200); }
 function showDebug(msg){ debugEl.style.display="block"; debugEl.textContent=msg; }
 function hideDebug(){ debugEl.style.display="none"; debugEl.textContent=""; }
@@ -570,7 +558,7 @@ function makeSlipUrl(payload){
   return `${getBaseUrl()}slip.html?d=${encoded}`;
 }
 
-/* offline matrix (QR-like) */
+/* offline QR-like matrix */
 function drawMatrix(canvas, text){
   const ctx = canvas.getContext("2d");
   const size = canvas.width;
@@ -614,7 +602,7 @@ function drawMatrix(canvas, text){
 }
 function openSlipNow(){ if(lastSlipUrl) window.open(lastSlipUrl,"_blank"); }
 
-/* safari copy */
+/* Safari copy */
 function copyTextSafe(text){
   try{
     const ta=document.createElement("textarea");
@@ -655,7 +643,7 @@ function inchValue(sizeLabel){
 }
 function weldGapFor(key){ return key === "flangeA" ? 0 : WELD_GAP_MM; }
 
-/* build sizes */
+/* build dropdowns */
 function buildSizeOptions(){
   sizeSel.innerHTML="";
   Object.keys(DATA).forEach(sz=>{
@@ -667,8 +655,6 @@ function buildSizeOptions(){
   });
   if (!DATA[sizeSel.value]) sizeSel.value='2"';
 }
-
-/* flange always visible */
 function buildFittings(){
   const row = DATA[sizeSel.value];
   const prevA = endA.value || "elbowLR";
@@ -679,23 +665,27 @@ function buildFittings(){
 
   FITTINGS.forEach(f=>{
     const val = row[f.key];
-    const txt = (f.key === "flangeA" && val == null) ? "Flange (A) — N/A for this size" : f.label;
+    const isNA = (val == null);
+
+    const label = isNA ? `${f.label} — N/A for this size` : f.label;
 
     const oa=document.createElement("option");
-    oa.value=f.key; oa.textContent=txt;
-    if (f.key === "flangeA" && val == null) oa.disabled = true;
+    oa.value=f.key; oa.textContent=label;
+    if (isNA) oa.disabled = true;
     endA.appendChild(oa);
 
     const ob=document.createElement("option");
-    ob.value=f.key; ob.textContent=txt;
-    if (f.key === "flangeA" && val == null) ob.disabled = true;
+    ob.value=f.key; ob.textContent=label;
+    if (isNA) ob.disabled = true;
     endB.appendChild(ob);
   });
 
-  endA.value = (prevA === "flangeA" && row.flangeA == null) ? "elbowLR" : prevA;
-  endB.value = (prevB === "flangeA" && row.flangeA == null) ? "elbowLR" : prevB;
+  // If previous selection is now N/A, fallback
+  if (DATA[sizeSel.value][prevA] == null) endA.value = "elbowLR"; else endA.value = prevA;
+  if (DATA[sizeSel.value][prevB] == null) endB.value = "elbowLR"; else endB.value = prevB;
 }
 
+/* main calc */
 function updateLive(){
   hideDebug();
   clearWarn();
@@ -705,7 +695,7 @@ function updateLive(){
     const row  = DATA[size];
     const ctc  = Number(ctcEl.value);
 
-    // ✅ SR warning (independent of CTC)
+    // SR warning (even before CTC)
     const inches = inchValue(size);
     if (inches >= SR_WARNING_FROM_INCH && (endA.value === "elbowSR" || endB.value === "elbowSR")) {
       showWarn(`⚠️ Short Radius (SR) selected on ${size}. SR is unusual on large sizes — please confirm spec/drawing before cutting.`, true);
@@ -741,8 +731,8 @@ function updateLive(){
     const cut = ctc - ((offA+weldA) + (offB+weldB));
     const cutTxt = cut.toFixed(1);
 
-    const endALabel = endA.options[endA.selectedIndex]?.text || endA.value;
-    const endBLabel = endB.options[endB.selectedIndex]?.text || endB.value;
+    const endALabel = endA.options[endA.selectedIndex]?.text.replace(" — N/A for this size","") || endA.value;
+    const endBLabel = endB.options[endB.selectedIndex]?.text.replace(" — N/A for this size","") || endB.value;
 
     cutEl.textContent = `${cutTxt} mm`;
     formulaEl.textContent = `CTC ${ctc} − (A ${offA}${weldA?`+${weldA}`:""} + B ${offB}${weldB?`+${weldB}`:""})`;
