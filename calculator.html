@@ -579,23 +579,35 @@ function leaveTo(url, clearSession){
 const WELD_GAP_MM = 3;
 const SR_WARNING_FROM_INCH = 8;
 
-/* Keep your existing full dataset here (this sample includes a few).
-   If you already have the full one, keep it exactly as-is and just replace the buttons part. */
+/* FULL TABLE FROM YOUR PDF (1/2" → 20") */
 const DATA = {
-  '1/2"':   { id:15,  od:21.3,  flangeA:null, elbowSR:null, elbowLR:38,  elbow45:16,  teeD:25,  teeE:50  },
-  '3/4"':   { id:20,  od:26.9,  flangeA:null, elbowSR:null, elbowLR:38,  elbow45:19,  teeD:29,  teeE:58  },
-  '1"':     { id:25,  od:33.7,  flangeA:null, elbowSR:25,   elbowLR:38,  elbow45:22,  teeD:38,  teeE:76  },
-  '2"':     { id:50,  od:60.3,  flangeA:null, elbowSR:61,   elbowLR:76,  elbow45:35,  teeD:64,  teeE:128 },
-  '4"':     { id:100, od:114.3, flangeA:20,   elbowSR:102,  elbowLR:152, elbow45:64,  teeD:105, teeE:210 }
+  '1/2"':  { id:15,  od:21.3,  flangeA:null, elbowSR:null, elbowLR:38,  teeD:25,  teeE:50,  elbow45:16 },
+  '3/4"':  { id:20,  od:26.9,  flangeA:null, elbowSR:null, elbowLR:38,  teeD:29,  teeE:58,  elbow45:19 },
+  '1"':    { id:25,  od:33.7,  flangeA:null, elbowSR:25,   elbowLR:38,  teeD:38,  teeE:76,  elbow45:22 },
+  '1 1/4"':{ id:32,  od:42.4,  flangeA:null, elbowSR:32,   elbowLR:48,  teeD:48,  teeE:96,  elbow45:25 },
+  '1 1/2"':{ id:40,  od:48.3,  flangeA:null, elbowSR:38,   elbowLR:57,  teeD:57,  teeE:114, elbow45:29 },
+  '2"':    { id:50,  od:60.3,  flangeA:null, elbowSR:61,   elbowLR:76,  teeD:64,  teeE:128, elbow45:35 },
+  '2 1/2"':{ id:65,  od:76.1,  flangeA:20,   elbowSR:64,   elbowLR:95,  teeD:76,  teeE:152, elbow45:44 },
+  '3"':    { id:80,  od:88.9,  flangeA:20,   elbowSR:76,   elbowLR:114, teeD:86,  teeE:172, elbow45:51 },
+  '4"':    { id:100, od:114.3, flangeA:20,   elbowSR:102,  elbowLR:152, teeD:105, teeE:210, elbow45:64 },
+  '5"':    { id:125, od:139.7, flangeA:20,   elbowSR:127,  elbowLR:190, teeD:124, teeE:248, elbow45:79 },
+  '6"':    { id:150, od:168.3, flangeA:20,   elbowSR:152,  elbowLR:229, teeD:143, teeE:286, elbow45:95 },
+  '8"':    { id:200, od:219.1, flangeA:25,   elbowSR:203,  elbowLR:305, teeD:178, teeE:356, elbow45:127 },
+  '10"':   { id:250, od:273,   flangeA:25,   elbowSR:254,  elbowLR:381, teeD:216, teeE:432, elbow45:159 },
+  '12"':   { id:300, od:323.9, flangeA:25,   elbowSR:305,  elbowLR:457, teeD:254, teeE:508, elbow45:190 },
+  '14"':   { id:350, od:355.6, flangeA:25,   elbowSR:356,  elbowLR:533, teeD:279, teeE:558, elbow45:222 },
+  '16"':   { id:400, od:406.4, flangeA:25,   elbowSR:406,  elbowLR:610, teeD:305, teeE:610, elbow45:254 },
+  '18"':   { id:450, od:457,   flangeA:25,   elbowSR:457,  elbowLR:686, teeD:343, teeE:686, elbow45:286 },
+  '20"':   { id:500, od:508,   flangeA:25,   elbowSR:508,  elbowLR:762, teeD:381, teeE:762, elbow45:318 }
 };
 
 const FITTINGS = [
   { key:"flangeA", label:"Flange (A)", weld:false },
   { key:"elbowSR", label:"90° Elbow – Short Radius (SR)", weld:true },
   { key:"elbowLR", label:"90° Elbow – Long Radius (LR)", weld:true },
-  { key:"elbow45", label:"45° Elbow", weld:true },
   { key:"teeD",    label:"Tee (D)", weld:true },
-  { key:"teeE",    label:"Tee (E)", weld:true }
+  { key:"teeE",    label:"Tee (E)", weld:true },
+  { key:"elbow45", label:"45° Elbow (F)", weld:true }
 ];
 
 const sizeSel   = document.getElementById("size");
@@ -674,8 +686,8 @@ function buildFittings(){
     ob.value=f.key; ob.textContent=label; if (isNA) ob.disabled=true;
     endB.appendChild(ob);
   });
-  endA.value = (row[prevA]==null) ? "elbowLR" : prevA;
-  endB.value = (row[prevB]==null) ? "elbowLR" : prevB;
+  endA.value = (row[prevA]==null) ? (row.elbowLR!=null ? "elbowLR" : "teeD") : prevA;
+  endB.value = (row[prevB]==null) ? (row.elbowLR!=null ? "elbowLR" : "teeE") : prevB;
 }
 
 function saveSlipPayload(payload){
@@ -714,7 +726,7 @@ function copySlipLink(){
 function openSlipNow(){ window.open("slip.html", "_blank"); }
 function printSlip(){ window.open("slip.html", "_blank"); }
 
-/* NEW: Share Slip (WhatsApp-ready) */
+/* Share Slip */
 async function shareSlip(){
   if(!lastShareText){
     showToast("Enter CTC first");
@@ -723,17 +735,13 @@ async function shareSlip(){
   const url = slipUrl();
   const payload = lastShareText + "\n\nSlip: " + url;
 
-  // iOS share sheet
   if (navigator.share) {
     try{
       await navigator.share({ title:"GROVE Cut Slip", text: payload });
       showToast("Shared ✅");
       return;
-    }catch(e){
-      // fall back to copy
-    }
+    }catch(e){}
   }
-  // Copy fallback
   showToast(copyTextSafe(payload) ? "Slip copied ✅" : "Copy blocked");
 }
 
