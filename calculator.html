@@ -64,7 +64,7 @@ body{
   100%{transform:translate(-50%,-50%) scale(1)}
 }
 
-/* ✅ Page transitions */
+/* Page transitions */
 .page{
   opacity:0;
   transform: translateY(6px);
@@ -75,28 +75,14 @@ body{
 
 /* header */
 .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
-
-/* ✅ Clickable logo styles */
-.logoLink{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  text-decoration:none;
-  border-radius:16px;
-}
+.logoLink{display:inline-flex;align-items:center;gap:10px;text-decoration:none;border-radius:16px}
 .logoPlate{
-  background:#fff;
-  padding:10px 14px;
-  border-radius:16px;
+  background:#fff;padding:10px 14px;border-radius:16px;
   box-shadow:0 12px 30px rgba(0,0,0,.35);
   transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
 }
-.logoPlate:hover{
-  transform: translateY(-1px);
-  box-shadow:0 16px 38px rgba(0,0,0,.42);
-  filter: brightness(1.02);
-}
-.logoPlate:active{ transform: translateY(0px) scale(.99); }
+.logoPlate:hover{transform: translateY(-1px);box-shadow:0 16px 38px rgba(0,0,0,.42);filter: brightness(1.02)}
+.logoPlate:active{transform: translateY(0px) scale(.99)}
 .logoPlate img{height:46px}
 .logoHint{font-size:12px;font-weight:900;color:rgba(255,255,255,.62);margin-left:2px}
 
@@ -203,12 +189,10 @@ textarea{min-height:88px;resize:vertical}
 
 .footer{border-top:1px solid var(--line);padding:14px 22px;font-size:12px;color:rgba(255,255,255,.45);display:flex;justify-content:space-between;background:rgba(0,0,0,.18)}
 
-/* Diagram modal (kept as-is) */
+/* Diagram modal (simple) */
 .modal{
   position:fixed; inset:0;
-  display:none;
-  align-items:center;
-  justify-content:center;
+  display:none; align-items:center; justify-content:center;
   padding:18px;
   background:rgba(0,0,0,.62);
   backdrop-filter: blur(10px);
@@ -229,6 +213,13 @@ textarea{min-height:88px;resize:vertical}
 }
 .modalTitle{font-weight:1100}
 .modalBody{padding:14px 16px}
+.diagramImg{
+  max-width:100%;
+  height:auto;
+  border-radius:14px;
+  background:#fff;
+  box-shadow:0 18px 55px rgba(0,0,0,.55);
+}
 </style>
 </head>
 
@@ -249,11 +240,8 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
   </div>
 
   <div class="topbar">
-    <!-- ✅ LOGO NOW CLICKABLE -->
     <a class="logoLink" href="#" onclick="leaveTo('pipe-type.html'); return false;" title="Back to GROVE Home">
-      <div class="logoPlate">
-        <img src="grove-logo.png" alt="GROVE">
-      </div>
+      <div class="logoPlate"><img src="grove-logo.png" alt="GROVE"></div>
       <span class="logoHint">Home</span>
     </a>
 
@@ -351,23 +339,23 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
   </div>
 </div>
 
-<!-- Diagrams Modal (kept simple, you can upload dims-diagram.jpg later) -->
+<!-- Diagrams Modal -->
 <div class="modal" id="diagModal" onclick="closeDiagrams(event)">
   <div class="modalCard" onclick="event.stopPropagation()">
     <div class="modalHead">
-      <div class="modalTitle">Flanges & Fittings Diagram</div>
+      <div class="modalTitle">Flanges & Fittings Diagram (A / C / D / E)</div>
       <button class="btnSmall primary" onclick="closeDiagrams()">Close</button>
     </div>
     <div class="modalBody">
-      <div style="color:rgba(255,255,255,.7);font-size:12px;line-height:1.6">
-        Upload your diagram image to the repo root as <b>dims-diagram.jpg</b>, then we’ll show it here perfectly.
+      <img class="diagramImg" src="dims-diagram.jpg" alt="Flanges & Fittings Diagram">
+      <div class="help" style="margin-top:10px;">
+        If the image doesn’t show, confirm the filename is exactly <b>dims-diagram.jpg</b> in the repo root.
       </div>
     </div>
   </div>
 </div>
 
 <script>
-/* ✅ fade-in on load */
 requestAnimationFrame(()=> document.getElementById("page").classList.add("is-ready"));
 
 function leaveTo(url, clearSession){
@@ -379,13 +367,12 @@ function leaveTo(url, clearSession){
     window.location.href=url;
   }, 260);
 }
-
 function openDiagrams(){ document.getElementById("diagModal").classList.add("open"); }
 function closeDiagrams(){ document.getElementById("diagModal").classList.remove("open"); }
 </script>
 
 <script>
-/* ===== DATA (includes 8"–20") ===== */
+/* ===== DATA ===== */
 const DATA = {
   '1/2"':  { id:15,  od:21.3,  flangeA:null, elbowC:38,  teeD:25,  teeE:50  },
   '3/4"':  { id:20,  od:26.9,  flangeA:null, elbowC:38,  teeD:29,  teeE:58  },
@@ -499,7 +486,6 @@ function drawMatrix(canvas, text){
     finder(count-7,0);
   }
 }
-
 function openSlipNow(){ if(lastSlipUrl) window.open(lastSlipUrl,"_blank"); }
 
 /* safari copy */
@@ -527,7 +513,7 @@ function printSlip(){
   window.open(lastSlipUrl, "_blank");
 }
 
-/* dropdowns */
+/* ✅ Build size dropdown */
 function buildSizeOptions(){
   sizeSel.innerHTML="";
   Object.keys(DATA).forEach(sz=>{
@@ -539,6 +525,8 @@ function buildSizeOptions(){
   });
   if (!DATA[sizeSel.value]) sizeSel.value='2"';
 }
+
+/* ✅ FIX: Flange always visible (disabled when not available) */
 function buildFittings(){
   const row = DATA[sizeSel.value];
   const prevA = endA.value || "elbowC";
@@ -547,14 +535,34 @@ function buildFittings(){
   endA.innerHTML="";
   endB.innerHTML="";
 
-  const available = FITTINGS.filter(f => (f.key!=="flangeA") || (row.flangeA!==null));
-  available.forEach(f=>{
-    const oa=document.createElement("option"); oa.value=f.key; oa.textContent=f.label; endA.appendChild(oa);
-    const ob=document.createElement("option"); ob.value=f.key; ob.textContent=f.label; endB.appendChild(ob);
+  FITTINGS.forEach(f=>{
+    const val = row[f.key];
+
+    const oa = document.createElement("option");
+    oa.value = f.key;
+    oa.textContent = (f.key === "flangeA" && val == null)
+      ? "Flange (A) — N/A for this size"
+      : f.label;
+    if (f.key === "flangeA" && val == null) oa.disabled = true;
+    endA.appendChild(oa);
+
+    const ob = document.createElement("option");
+    ob.value = f.key;
+    ob.textContent = (f.key === "flangeA" && val == null)
+      ? "Flange (A) — N/A for this size"
+      : f.label;
+    if (f.key === "flangeA" && val == null) ob.disabled = true;
+    endB.appendChild(ob);
   });
 
-  endA.value = available.some(x=>x.key===prevA) ? prevA : "elbowC";
-  endB.value = available.some(x=>x.key===prevB) ? prevB : "elbowC";
+  // restore previous selections if still valid; otherwise fallback to elbow
+  endA.value = (prevA === "flangeA" && row.flangeA == null) ? "elbowC" : prevA;
+  endB.value = (prevB === "flangeA" && row.flangeA == null) ? "elbowC" : prevB;
+
+  // If previous selection was flange but not allowed, inform user once
+  if ((prevA === "flangeA" && row.flangeA == null) || (prevB === "flangeA" && row.flangeA == null)) {
+    showWarn('Flange (A) is not available for this pipe size in the table. Choose Elbow/Tee or select a larger size.');
+  }
 }
 
 /* calculate */
