@@ -169,10 +169,10 @@ input{
   <div class="card">
     <div class="head">
       <h1>GROVE Pipe Cut Length</h1>
-      <div class="sub">Enter your access code to continue.</div>
+      <div class="sub">Enter your  to continue.</div>
     </div>
     <div class="body">
-      <label>Access Code</label>
+      <label></label>
       <input id="code" type="password" inputmode="text" autocomplete="off" placeholder="Enter code">
       <div class="row">
         <button class="btn" onclick="clearCode()">Clear</button>
@@ -212,7 +212,7 @@ function enter(){
   // If you already have a different code in your current index.html,
   // replace GROVE123 with your real one.
 
-  if(code === "GRO1234"){
+  if(code === "1234"){
     sessionStorage.setItem("cutcalc_ok","1");
     smoothGo("pipe-type.html");
   }else{
