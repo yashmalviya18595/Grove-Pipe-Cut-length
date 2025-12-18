@@ -34,8 +34,6 @@ body{
   pointer-events:none;
   z-index:-3;
 }
-
-/* watermark zoom */
 .wm{
   position:fixed; left:50%; top:52%;
   width:min(820px, 78vw);
@@ -51,7 +49,6 @@ body{
   50%{transform:translate(-50%,-50%) scale(1.05)}
   100%{transform:translate(-50%,-50%) scale(1)}
 }
-
 .wrap{max-width:920px;margin:0 auto}
 .top{
   display:flex; align-items:center; justify-content:space-between; gap:12px;
@@ -80,7 +77,6 @@ body{
   background:linear-gradient(180deg,#ff3b30,var(--red));
   color:#fff;
 }
-
 .card{
   border:1px solid var(--line);
   border-radius:var(--radius);
@@ -96,14 +92,8 @@ body{
 .h1{margin:0;font-size:26px;font-weight:1000}
 .sub{margin-top:6px;color:var(--muted);line-height:1.55}
 .body{padding:18px 20px 20px}
-
-.grid{
-  display:grid;
-  grid-template-columns: 1.2fr .8fr;
-  gap:14px;
-}
+.grid{display:grid;grid-template-columns: 1.2fr .8fr;gap:14px;}
 @media(max-width:860px){.grid{grid-template-columns:1fr}}
-
 .block{
   border:1px solid var(--line);
   border-radius:18px;
@@ -119,7 +109,6 @@ body{
 .bigLabel{font-size:12px;font-weight:900;color:rgba(255,255,255,.72)}
 .bigValue{font-size:44px;font-weight:1100;margin-top:6px}
 .small{font-size:12px;color:rgba(255,255,255,.70);line-height:1.5;margin-top:8px}
-
 .table{
   width:100%;
   border-collapse:separate;
@@ -143,23 +132,6 @@ body{
 }
 .table td{color:rgba(255,255,255,.86)}
 .table tr:last-child th,.table tr:last-child td{border-bottom:none}
-
-.qrWrap{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-}
-.qrBox{
-  width:190px;height:190px;
-  background:#fff;
-  border-radius:14px;
-  overflow:hidden;
-  border:8px solid #fff;
-  flex:0 0 auto;
-}
-.qrBox canvas{width:190px;height:190px;display:block}
-
 .footer{
   border-top:1px solid var(--line);
   padding:12px 20px;
@@ -177,8 +149,6 @@ body{
   color:rgba(255,255,255,.90);
   line-height:1.55;
 }
-
-/* PRINT */
 @media print{
   body{background:#fff;color:#111;padding:0}
   .bgGlow,.wm,.actions{display:none !important}
@@ -191,9 +161,7 @@ body{
   .table{border:1px solid #ddd}
   .table th{background:#f4f4f4;color:#333;border-bottom:1px solid #ddd}
   .table td{color:#111;border-bottom:1px solid #ddd}
-  .qrBox{border:8px solid #fff}
   .footer{background:#fff;border-top:1px solid #ddd}
-  a{color:#111;text-decoration:none}
 }
 </style>
 </head>
@@ -213,15 +181,13 @@ body{
     </div>
   </div>
 
-  <div class="card" id="card">
+  <div class="card">
     <div class="head">
       <h1 class="h1">GROVE Cut Slip</h1>
-      <div class="sub">Generated from MS Pipe Cut Length Calculator • Print at 100% for best clarity.</div>
+      <div class="sub">This slip loads the latest calculation saved on this device.</div>
     </div>
 
-    <div class="body" id="body">
-      <!-- Filled by JS -->
-    </div>
+    <div class="body" id="body"></div>
 
     <div class="footer">
       <div>© GROVE Services Ltd.</div>
@@ -232,160 +198,73 @@ body{
 
 <script>
 function goBack(){
-  // Try to go back; if not possible, open calculator directly
   if (history.length > 1) history.back();
   else window.location.href = "calculator.html";
 }
-
-// Decode helper (matches calculator.html encoding)
-function base64UnicodeDecode(b64){
-  const str = decodeURIComponent(escape(atob(b64)));
-  return str;
-}
-
+function safe(text){ return (text ?? "").toString().replace(/[<>]/g, ""); }
 function fmtTime(iso){
-  try{
-    const d = new Date(iso);
-    return d.toLocaleString();
-  }catch(e){ return ""; }
-}
-
-// Offline “QR-like” matrix (no external libs)
-function drawMatrix(canvas, text){
-  const ctx = canvas.getContext("2d");
-  const size = canvas.width;
-  ctx.fillStyle="#fff"; ctx.fillRect(0,0,size,size);
-
-  const quiet=4, count=29;
-  const cells=count+quiet*2;
-  const cell=Math.floor(size/cells);
-  const offset=Math.floor((size - cell*cells)/2);
-
-  let h=2166136261;
-  for(let i=0;i<text.length;i++){ h^=text.charCodeAt(i); h=Math.imul(h,16777619); }
-  function bit(i){
-    h = (h ^ (h >>> 13)) >>> 0;
-    h = (Math.imul(h, 0x5bd1e995) ^ (h >>> 15)) >>> 0;
-    return (h >>> (i%31)) & 1;
-  }
-  function paint(r,c,on){
-    const x=offset+(c+quiet)*cell, y=offset+(r+quiet)*cell;
-    ctx.fillStyle = on ? "#000" : "#fff";
-    ctx.fillRect(x,y,cell,cell);
-  }
-  function finder(r0,c0){
-    for(let r=0;r<7;r++){
-      for(let c=0;c<7;c++){
-        const on = (r===0||r===6||c===0||c===6) || (r>=2&&r<=4&&c>=2&&c<=4);
-        paint(r0+r,c0+c,on);
-      }
-    }
-  }
-  for(let r=0;r<count;r++){
-    for(let c=0;c<count;c++){
-      paint(r,c, text ? bit(r*count+c) : 0);
-    }
-  }
-  if(text){
-    finder(0,0);
-    finder(0,count-7);
-    finder(count-7,0);
-  }
-}
-
-function safe(text){
-  return (text ?? "").toString().replace(/[<>]/g, "");
+  try{ return new Date(iso).toLocaleString(); }catch(e){ return ""; }
 }
 
 (function init(){
   const body = document.getElementById("body");
-  const params = new URLSearchParams(window.location.search);
-  const d = params.get("d");
+  const raw = sessionStorage.getItem("grove_slip_payload");
 
-  if(!d){
+  if(!raw){
     body.innerHTML = `
       <div class="err">
-        <b>Slip data missing.</b><br>
-        This page must be opened from the calculator QR / slip link.<br>
-        Please go back to the calculator and generate again.
+        <b>No slip data found on this device.</b><br><br>
+        This is normal if you scanned the QR on a different phone or browser.<br>
+        Please open the slip from the <b>same device</b> where you calculated the cut length.<br><br>
+        Go back to the calculator, enter CTC, then open slip again.
       </div>
     `;
     return;
   }
 
-  let payload;
-  try{
-    payload = JSON.parse(base64UnicodeDecode(decodeURIComponent(d)));
-  }catch(e){
-    body.innerHTML = `
-      <div class="err">
-        <b>Slip data could not be read.</b><br>
-        The link may be incomplete. Please regenerate the slip from the calculator.
-      </div>
-    `;
+  let p;
+  try{ p = JSON.parse(raw); }catch(e){
+    body.innerHTML = `<div class="err"><b>Slip data corrupted.</b> Please recalculate in the calculator.</div>`;
     return;
   }
 
-  // Recompute cut (for safety) from payload if possible
-  const ctc = Number(payload.c || 0);
-  const oa  = Number(payload.oa || 0);
-  const ob  = Number(payload.ob || 0);
-  const wa  = Number(payload.wa || 0);
-  const wb  = Number(payload.wb || 0);
-  const recompute = (ctc > 0) ? (ctc - ((oa+wa) + (ob+wb))) : NaN;
-  const cutShown = isFinite(recompute) ? recompute.toFixed(1) : safe(payload.cut);
-
-  const urlHere = window.location.href;
+  const cut = safe(p.cut);
+  const ctc = safe(p.c);
+  const oa  = safe(p.oa);
+  const ob  = safe(p.ob);
+  const wa  = Number(p.wa || 0);
+  const wb  = Number(p.wb || 0);
 
   body.innerHTML = `
     <div class="grid">
       <div class="block">
         <div class="bigCut">
           <div class="bigLabel">Cut length</div>
-          <div class="bigValue">${safe(cutShown)} mm</div>
-          <div class="small">
-            Formula: CTC ${safe(ctc)} − (A ${safe(oa)}${wa?`+${safe(wa)}`:""} + B ${safe(ob)}${wb?`+${safe(wb)}`:""})
-          </div>
+          <div class="bigValue">${cut} mm</div>
+          <div class="small">Formula: CTC ${ctc} − (A ${oa}${wa?`+${wa}`:""} + B ${ob}${wb?`+${wb}`:""})</div>
         </div>
 
         <div style="height:12px"></div>
 
         <table class="table">
-          <tr><th>Pipe size</th><td>${safe(payload.s)} • ID ${safe(payload.i)}mm • OD ${safe(payload.o)}mm</td></tr>
-          <tr><th>End A</th><td>${safe(payload.a)} • Offset ${safe(oa)}mm${wa?` + weld ${safe(wa)}mm`:""}</td></tr>
-          <tr><th>End B</th><td>${safe(payload.b)} • Offset ${safe(ob)}mm${wb?` + weld ${safe(wb)}mm`:""}</td></tr>
-          <tr><th>CTC</th><td>${safe(ctc)} mm</td></tr>
-          <tr><th>Notes</th><td>${safe(payload.n) || "—"}</td></tr>
-          <tr><th>Generated</th><td>${safe(fmtTime(payload.t)) || "—"}</td></tr>
+          <tr><th>Pipe size</th><td>${safe(p.s)} • ID ${safe(p.i)}mm • OD ${safe(p.o)}mm</td></tr>
+          <tr><th>End A</th><td>${safe(p.a)} • Offset ${safe(p.oa)}mm${wa?` + weld ${wa}mm`:""}</td></tr>
+          <tr><th>End B</th><td>${safe(p.b)} • Offset ${safe(p.ob)}mm${wb?` + weld ${wb}mm`:""}</td></tr>
+          <tr><th>CTC</th><td>${safe(p.c)} mm</td></tr>
+          <tr><th>Notes</th><td>${safe(p.n) || "—"}</td></tr>
+          <tr><th>Generated</th><td>${safe(fmtTime(p.t)) || "—"}</td></tr>
         </table>
       </div>
 
       <div class="block">
-        <div style="font-weight:1000;margin-bottom:10px;">Scan to reopen this slip</div>
-        <div class="qrWrap">
-          <div class="small">
-            This is an <b>offline</b> QR-style code (no external library).<br>
-            If camera struggles, open the link manually on the same device.
-            <div style="margin-top:10px;word-break:break-all;opacity:.85">
-              <b>Link:</b> ${safe(urlHere)}
-            </div>
-          </div>
-          <div class="qrBox">
-            <canvas id="qr" width="190" height="190"></canvas>
-          </div>
-        </div>
-
-        <div style="height:12px"></div>
-
-        <div class="small" style="opacity:.85">
-          Printing tip: set print scale to <b>100%</b>.
+        <div style="font-weight:1000;margin-bottom:10px;">Quick instruction</div>
+        <div class="small">
+          This slip is designed for printing and handing to the fitter.<br><br>
+          <b>Print at 100%</b> for best readability.
         </div>
       </div>
     </div>
   `;
-
-  const canvas = document.getElementById("qr");
-  drawMatrix(canvas, urlHere);
 })();
 </script>
 
