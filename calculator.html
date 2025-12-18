@@ -70,21 +70,36 @@ body{
   transform: translateY(6px);
   transition: opacity 320ms ease, transform 320ms ease, filter 320ms ease;
 }
-.page.is-ready{
-  opacity:1;
-  transform:none;
-  filter:none;
-}
-.page.is-leaving{
-  opacity:0;
-  transform: translateY(10px) scale(.99);
-  filter: blur(1px);
-}
+.page.is-ready{ opacity:1; transform:none; filter:none; }
+.page.is-leaving{ opacity:0; transform: translateY(10px) scale(.99); filter: blur(1px); }
 
 /* header */
 .topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
-.logoPlate{background:#fff;padding:10px 14px;border-radius:16px;box-shadow:0 12px 30px rgba(0,0,0,.35)}
+
+/* ✅ Clickable logo styles */
+.logoLink{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  text-decoration:none;
+  border-radius:16px;
+}
+.logoPlate{
+  background:#fff;
+  padding:10px 14px;
+  border-radius:16px;
+  box-shadow:0 12px 30px rgba(0,0,0,.35);
+  transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+}
+.logoPlate:hover{
+  transform: translateY(-1px);
+  box-shadow:0 16px 38px rgba(0,0,0,.42);
+  filter: brightness(1.02);
+}
+.logoPlate:active{ transform: translateY(0px) scale(.99); }
 .logoPlate img{height:46px}
+.logoHint{font-size:12px;font-weight:900;color:rgba(255,255,255,.62);margin-left:2px}
+
 .topRight{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;align-items:center}
 .pill{
   font-size:12px;font-weight:800;color:var(--muted);
@@ -144,7 +159,7 @@ textarea{min-height:88px;resize:vertical}
 .meta{margin-top:10px;display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:rgba(255,255,255,.70)}
 .metaPill{border:1px solid var(--line);background:rgba(255,255,255,.03);padding:7px 10px;border-radius:999px}
 
-/* QR block */
+/* QR */
 .qrPreview{
   margin-top:12px;
   display:flex;
@@ -184,29 +199,28 @@ textarea{min-height:88px;resize:vertical}
 .btnPrimary{border:none;padding:13px 14px;border-radius:14px;background:linear-gradient(180deg,#ff3b30,var(--red));color:#fff;font-weight:900;cursor:pointer;flex:1;min-width:160px}
 .btnGhost{border:1px solid var(--line);background:rgba(255,255,255,.04);color:#fff;font-weight:900;padding:13px 14px;border-radius:14px;cursor:pointer;flex:1;min-width:160px}
 .toast{margin-top:10px;font-size:12px;color:rgba(255,255,255,.70);display:none}
-
 .debug{margin-top:12px;display:none;border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.03);padding:10px 12px;border-radius:14px;color:rgba(255,255,255,.75);font-size:12px;line-height:1.45}
 
 .footer{border-top:1px solid var(--line);padding:14px 22px;font-size:12px;color:rgba(255,255,255,.45);display:flex;justify-content:space-between;background:rgba(0,0,0,.18)}
 
-/* Diagram modal */
+/* Diagram modal (kept as-is) */
 .modal{
   position:fixed; inset:0;
   display:none;
   align-items:center;
   justify-content:center;
   padding:18px;
-  background:rgba(0,0,0,.55);
-  backdrop-filter: blur(8px);
+  background:rgba(0,0,0,.62);
+  backdrop-filter: blur(10px);
   z-index:50;
 }
 .modal.open{display:flex}
 .modalCard{
-  width:min(980px, 100%);
+  width:min(1100px, 100%);
   border:1px solid rgba(255,255,255,.18);
   border-radius:22px;
-  background:linear-gradient(180deg, rgba(20,20,20,.92), rgba(10,10,10,.92));
-  box-shadow:0 30px 90px rgba(0,0,0,.7);
+  background:linear-gradient(180deg, rgba(18,18,18,.95), rgba(10,10,10,.95));
+  box-shadow:0 30px 90px rgba(0,0,0,.75);
   overflow:hidden;
 }
 .modalHead{
@@ -215,24 +229,6 @@ textarea{min-height:88px;resize:vertical}
 }
 .modalTitle{font-weight:1100}
 .modalBody{padding:14px 16px}
-.diagramGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:820px){.diagramGrid{grid-template-columns:1fr}}
-.diagramBox{
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.03);
-  border-radius:18px;
-  padding:12px;
-}
-.diagramBox h3{margin:0 0 8px;font-size:14px}
-.diagramNote{color:rgba(255,255,255,.70);font-size:12px;line-height:1.45;margin-top:8px}
-svg{width:100%;height:auto;display:block}
-
-/* Exact-style diagram strokes */
-.svgBlue{stroke:#2e64ff;stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.svgRed{stroke:var(--red);stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.svgGrey{stroke:rgba(255,255,255,.45);stroke-width:3;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.svgText{fill:#f5f5f5;font-size:18px;font-weight:1000}
-.svgTextSmall{fill:rgba(255,255,255,.75);font-size:12px;font-weight:800}
 </style>
 </head>
 
@@ -253,9 +249,14 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
   </div>
 
   <div class="topbar">
-    <div class="logoPlate">
-      <img src="grove-logo.png" alt="GROVE">
-    </div>
+    <!-- ✅ LOGO NOW CLICKABLE -->
+    <a class="logoLink" href="#" onclick="leaveTo('pipe-type.html'); return false;" title="Back to GROVE Home">
+      <div class="logoPlate">
+        <img src="grove-logo.png" alt="GROVE">
+      </div>
+      <span class="logoHint">Home</span>
+    </a>
+
     <div class="topRight">
       <div class="pill"><span class="dot"></span>MS Pipes • Calculator</div>
       <button class="btnSmall" onclick="openDiagrams()">View Diagrams</button>
@@ -350,165 +351,16 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
   </div>
 </div>
 
-<!-- Diagrams Modal -->
+<!-- Diagrams Modal (kept simple, you can upload dims-diagram.jpg later) -->
 <div class="modal" id="diagModal" onclick="closeDiagrams(event)">
   <div class="modalCard" onclick="event.stopPropagation()">
     <div class="modalHead">
-      <div class="modalTitle">Flanges & Fittings Dimensions (A / C / D / E)</div>
+      <div class="modalTitle">Flanges & Fittings Diagram</div>
       <button class="btnSmall primary" onclick="closeDiagrams()">Close</button>
     </div>
     <div class="modalBody">
-      <div class="diagramGrid">
-
-        <!-- A: Flange -->
-        <div class="diagramBox">
-          <h3>Flange Offset (A)</h3>
-          <svg viewBox="0 0 520 240" role="img" aria-label="Flange offset A diagram">
-            <defs>
-              <marker id="arrowRedA" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
-                <path d="M0,0 L10,5 L0,10 Z" fill="#ef2a1f"></path>
-              </marker>
-            </defs>
-
-            <!-- pipe (blue) -->
-            <path class="svgBlue" d="M60 70 L240 70" />
-            <path class="svgBlue" d="M60 170 L240 170" />
-            <!-- flange plate (black-ish outline = still blue like your image) -->
-            <path class="svgBlue" d="M240 55 L260 55 L260 185 L240 185 Z" />
-            <!-- flange face -->
-            <path class="svgBlue" d="M270 45 L270 195" />
-            <!-- internal blue line close to face -->
-            <path class="svgBlue" d="M255 60 L255 180" />
-
-            <!-- centreline (red horizontal in your ref) -->
-            <path class="svgRed" d="M40 120 L300 120" />
-
-            <!-- A dimension (red, bottom) -->
-            <path class="svgRed" d="M220 210 L270 210" marker-start="url(#arrowRedA)" marker-end="url(#arrowRedA)" />
-            <path class="svgRed" d="M220 200 L220 220" />
-            <path class="svgRed" d="M270 200 L270 220" />
-            <text class="svgText" x="242" y="205">A</text>
-          </svg>
-          <div class="diagramNote">A = flange offset (mm) as per your table.</div>
-        </div>
-
-        <!-- C: 90 Elbow -->
-        <div class="diagramBox">
-          <h3>90° Elbow (C)</h3>
-          <svg viewBox="0 0 520 240" role="img" aria-label="Elbow C diagram">
-            <defs>
-              <marker id="arrowRedC" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
-                <path d="M0,0 L10,5 L0,10 Z" fill="#ef2a1f"></path>
-              </marker>
-            </defs>
-
-            <!-- elbow outer/inner (blue) -->
-            <path class="svgBlue" d="M120 190 A160 160 0 0 1 400 60" />
-            <path class="svgBlue" d="M170 190 A110 110 0 0 1 400 110" />
-            <!-- end face (right) -->
-            <path class="svgBlue" d="M400 60 L400 110" />
-
-            <!-- elbow centreline (red curved, like your ref) -->
-            <path class="svgRed" d="M200 190 A120 120 0 0 1 400 90" />
-
-            <!-- right vertical red line -->
-            <path class="svgRed" d="M400 45 L400 205" />
-
-            <!-- C dimension bottom -->
-            <path class="svgRed" d="M160 210 L400 210" marker-start="url(#arrowRedC)" marker-end="url(#arrowRedC)" />
-            <path class="svgRed" d="M160 200 L160 220" />
-            <path class="svgRed" d="M400 200 L400 220" />
-            <text class="svgText" x="275" y="205">C</text>
-          </svg>
-          <div class="diagramNote">If elbow selected, calculator subtracts (C + 3mm weld gap).</div>
-        </div>
-
-        <!-- D: Tee depth -->
-        <div class="diagramBox">
-          <h3>Tee Depth (D)</h3>
-          <svg viewBox="0 0 520 240" role="img" aria-label="Tee D diagram">
-            <defs>
-              <marker id="arrowRedD" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
-                <path d="M0,0 L10,5 L0,10 Z" fill="#ef2a1f"></path>
-              </marker>
-            </defs>
-
-            <!-- tee outline (blue) - simplified but matches your reference shape -->
-            <path class="svgBlue" d="M170 60
-                                  L350 60
-                                  Q370 60 370 80
-                                  Q370 95 355 95
-                                  L330 95
-                                  L330 140
-                                  L190 140
-                                  L190 95
-                                  L165 95
-                                  Q150 95 150 80
-                                  Q150 60 170 60 Z" />
-            <path class="svgBlue" d="M150 140 L150 195 L370 195 L370 140" />
-
-            <!-- red crosshair centre -->
-            <path class="svgRed" d="M110 140 L410 140" />
-            <path class="svgRed" d="M260 40 L260 210" />
-
-            <!-- grey branch lines -->
-            <path class="svgGrey" d="M260 140 L210 95" />
-            <path class="svgGrey" d="M260 140 L310 95" />
-
-            <!-- D dimension (vertical left) -->
-            <path class="svgRed" d="M110 85 L110 140" marker-start="url(#arrowRedD)" marker-end="url(#arrowRedD)" />
-            <path class="svgRed" d="M120 85 L100 85" />
-            <path class="svgRed" d="M120 140 L100 140" />
-            <text class="svgText" x="95" y="120" transform="rotate(-90 95 120)">D</text>
-          </svg>
-          <div class="diagramNote">D = tee depth dimension (mm).</div>
-        </div>
-
-        <!-- E: Tee overall -->
-        <div class="diagramBox">
-          <h3>Tee Overall (E)</h3>
-          <svg viewBox="0 0 520 240" role="img" aria-label="Tee E diagram">
-            <defs>
-              <marker id="arrowRedE" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
-                <path d="M0,0 L10,5 L0,10 Z" fill="#ef2a1f"></path>
-              </marker>
-            </defs>
-
-            <!-- same tee outline (blue) -->
-            <path class="svgBlue" d="M170 60
-                                  L350 60
-                                  Q370 60 370 80
-                                  Q370 95 355 95
-                                  L330 95
-                                  L330 140
-                                  L190 140
-                                  L190 95
-                                  L165 95
-                                  Q150 95 150 80
-                                  Q150 60 170 60 Z" />
-            <path class="svgBlue" d="M150 140 L150 195 L370 195 L370 140" />
-
-            <!-- red crosshair centre -->
-            <path class="svgRed" d="M110 140 L410 140" />
-            <path class="svgRed" d="M260 40 L260 210" />
-
-            <!-- grey branch lines -->
-            <path class="svgGrey" d="M260 140 L210 95" />
-            <path class="svgGrey" d="M260 140 L310 95" />
-
-            <!-- E dimension bottom (end to end) -->
-            <path class="svgRed" d="M150 220 L370 220" marker-start="url(#arrowRedE)" marker-end="url(#arrowRedE)" />
-            <path class="svgRed" d="M150 210 L150 232" />
-            <path class="svgRed" d="M370 210 L370 232" />
-            <text class="svgText" x="255" y="214">E</text>
-          </svg>
-          <div class="diagramNote">E = overall end-to-end tee dimension (mm).</div>
-        </div>
-
-      </div>
-
-      <div class="help" style="margin-top:12px;">
-        Diagrams are now matched to your reference style (blue outline + red dimensions).
+      <div style="color:rgba(255,255,255,.7);font-size:12px;line-height:1.6">
+        Upload your diagram image to the repo root as <b>dims-diagram.jpg</b>, then we’ll show it here perfectly.
       </div>
     </div>
   </div>
@@ -528,12 +380,8 @@ function leaveTo(url, clearSession){
   }, 260);
 }
 
-function openDiagrams(){
-  document.getElementById("diagModal").classList.add("open");
-}
-function closeDiagrams(){
-  document.getElementById("diagModal").classList.remove("open");
-}
+function openDiagrams(){ document.getElementById("diagModal").classList.add("open"); }
+function closeDiagrams(){ document.getElementById("diagModal").classList.remove("open"); }
 </script>
 
 <script>
@@ -566,9 +414,9 @@ const FITTINGS = [
   { key:"teeE",    label:"Tee (E)" }
 ];
 
-const WELD_GAP_MM = 3; // weld gap for elbows
+const WELD_GAP_MM = 3;
 
-/* ===== UI refs ===== */
+/* refs */
 const sizeSel   = document.getElementById("size");
 const endA      = document.getElementById("endA");
 const endB      = document.getElementById("endB");
@@ -587,18 +435,11 @@ const qrCanvas  = document.getElementById("qrCanvas");
 let lastCopyText = "";
 let lastSlipUrl = "";
 
-/* ===== Helpers ===== */
+/* helpers */
 function showWarn(msg){ warnEl.style.display="block"; warnEl.textContent=msg; }
 function clearWarn(){ warnEl.style.display="none"; warnEl.textContent=""; }
-function showToast(msg){
-  toast.style.display="block";
-  toast.textContent=msg;
-  setTimeout(()=>toast.style.display="none",1200);
-}
-function showDebug(msg){
-  debugEl.style.display="block";
-  debugEl.textContent=msg;
-}
+function showToast(msg){ toast.style.display="block"; toast.textContent=msg; setTimeout(()=>toast.style.display="none",1200); }
+function showDebug(msg){ debugEl.style.display="block"; debugEl.textContent=msg; }
 function hideDebug(){ debugEl.style.display="none"; debugEl.textContent=""; }
 
 function getBaseUrl(){
@@ -616,7 +457,7 @@ function makeSlipUrl(payload){
   return `${getBaseUrl()}slip.html?d=${encoded}`;
 }
 
-/* ===== QR (deterministic matrix) ===== */
+/* offline matrix */
 function drawMatrix(canvas, text){
   const ctx = canvas.getContext("2d");
   const size = canvas.width;
@@ -661,7 +502,7 @@ function drawMatrix(canvas, text){
 
 function openSlipNow(){ if(lastSlipUrl) window.open(lastSlipUrl,"_blank"); }
 
-/* ===== Safari-safe copy ===== */
+/* safari copy */
 function copyTextSafe(text){
   try{
     const ta=document.createElement("textarea");
@@ -673,25 +514,20 @@ function copyTextSafe(text){
     return true;
   }catch(e){ return false; }
 }
-
 function copyResult(){
   if(!lastCopyText){ showToast("Nothing to copy yet"); return; }
-  const ok = copyTextSafe(lastCopyText);
-  showToast(ok ? "Copied ✅" : "Copy blocked");
+  showToast(copyTextSafe(lastCopyText) ? "Copied ✅" : "Copy blocked");
 }
-
 function copySlipLink(){
   if(!lastSlipUrl){ showToast("No slip link yet"); return; }
-  const ok = copyTextSafe(lastSlipUrl);
-  showToast(ok ? "Slip link copied ✅" : "Copy blocked");
+  showToast(copyTextSafe(lastSlipUrl) ? "Slip link copied ✅" : "Copy blocked");
 }
-
 function printSlip(){
   if(!lastSlipUrl){ showToast("No slip to print yet"); return; }
   window.open(lastSlipUrl, "_blank");
 }
 
-/* ===== Build dropdowns ===== */
+/* dropdowns */
 function buildSizeOptions(){
   sizeSel.innerHTML="";
   Object.keys(DATA).forEach(sz=>{
@@ -721,10 +557,9 @@ function buildFittings(){
   endB.value = available.some(x=>x.key===prevB) ? prevB : "elbowC";
 }
 
-/* ===== Calculate (with weld gap) ===== */
+/* calculate */
 function updateLive(){
-  hideDebug();
-  clearWarn();
+  hideDebug(); clearWarn();
 
   try{
     const size = sizeSel.value;
@@ -758,15 +593,11 @@ function updateLive(){
     const weldA = (endA.value === "elbowC") ? WELD_GAP_MM : 0;
     const weldB = (endB.value === "elbowC") ? WELD_GAP_MM : 0;
 
-    const totalOffsetA = offA + weldA;
-    const totalOffsetB = offB + weldB;
-
-    const cut = ctc - (totalOffsetA + totalOffsetB);
+    const cut = ctc - ((offA+weldA) + (offB+weldB));
     const cutTxt = cut.toFixed(1);
 
     cutEl.textContent = `${cutTxt} mm`;
-    formulaEl.textContent =
-      `CTC ${ctc} − (A ${offA}${weldA?`+${weldA}`:""} + B ${offB}${weldB?`+${weldB}`:""})`;
+    formulaEl.textContent = `CTC ${ctc} − (A ${offA}${weldA?`+${weldA}`:""} + B ${offB}${weldB?`+${weldB}`:""})`;
 
     const endALabel = endA.options[endA.selectedIndex]?.text || "";
     const endBLabel = endB.options[endB.selectedIndex]?.text || "";
@@ -781,8 +612,7 @@ function updateLive(){
     const payload = {
       s:size, i:row.id, o:row.od,
       a:endALabel, b:endBLabel,
-      oa:offA, ob:offB,
-      wa:weldA, wb:weldB,
+      oa:offA, ob:offB, wa:weldA, wb:weldB,
       c:ctc, cut:cutTxt,
       n:(notesEl.value||"").trim().slice(0,120),
       t:new Date().toISOString()
@@ -819,13 +649,11 @@ function resetAll(){
 /* init */
 buildSizeOptions();
 buildFittings();
-
 sizeSel.addEventListener("change", ()=>{ buildFittings(); updateLive(); });
 endA.addEventListener("change", updateLive);
 endB.addEventListener("change", updateLive);
 ctcEl.addEventListener("input", updateLive);
 notesEl.addEventListener("input", updateLive);
-
 updateLive();
 </script>
 
