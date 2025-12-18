@@ -149,6 +149,7 @@ body{
   color:rgba(255,255,255,.90);
   line-height:1.55;
 }
+.toast{margin-top:10px;font-size:12px;color:rgba(255,255,255,.72);display:none}
 @media print{
   body{background:#fff;color:#111;padding:0}
   .bgGlow,.wm,.actions{display:none !important}
@@ -177,6 +178,8 @@ body{
     </div>
     <div class="actions">
       <button class="btn" onclick="goBack()">Back</button>
+      <button class="btn" onclick="copySlip()">Copy</button>
+      <button class="btn" onclick="shareSlip()">Share</button>
       <button class="btn primary" onclick="window.print()">Print</button>
     </div>
   </div>
@@ -194,6 +197,8 @@ body{
       <div>Internal use only</div>
     </div>
   </div>
+
+  <div class="toast" id="toast">Done ✅</div>
 </div>
 
 <script>
@@ -204,6 +209,52 @@ function goBack(){
 function safe(text){ return (text ?? "").toString().replace(/[<>]/g, ""); }
 function fmtTime(iso){
   try{ return new Date(iso).toLocaleString(); }catch(e){ return ""; }
+}
+function showToast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;
+  t.style.display="block";
+  setTimeout(()=>t.style.display="none",1200);
+}
+function copyTextSafe(text){
+  try{
+    const ta=document.createElement("textarea");
+    ta.value=text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    return true;
+  }catch(e){ return false; }
+}
+
+let SHARE_TEXT = "";
+
+function buildShareText(p){
+  return `GROVE CUT SLIP
+CUT: ${p.cut} mm
+CTC: ${p.c} mm
+SIZE: ${p.s} (ID ${p.i}mm, OD ${p.o}mm)
+END A: ${p.a} (${p.oa}mm${p.wa?` + weld ${p.wa}mm`:""})
+END B: ${p.b} (${p.ob}mm${p.wb?` + weld ${p.wb}mm`:""})
+NOTES: ${(p.n || "—")}
+TIME: ${fmtTime(p.t)}`;
+}
+
+function copySlip(){
+  if(!SHARE_TEXT){ showToast("Nothing to copy"); return; }
+  showToast(copyTextSafe(SHARE_TEXT) ? "Copied ✅" : "Copy blocked");
+}
+async function shareSlip(){
+  if(!SHARE_TEXT){ showToast("Nothing to share"); return; }
+  if (navigator.share) {
+    try{
+      await navigator.share({ title:"GROVE Cut Slip", text: SHARE_TEXT });
+      showToast("Shared ✅");
+      return;
+    }catch(e){}
+  }
+  showToast(copyTextSafe(SHARE_TEXT) ? "Slip copied ✅" : "Copy blocked");
 }
 
 (function init(){
@@ -228,28 +279,23 @@ function fmtTime(iso){
     return;
   }
 
-  const cut = safe(p.cut);
-  const ctc = safe(p.c);
-  const oa  = safe(p.oa);
-  const ob  = safe(p.ob);
-  const wa  = Number(p.wa || 0);
-  const wb  = Number(p.wb || 0);
+  SHARE_TEXT = buildShareText(p);
 
   body.innerHTML = `
     <div class="grid">
       <div class="block">
         <div class="bigCut">
           <div class="bigLabel">Cut length</div>
-          <div class="bigValue">${cut} mm</div>
-          <div class="small">Formula: CTC ${ctc} − (A ${oa}${wa?`+${wa}`:""} + B ${ob}${wb?`+${wb}`:""})</div>
+          <div class="bigValue">${safe(p.cut)} mm</div>
+          <div class="small">Formula: CTC ${safe(p.c)} − (A ${safe(p.oa)}${p.wa?`+${p.wa}`:""} + B ${safe(p.ob)}${p.wb?`+${p.wb}`:""})</div>
         </div>
 
         <div style="height:12px"></div>
 
         <table class="table">
           <tr><th>Pipe size</th><td>${safe(p.s)} • ID ${safe(p.i)}mm • OD ${safe(p.o)}mm</td></tr>
-          <tr><th>End A</th><td>${safe(p.a)} • Offset ${safe(p.oa)}mm${wa?` + weld ${wa}mm`:""}</td></tr>
-          <tr><th>End B</th><td>${safe(p.b)} • Offset ${safe(p.ob)}mm${wb?` + weld ${wb}mm`:""}</td></tr>
+          <tr><th>End A</th><td>${safe(p.a)} • Offset ${safe(p.oa)}mm${p.wa?` + weld ${p.wa}mm`:""}</td></tr>
+          <tr><th>End B</th><td>${safe(p.b)} • Offset ${safe(p.ob)}mm${p.wb?` + weld ${p.wb}mm`:""}</td></tr>
           <tr><th>CTC</th><td>${safe(p.c)} mm</td></tr>
           <tr><th>Notes</th><td>${safe(p.n) || "—"}</td></tr>
           <tr><th>Generated</th><td>${safe(fmtTime(p.t)) || "—"}</td></tr>
@@ -260,7 +306,7 @@ function fmtTime(iso){
         <div style="font-weight:1000;margin-bottom:10px;">Quick instruction</div>
         <div class="small">
           This slip is designed for printing and handing to the fitter.<br><br>
-          <b>Print at 100%</b> for best readability.
+          If QR is scanned on a different phone and shows “No slip data”, use <b>Share</b> or <b>Copy</b> here.
         </div>
       </div>
     </div>
