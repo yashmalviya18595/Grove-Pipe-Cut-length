@@ -491,24 +491,24 @@ const WELD_GAP_MM = 3;            // Weld gap applies to ALL fittings except Fla
    update only those values (the rest stays the same).
    =========================== */
 const DATA = {
-  '1/2"':   { id:15,  od:21.3,  flangeA:null, elbowLR:38,  elbowSR:38,  elbow45:19,  teeD:25,  teeE:50  },
-  '3/4"':   { id:20,  od:26.9,  flangeA:null, elbowLR:38,  elbowSR:38,  elbow45:19,  teeD:29,  teeE:58  },
-  '1"':     { id:25,  od:33.7,  flangeA:null, elbowLR:38,  elbowSR:38,  elbow45:19,  teeD:38,  teeE:76  },
-  '1 1/4"': { id:32,  od:42.4,  flangeA:null, elbowLR:48,  elbowSR:48,  elbow45:24,  teeD:48,  teeE:96  },
-  '1 1/2"': { id:40,  od:48.3,  flangeA:null, elbowLR:57,  elbowSR:57,  elbow45:29,  teeD:57,  teeE:114 },
-  '2"':     { id:50,  od:60.3,  flangeA:null, elbowLR:76,  elbowSR:76,  elbow45:38,  teeD:64,  teeE:128 },
-  '2 1/2"': { id:65,  od:76.1,  flangeA:20,   elbowLR:95,  elbowSR:95,  elbow45:48,  teeD:76,  teeE:152 },
-  '3"':     { id:80,  od:88.9,  flangeA:20,   elbowLR:114, elbowSR:114, elbow45:57,  teeD:86,  teeE:172 },
-  '4"':     { id:100, od:114.3, flangeA:20,   elbowLR:152, elbowSR:102, elbow45:76,  teeD:105, teeE:210 },
-  '5"':     { id:125, od:139.7, flangeA:20,   elbowLR:190, elbowSR:190, elbow45:95,  teeD:124, teeE:248 },
-  '6"':     { id:150, od:168.3, flangeA:20,   elbowLR:229, elbowSR:229, elbow45:114, teeD:143, teeE:286 },
-  '8"':     { id:200, od:219.1, flangeA:25,   elbowLR:305, elbowSR:305, elbow45:152, teeD:178, teeE:356 },
-  '10"':    { id:250, od:273.0, flangeA:25,   elbowLR:381, elbowSR:381, elbow45:190, teeD:216, teeE:432 },
-  '12"':    { id:300, od:323.9, flangeA:25,   elbowLR:457, elbowSR:457, elbow45:229, teeD:254, teeE:508 },
-  '14"':    { id:350, od:355.6, flangeA:25,   elbowLR:533, elbowSR:533, elbow45:267, teeD:279, teeE:558 },
-  '16"':    { id:400, od:406.4, flangeA:25,   elbowLR:610, elbowSR:610, elbow45:305, teeD:305, teeE:610 },
-  '18"':    { id:450, od:457.0, flangeA:25,   elbowLR:686, elbowSR:686, elbow45:343, teeD:343, teeE:686 },
-  '20"':    { id:500, od:508.0, flangeA:25,   elbowLR:762, elbowSR:762, elbow45:381, teeD:381, teeE:762 }
+  '1/2"':   { id:15,  od:21.3,  flangeA:null, elbowLR:38,  elbowSR:null,  elbow45:16,  teeD:25,  teeE:50  },
+  '3/4"':   { id:20,  od:26.9,  flangeA:null, elbowLR:38,  elbowSR:null,  elbow45:19,  teeD:29,  teeE:58  },
+  '1"':     { id:25,  od:33.7,  flangeA:null, elbowLR:38,  elbowSR:25,  elbow45:22,  teeD:38,  teeE:76  },
+  '1 1/4"': { id:32,  od:42.4,  flangeA:null, elbowLR:48,  elbowSR:32,  elbow45:25,  teeD:48,  teeE:96  },
+  '1 1/2"': { id:40,  od:48.3,  flangeA:null, elbowLR:57,  elbowSR:38,  elbow45:29,  teeD:57,  teeE:114 },
+  '2"':     { id:50,  od:60.3,  flangeA:null, elbowLR:76,  elbowSR:61,  elbow45:35,  teeD:64,  teeE:128 },
+  '2 1/2"': { id:65,  od:76.1,  flangeA:20,   elbowLR:95,  elbowSR:64,  elbow45:44,  teeD:76,  teeE:152 },
+  '3"':     { id:80,  od:88.9,  flangeA:20,   elbowLR:114, elbowSR:76, elbow45:51,  teeD:86,  teeE:172 },
+  '4"':     { id:100, od:114.3, flangeA:20,   elbowLR:152, elbowSR:102, elbow45:64,  teeD:105, teeE:210 },
+  '5"':     { id:125, od:139.7, flangeA:20,   elbowLR:190, elbowSR:127, elbow45:79,  teeD:124, teeE:248 },
+  '6"':     { id:150, od:168.3, flangeA:20,   elbowLR:229, elbowSR:152, elbow45:95, teeD:143, teeE:286 },
+  '8"':     { id:200, od:219.1, flangeA:25,   elbowLR:305, elbowSR:203, elbow45:127, teeD:178, teeE:356 },
+  '10"':    { id:250, od:273.0, flangeA:25,   elbowLR:381, elbowSR:254, elbow45:159, teeD:216, teeE:432 },
+  '12"':    { id:300, od:323.9, flangeA:25,   elbowLR:457, elbowSR:305, elbow45:190, teeD:254, teeE:508 },
+  '14"':    { id:350, od:355.6, flangeA:25,   elbowLR:533, elbowSR:356, elbow45:222, teeD:279, teeE:558 },
+  '16"':    { id:400, od:406.4, flangeA:25,   elbowLR:610, elbowSR:406, elbow45:254, teeD:305, teeE:610 },
+  '18"':    { id:450, od:457.0, flangeA:25,   elbowLR:686, elbowSR:457, elbow45:286, teeD:343, teeE:686 },
+  '20"':    { id:500, od:508.0, flangeA:25,   elbowLR:762, elbowSR:508, elbow45:318, teeD:381, teeE:762 }
 };
 
 /* Fitting list */
