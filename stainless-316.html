@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>GROVE | Stainless 316 S10 Cut Length</title>
+<title>GROVE | Stainless 316 S10 Cut Length Calculator</title>
 
 <style>
 :root{
@@ -13,167 +13,55 @@
   --muted:rgba(255,255,255,.65);
   --red:#ef2a1f;
   --radius:22px;
-  --shadow:0 22px 70px rgba(0,0,0,.60);
+  --shadow:0 20px 60px rgba(0,0,0,.55);
 }
 *{box-sizing:border-box}
-html,body{height:100%}
 body{
   margin:0;
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
   color:var(--text);
   background:var(--bg);
+  min-height:100vh;
+  padding:24px;
   overflow-x:hidden;
 }
 .bgGlow{
   position:fixed; inset:-40%;
   background:
-    radial-gradient(900px 520px at 18% 16%, rgba(239,42,31,.14), transparent 60%),
-    radial-gradient(700px 460px at 84% 34%, rgba(255,255,255,.05), transparent 60%);
+    radial-gradient(900px 500px at 15% 15%, rgba(239,42,31,.14), transparent 60%),
+    radial-gradient(700px 450px at 85% 35%, rgba(255,255,255,.05), transparent 60%);
   filter: blur(14px);
   pointer-events:none;
   z-index:-3;
 }
+.wrap{max-width:1100px;margin:0 auto;position:relative}
+
+/* Watermark breathing zoom */
 .wm-center{
-  position:fixed;
-  left:50%;
-  top:56%;
-  width:min(980px, 92vw);
+  position:absolute; left:50%; top:55%;
+  width:72%; max-width:820px;
   transform: translate(-50%, -50%);
-  pointer-events:none;
-  z-index:-2;
+  pointer-events:none; z-index:-1;
   animation: zoomBreath 16s ease-in-out infinite;
 }
 .wm-center img{
   width:100%;
   opacity:.10;
   filter: grayscale(100%) contrast(115%);
+  position:relative; z-index:2;
 }
 .wm-glow{
-  position:absolute; inset:-22%;
+  position:absolute; inset:-20%;
   background: radial-gradient(circle at center, rgba(255,255,255,.25), rgba(255,255,255,0) 65%);
-  filter: blur(16px);
-  z-index:-1;
+  filter: blur(14px); z-index:1;
 }
 @keyframes zoomBreath{
   0%{transform:translate(-50%,-50%) scale(1)}
   50%{transform:translate(-50%,-50%) scale(1.05)}
   100%{transform:translate(-50%,-50%) scale(1)}
 }
-.stage{
-  min-height:100vh;
-  display:grid;
-  grid-template-rows:auto 1fr auto;
-  padding:22px;
-}
-.topbar{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  flex-wrap:wrap;
-}
-.logoLink{display:inline-flex; align-items:center; text-decoration:none;}
-.logoPlate{
-  background:#fff;
-  padding:10px 14px;
-  border-radius:16px;
-  box-shadow:0 12px 30px rgba(0,0,0,.35);
-  transition: transform 160ms ease, box-shadow 160ms ease;
-  cursor:pointer;
-}
-.logoPlate:hover{transform: translateY(-1px); box-shadow:0 16px 38px rgba(0,0,0,.42);}
-.logoPlate:active{transform: translateY(0px) scale(.99);}
-.logoPlate img{height:46px; display:block;}
-.pill{
-  font-size:12px;
-  font-weight:900;
-  color:rgba(255,255,255,.75);
-  border:1px solid var(--line);
-  padding:9px 12px;
-  border-radius:999px;
-  background:rgba(255,255,255,.03);
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-.dot{width:9px;height:9px;border-radius:50%;background:var(--red);box-shadow:0 0 0 5px rgba(239,42,31,.18);}
-.center{display:grid; place-items:center; padding:10px 0;}
-.card{
-  width:min(1100px, 100%);
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-  box-shadow:var(--shadow);
-  overflow:hidden;
-}
-.head{
-  padding:18px 22px;
-  border-bottom:1px solid var(--line);
-  background:rgba(0,0,0,.22);
-}
-h1{margin:0;font-size:26px;font-weight:1000}
-.sub{margin-top:6px;color:var(--muted);line-height:1.55}
-.body{padding:18px 22px 22px}
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-}
-@media(max-width:900px){ .grid{grid-template-columns:1fr;} }
-.field{
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(0,0,0,.16);
-  border-radius:18px;
-  padding:14px;
-}
-.label{font-size:12px;font-weight:1000;color:rgba(255,255,255,.75);margin-bottom:8px;}
-select, input{
-  width:100%;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.05);
-  color:#fff;
-  padding:12px 12px;
-  font-size:15px;
-  outline:none;
-}
-.actions{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:12px;
-  margin-top:14px;
-}
-@media(max-width:900px){ .actions{grid-template-columns:1fr;} }
-.btn{
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.04);
-  color:#fff;
-  font-weight:1000;
-  padding:14px 16px;
-  border-radius:16px;
-  cursor:pointer;
-  transition: transform 140ms ease, background 140ms ease;
-}
-.btn:hover{background:rgba(255,255,255,.06); transform: translateY(-1px);}
-.btn:active{transform: translateY(0px) scale(.99);}
-.btn.primary{border:none; background:linear-gradient(180deg,#ff3b30,var(--red));}
-.result{
-  margin-top:14px;
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(0,0,0,.18);
-  border-radius:18px;
-  padding:14px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:14px;
-  flex-wrap:wrap;
-}
-.big{font-size:28px;font-weight:1100;letter-spacing:.2px;}
-.small{font-size:12px;color:rgba(255,255,255,.62);line-height:1.5;}
-.footer{text-align:center;color:rgba(255,255,255,.40);font-size:12px;padding-top:10px;}
 
-/* Premium fade-in transition */
+/* Premium fade-in */
 .page{
   opacity:0;
   transform: translateY(6px);
@@ -181,16 +69,192 @@ select, input{
   will-change: opacity, transform, filter;
 }
 .page.is-ready{ opacity:1; transform:none; filter:none; }
+
+.topbar{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;margin-bottom:16px;flex-wrap:wrap
+}
+.logoLink{display:inline-flex;align-items:center;gap:10px;text-decoration:none;border-radius:16px}
+.logoPlate{
+  background:#fff;padding:10px 14px;border-radius:16px;
+  box-shadow:0 12px 30px rgba(0,0,0,.35);
+  transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+}
+.logoPlate:hover{transform: translateY(-1px);box-shadow:0 16px 38px rgba(0,0,0,.42);filter: brightness(1.02)}
+.logoPlate:active{transform: translateY(0px) scale(.99)}
+.logoPlate img{height:46px;display:block}
+.logoHint{font-size:12px;font-weight:900;color:rgba(255,255,255,.62);margin-left:2px}
+
+.topRight{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;align-items:center}
+.pill{
+  font-size:12px;font-weight:900;color:rgba(255,255,255,.75);
+  border:1px solid rgba(255,255,255,.14);
+  padding:9px 12px;border-radius:999px;
+  background:rgba(255,255,255,.03);
+  display:flex;align-items:center;gap:10px;
+}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--red);box-shadow:0 0 0 5px rgba(239,42,31,.18);animation:pulse 1.8s ease infinite}
+@keyframes pulse{50%{transform:scale(1.1)}}
+.btnSmall{
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.04);
+  color:#fff;
+  font-weight:900;
+  padding:9px 12px;
+  border-radius:999px;
+  cursor:pointer
+}
+
+.card{
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:var(--radius);
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  position:relative;
+  z-index:1;
+}
+.cardHead{
+  padding:18px 22px;
+  border-bottom:1px solid rgba(255,255,255,.12);
+  background:rgba(0,0,0,.22)
+}
+h1{margin:0;font-size:26px}
+.sub{margin-top:6px;color:var(--muted);line-height:1.55}
+.content{
+  padding:18px 22px 22px;
+  display:grid;
+  grid-template-columns:1.15fr .85fr;
+  gap:16px
+}
+@media(max-width:940px){.content{grid-template-columns:1fr}.wm-center{display:none}}
+.block{
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:18px;
+  background:rgba(0,0,0,.20);
+  padding:14px
+}
+.blockTitle{display:flex;align-items:center;gap:10px;font-weight:1000;margin-bottom:10px}
+.stepNum{
+  width:28px;height:28px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  background:rgba(239,42,31,.18);
+  border:1px solid rgba(239,42,31,.35)
+}
+label{display:block;font-size:12px;font-weight:1000;margin:10px 0 6px;color:rgba(255,255,255,.82)}
+select,input,textarea{
+  width:100%;
+  padding:14px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.05);
+  color:var(--text);
+  font-size:15px;
+  outline:none;
+}
+select option{background:#111;color:#fff}
+textarea{min-height:88px;resize:vertical}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:700px){.row2{grid-template-columns:1fr}}
+.help{margin-top:10px;color:rgba(255,255,255,.55);font-size:12px;line-height:1.5}
+.warn{
+  display:none;
+  margin-top:12px;
+  padding:12px 14px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.03);
+  color:rgba(255,255,255,.70);
+  font-size:12px;
+  line-height:1.5;
+}
+.warn.urgent{
+  border-color: rgba(239,42,31,.45);
+  background: rgba(239,42,31,.10);
+  color: rgba(255,255,255,.82);
+}
+.resultCard{
+  border:1px solid rgba(239,42,31,.35);
+  background: rgba(239,42,31,.08);
+  border-radius:18px;
+  padding:16px
+}
+.resultLabel{font-size:12px;font-weight:1000;color:rgba(255,255,255,.72)}
+.resultValue{font-size:44px;font-weight:1100;margin-top:6px;letter-spacing:.3px}
+.meta{margin-top:10px;display:flex;flex-wrap:wrap;gap:10px;font-size:12px;color:rgba(255,255,255,.70)}
+.metaPill{border:1px solid rgba(255,255,255,.14);background:rgba(255,255,255,.03);padding:7px 10px;border-radius:999px}
+
+.qrPreview{
+  margin-top:12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.03);
+  border-radius:16px;
+  padding:12px;
+}
+.qrPreview .txt{color:rgba(255,255,255,.70);font-size:12px;line-height:1.45}
+.qrBox{
+  width:180px;height:180px;
+  background:#fff;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  flex:0 0 auto;
+  border:8px solid #fff;
+  cursor:pointer;
+}
+.qrBox img{width:180px;height:180px;display:block}
+.linkRow{margin-top:10px;display:flex;gap:10px;flex-wrap:wrap}
+.linkRow a{
+  color:#fff;font-weight:1000;text-decoration:none;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.04);
+  padding:10px 12px;border-radius:14px;
+  display:inline-flex;align-items:center;gap:8px;
+}
+.copyRow{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+.btnPrimary{
+  border:none;
+  padding:13px 14px;
+  border-radius:14px;
+  background:linear-gradient(180deg,#ff3b30,var(--red));
+  color:#fff;
+  font-weight:1000;
+  cursor:pointer;
+  flex:1;
+  min-width:160px
+}
+.btnGhost{
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.04);
+  color:#fff;
+  font-weight:1000;
+  padding:13px 14px;
+  border-radius:14px;
+  cursor:pointer;
+  flex:1;
+  min-width:160px
+}
+.toast{margin-top:10px;font-size:12px;color:rgba(255,255,255,.70);display:none}
+.footer{
+  border-top:1px solid rgba(255,255,255,.12);
+  padding:14px 22px;
+  font-size:12px;
+  color:rgba(255,255,255,.45);
+  display:flex;
+  justify-content:space-between;
+  background:rgba(0,0,0,.18)
+}
 </style>
 </head>
 
 <body>
 <div class="bgGlow"></div>
-
-<div class="wm-center" aria-hidden="true">
-  <div class="wm-glow"></div>
-  <img src="grove-logo.png" alt="">
-</div>
 
 <script>
 if (sessionStorage.getItem("cutcalc_ok") !== "1") {
@@ -198,219 +262,572 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
 }
 </script>
 
-<div class="stage page" id="page">
+<div class="wrap page" id="page">
+  <div class="wm-center" aria-hidden="true">
+    <div class="wm-glow"></div>
+    <img src="grove-logo.png" alt="">
+  </div>
+
   <div class="topbar">
     <a class="logoLink" href="pipe-type.html" title="Back to Pipe Type">
       <div class="logoPlate"><img src="grove-logo.png" alt="GROVE"></div>
+      <span class="logoHint">Home</span>
     </a>
-    <div class="pill"><span class="dot"></span>Stainless 316 S10</div>
-  </div>
 
-  <div class="center">
-    <div class="card">
-      <div class="head">
-        <h1>Stainless 316 (Schedule 10) Calculator</h1>
-        <div class="sub">Select both end fittings + enter centre-to-centre. Weld gap: <b>3mm</b> applies to all fittings except flange.</div>
-      </div>
-
-      <div class="body">
-        <div class="grid">
-          <div class="field">
-            <div class="label">Pipe Size</div>
-            <select id="pipeSize"></select>
-          </div>
-
-          <div class="field">
-            <div class="label">Centre-to-Centre (mm)</div>
-            <input id="ctc" type="number" inputmode="decimal" placeholder="e.g. 1200" />
-          </div>
-
-          <div class="field">
-            <div class="label">Fitting (End A)</div>
-            <select id="fitA"></select>
-          </div>
-
-          <div class="field">
-            <div class="label">Fitting (End B)</div>
-            <select id="fitB"></select>
-          </div>
-        </div>
-
-        <div class="result">
-          <div>
-            <div class="small">Calculated Cut Length</div>
-            <div class="big"><span id="cutLen">—</span> mm</div>
-          </div>
-          <div class="small" id="breakdown">Select size + fittings + CTC.</div>
-        </div>
-
-        <div class="actions">
-          <button class="btn" onclick="copyCut()">Copy</button>
-          <button class="btn" onclick="openSlip()">Open / Print Cut Slip</button>
-          <button class="btn primary" onclick="resetAll()">Reset</button>
-        </div>
-      </div>
+    <div class="topRight">
+      <div class="pill"><span class="dot"></span>Stainless 316 • Schedule 10</div>
+      <button class="btnSmall" onclick="window.location.href='pipe-type.html'">← Pipe Type</button>
+      <button class="btnSmall" onclick="sessionStorage.clear();window.location.href='index.html'">Exit</button>
     </div>
   </div>
 
-  <div class="footer">© GROVE Services Ltd. • Internal use only</div>
+  <div class="card">
+    <div class="cardHead">
+      <h1>Pipe Cut Length Calculator</h1>
+      <div class="sub">Cut Length = CTC − (Offset A + Offset B + Weld Gaps). Weld gap = <b>3mm</b> for ALL fittings except Flange.</div>
+    </div>
+
+    <div class="content">
+      <div class="block">
+        <div class="blockTitle"><div class="stepNum">1</div> Pipe size</div>
+        <label>Pipe Size</label>
+        <select id="size"></select>
+
+        <div class="help">Pipe sizes show inch + ID/OD in mm.</div>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,.10);margin:14px 0;">
+
+        <div class="blockTitle"><div class="stepNum">2</div> Fittings (both ends)</div>
+        <div class="row2">
+          <div>
+            <label>End A</label>
+            <select id="endA"></select>
+          </div>
+          <div>
+            <label>End B</label>
+            <select id="endB"></select>
+          </div>
+        </div>
+
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,.10);margin:14px 0;">
+
+        <div class="blockTitle"><div class="stepNum">3</div> Centre-to-centre</div>
+        <label>CTC (mm)</label>
+        <input id="ctc" type="number" inputmode="numeric" placeholder="e.g. 1200">
+
+        <label style="margin-top:14px;">Notes (optional)</label>
+        <textarea id="notes" placeholder="e.g. Room/Line/Level, fitter name, drawing ref…"></textarea>
+
+        <div class="warn" id="warn"></div>
+      </div>
+
+      <div class="block">
+        <div class="blockTitle"><div class="stepNum">✓</div> Result</div>
+
+        <div class="resultCard">
+          <div class="resultLabel">Cut length</div>
+          <div id="cut" class="resultValue">—</div>
+          <div id="formula" class="help">Enter CTC to calculate.</div>
+
+          <div class="meta" id="meta"></div>
+
+          <div class="qrPreview">
+            <div class="txt">
+              <b>Scan QR → GROVE Cut Slip</b><br>
+              <span id="qrHint">Enter CTC to generate slip + QR.</span>
+              <div class="linkRow" style="margin-top:10px;">
+                <a id="openSlip" href="stainless-316-slip.html" target="_blank" rel="noopener">Open Slip ↗</a>
+                <a href="#" onclick="copySlipLink();return false;">Copy Slip Link</a>
+              </div>
+            </div>
+            <div class="qrBox" title="Tap to open slip" onclick="openSlipNow()">
+              <img id="qrImg" alt="QR">
+            </div>
+          </div>
+
+          <div class="copyRow">
+            <button class="btnGhost" onclick="copyResult()">Copy Result</button>
+            <button class="btnGhost" onclick="shareSlip()">Share Slip</button>
+            <button class="btnGhost" onclick="printSlip()">Print Cut Slip</button>
+            <button class="btnPrimary" onclick="resetAll()">Reset</button>
+          </div>
+
+          <div class="toast" id="toast">Done ✅</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div>© GROVE Services Ltd.</div>
+      <div>Internal use only</div>
+    </div>
+  </div>
 </div>
 
 <script>
-/* Fade in on load */
-requestAnimationFrame(()=>document.getElementById("page").classList.add("is-ready"));
+/* Fade-in on load */
+requestAnimationFrame(()=> document.getElementById("page").classList.add("is-ready"));
+</script>
 
-/* =========================================================
-   ✅ IMPORTANT: PASTE YOUR EXISTING SS 316 S10 TABLE HERE
-   Replace placeholder values with your full 316 S10 data.
-   ========================================================= */
-const DATA = {
-  sizes: [
-    // Example only — REPLACE with your full SS list
-    // { label: '1"', dims: { flangeA: 0, elbow90LR: 0, elbow90SR: 0, elbow45: 0, teeD: 0, teeE: 0 } },
-  ],
-  fittings: [
-    { key:"flange", label:"Flange", dimKey:"flangeA", weldGap:false },
-    { key:"elbow90LR", label:"90° Elbow (LR)", dimKey:"elbow90LR", weldGap:true },
-    { key:"elbow90SR", label:"90° Elbow (SR)", dimKey:"elbow90SR", weldGap:true },
-    { key:"elbow45", label:"45° Elbow", dimKey:"elbow45", weldGap:true },
-    { key:"teeD", label:"Tee (D)", dimKey:"teeD", weldGap:true },
-    { key:"teeE", label:"Tee (E)", dimKey:"teeE", weldGap:true }
-  ],
-  weldGapMM: 3
-};
-
-function ensureData(){
-  if(!DATA.sizes || DATA.sizes.length === 0){
-    document.getElementById("cutLen").textContent = "—";
-    document.getElementById("breakdown").textContent =
-      "316 S10 DATA is missing. Paste your full SS table into DATA.sizes in stainless-316.html.";
-    return false;
-  }
-  return true;
-}
-
-const els = {
-  pipeSize: document.getElementById("pipeSize"),
-  ctc: document.getElementById("ctc"),
-  fitA: document.getElementById("fitA"),
-  fitB: document.getElementById("fitB"),
-  cutLen: document.getElementById("cutLen"),
-  breakdown: document.getElementById("breakdown")
-};
-
-function populate(){
-  els.pipeSize.innerHTML = "";
-  (DATA.sizes || []).forEach((s, idx)=>{
-    const opt = document.createElement("option");
-    opt.value = String(idx);
-    opt.textContent = s.label;
-    els.pipeSize.appendChild(opt);
-  });
-
-  const fillFit = (sel)=>{
-    sel.innerHTML = "";
-    DATA.fittings.forEach(f=>{
-      const opt = document.createElement("option");
-      opt.value = f.key;
-      opt.textContent = f.label;
-      sel.appendChild(opt);
-    });
+<script>
+/* ===== Offline QR generator (no internet needed) ===== */
+(function(){
+  function QR8bitByte(data){this.data=data;}
+  QR8bitByte.prototype.getLength=function(){return this.data.length;}
+  QR8bitByte.prototype.write=function(buffer){for(let i=0;i<this.data.length;i++) buffer.put(this.data.charCodeAt(i),8);};
+  function QRBitBuffer(){this.buffer=[];this.length=0;}
+  QRBitBuffer.prototype.put=function(num,len){for(let i=0;i<len;i++) this.putBit(((num>>>(len-i-1))&1)==1);}
+  QRBitBuffer.prototype.putBit=function(bit){
+    const b=Math.floor(this.length/8);
+    if(this.buffer.length<=b) this.buffer.push(0);
+    if(bit) this.buffer[b]|=(0x80 >>> (this.length%8));
+    this.length++;
   };
-  fillFit(els.fitA);
-  fillFit(els.fitB);
-}
-
-function getSelectedSize(){
-  const idx = Number(els.pipeSize.value);
-  return DATA.sizes[idx];
-}
-function getFitting(key){
-  return DATA.fittings.find(f=>f.key===key);
-}
-
-function compute(){
-  if(!ensureData()) return;
-
-  const size = getSelectedSize();
-  const ctc = Number(els.ctc.value);
-
-  if(!size || !isFinite(ctc) || ctc <= 0){
-    els.cutLen.textContent = "—";
-    els.breakdown.textContent = "Enter a valid CTC (mm).";
-    return;
+  const QRUtil={
+    PATTERN_POSITION_TABLE:[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54]],
+    G15:(1<<10)|(1<<8)|(1<<5)|(1<<4)|(1<<2)|(1<<1)|(1<<0),
+    G15_MASK:(1<<14)|(1<<12)|(1<<10)|(1<<4)|(1<<1),
+    getBCHDigit:function(data){let digit=0;while(data!=0){digit++;data>>>=1;}return digit;},
+    getBCHTypeInfo:function(data){
+      let d=data<<10;
+      while(QRUtil.getBCHDigit(d)-QRUtil.getBCHDigit(QRUtil.G15)>=0){
+        d^=(QRUtil.G15 << (QRUtil.getBCHDigit(d)-QRUtil.getBCHDigit(QRUtil.G15)));
+      }
+      return ((data<<10)|d)^QRUtil.G15_MASK;
+    },
+    getPatternPosition:function(typeNumber){return QRUtil.PATTERN_POSITION_TABLE[typeNumber]||[];},
+    getMask:function(_,i,j){return (i+j)%2==0;}
+  };
+  function QRMath(){}
+  QRMath.glog=function(n){if(n<1) throw new Error("glog"); return QRMath.LOG_TABLE[n];}
+  QRMath.gexp=function(n){while(n<0) n+=255;while(n>=256) n-=255;return QRMath.EXP_TABLE[n];}
+  QRMath.EXP_TABLE=new Array(256); QRMath.LOG_TABLE=new Array(256);
+  for(let i=0;i<8;i++) QRMath.EXP_TABLE[i]=1<<i;
+  for(let i=8;i<256;i++) QRMath.EXP_TABLE[i]=QRMath.EXP_TABLE[i-4]^QRMath.EXP_TABLE[i-5]^QRMath.EXP_TABLE[i-6]^QRMath.EXP_TABLE[i-8];
+  for(let i=0;i<255;i++) QRMath.LOG_TABLE[QRMath.EXP_TABLE[i]]=i;
+  function QRPolynomial(num,shift){
+    let offset=0; while(offset<num.length && num[offset]==0) offset++;
+    this.num=new Array(num.length-offset+shift);
+    for(let i=0;i<num.length-offset;i++) this.num[i]=num[i+offset];
   }
+  QRPolynomial.prototype.get=function(i){return this.num[i];}
+  QRPolynomial.prototype.getLength=function(){return this.num.length;}
+  QRPolynomial.prototype.multiply=function(e){
+    const num=new Array(this.getLength()+e.getLength()-1).fill(0);
+    for(let i=0;i<this.getLength();i++){
+      for(let j=0;j<e.getLength();j++){
+        num[i+j]^=QRMath.gexp(QRMath.glog(this.get(i))+QRMath.glog(e.get(j)));
+      }
+    }
+    return new QRPolynomial(num,0);
+  }
+  QRPolynomial.prototype.mod=function(e){
+    if(this.getLength()-e.getLength()<0) return this;
+    const ratio=QRMath.glog(this.get(0))-QRMath.glog(e.get(0));
+    const num=this.num.slice();
+    for(let i=0;i<e.getLength();i++) num[i]^=QRMath.gexp(QRMath.glog(e.get(i))+ratio);
+    return new QRPolynomial(num,0).mod(e);
+  }
+  const RS_BLOCK_TABLE={1:[26,16],2:[44,28],3:[70,44],4:[100,64],5:[134,86],6:[172,108],7:[196,124],8:[242,154],9:[292,182],10:[346,216]};
+  function QRRSBlock(t,d){this.totalCount=t;this.dataCount=d;}
+  QRRSBlock.getRSBlocks=function(typeNumber){const t=RS_BLOCK_TABLE[typeNumber]; if(!t) throw new Error("RS"); return [new QRRSBlock(t[0],t[1])];}
+  function QRCodeModel(typeNumber){
+    this.typeNumber=typeNumber; this.modules=null; this.moduleCount=0; this.dataCache=null; this.dataList=[];
+  }
+  QRCodeModel.prototype.addData=function(data){this.dataList.push(new QR8bitByte(data)); this.dataCache=null;}
+  QRCodeModel.prototype.isDark=function(r,c){return this.modules[r][c]===true;}
+  QRCodeModel.prototype.getModuleCount=function(){return this.moduleCount;}
+  QRCodeModel.prototype.make=function(){this.makeImpl(false,0);}
+  QRCodeModel.prototype.makeImpl=function(test,maskPattern){
+    this.moduleCount=this.typeNumber*4+17;
+    this.modules=new Array(this.moduleCount);
+    for(let r=0;r<this.moduleCount;r++) this.modules[r]=new Array(this.moduleCount).fill(null);
+    this.setupPP(0,0); this.setupPP(this.moduleCount-7,0); this.setupPP(0,this.moduleCount-7);
+    this.setupTiming(); this.setupAdjust(); this.setupType(test,maskPattern);
+    if(this.dataCache==null) this.dataCache=this.createData();
+    this.mapData(this.dataCache,maskPattern);
+  }
+  QRCodeModel.prototype.setupPP=function(row,col){
+    for(let r=-1;r<=7;r++){
+      if(row+r<=-1||this.moduleCount<=row+r) continue;
+      for(let c=-1;c<=7;c++){
+        if(col+c<=-1||this.moduleCount<=col+c) continue;
+        const on=((0<=r&&r<=6&&(c==0||c==6))||(0<=c&&c<=6&&(r==0||r==6))||(2<=r&&r<=4&&2<=c&&c<=4));
+        this.modules[row+r][col+c]=on;
+      }
+    }
+  }
+  QRCodeModel.prototype.setupTiming=function(){
+    for(let i=8;i<this.moduleCount-8;i++){
+      if(this.modules[i][6]==null) this.modules[i][6]=(i%2==0);
+      if(this.modules[6][i]==null) this.modules[6][i]=(i%2==0);
+    }
+  }
+  QRCodeModel.prototype.setupAdjust=function(){
+    const pos=QRUtil.getPatternPosition(this.typeNumber);
+    for(let i=0;i<pos.length;i++){
+      for(let j=0;j<pos.length;j++){
+        const row=pos[i], col=pos[j];
+        if(this.modules[row][col]!=null) continue;
+        for(let r=-2;r<=2;r++){
+          for(let c=-2;c<=2;c++){
+            const on=(r==-2||r==2||c==-2||c==2||(r==0&&c==0));
+            this.modules[row+r][col+c]=on;
+          }
+        }
+      }
+    }
+  }
+  QRCodeModel.prototype.setupType=function(test,maskPattern){
+    const bits=QRUtil.getBCHTypeInfo(maskPattern);
+    for(let i=0;i<15;i++){
+      const mod=!test && ((bits>>i)&1)==1;
+      if(i<6) this.modules[i][8]=mod;
+      else if(i<8) this.modules[i+1][8]=mod;
+      else this.modules[this.moduleCount-15+i][8]=mod;
 
-  const a = getFitting(els.fitA.value);
-  const b = getFitting(els.fitB.value);
+      if(i<8) this.modules[8][this.moduleCount-i-1]=mod;
+      else if(i<9) this.modules[8][15-i-1+1]=mod;
+      else this.modules[8][15-i-1]=mod;
+    }
+    this.modules[this.moduleCount-8][8]=!test;
+  }
+  QRCodeModel.prototype.createData=function(){
+    const rs=QRRSBlock.getRSBlocks(this.typeNumber)[0];
+    const buffer=new QRBitBuffer();
+    for(const d of this.dataList){
+      buffer.put(4,4);
+      buffer.put(d.getLength(), this.typeNumber<10?8:16);
+      d.write(buffer);
+    }
+    if(buffer.length + 4 <= rs.dataCount*8) buffer.put(0,4);
+    while(buffer.length % 8 != 0) buffer.putBit(false);
+    const PAD0=0xEC, PAD1=0x11;
+    while(buffer.buffer.length < rs.dataCount){
+      buffer.put(PAD0,8);
+      if(buffer.buffer.length>=rs.dataCount) break;
+      buffer.put(PAD1,8);
+    }
+    const dataBytes=buffer.buffer;
+    let p=new QRPolynomial([1],0);
+    for(let i=0;i<rs.totalCount-rs.dataCount;i++) p=p.multiply(new QRPolynomial([1,QRMath.gexp(i)],0));
+    const raw=new QRPolynomial(dataBytes, p.getLength()-1);
+    const mod=raw.mod(p);
+    const ec=new Array(p.getLength()-1).fill(0);
+    for(let i=0;i<ec.length;i++){
+      const idx=i + mod.getLength() - ec.length;
+      ec[i]=idx>=0 ? mod.get(idx) : 0;
+    }
+    return dataBytes.concat(ec);
+  }
+  QRCodeModel.prototype.mapData=function(data,maskPattern){
+    let inc=-1, row=this.moduleCount-1, bitIndex=7, byteIndex=0;
+    for(let col=this.moduleCount-1; col>0; col-=2){
+      if(col==6) col--;
+      while(true){
+        for(let c=0;c<2;c++){
+          if(this.modules[row][col-c]==null){
+            let dark=false;
+            if(byteIndex<data.length) dark=(((data[byteIndex]>>>bitIndex)&1)==1);
+            const mask=QRUtil.getMask(maskPattern,row,col-c);
+            this.modules[row][col-c]=mask ? !dark : dark;
+            bitIndex--; if(bitIndex==-1){ byteIndex++; bitIndex=7; }
+          }
+        }
+        row+=inc;
+        if(row<0 || this.moduleCount<=row){ row-=inc; inc=-inc; break; }
+      }
+    }
+  }
+  window.__makeQRDataURL = function(text, size){
+    const q=new QRCodeModel(2);
+    q.addData(text);
+    q.make();
+    const count=q.getModuleCount();
+    const canvas=document.createElement("canvas");
+    canvas.width=canvas.height=size;
+    const ctx=canvas.getContext("2d");
+    ctx.fillStyle="#fff"; ctx.fillRect(0,0,size,size);
+    const cell=Math.floor(size/count);
+    const margin=Math.floor((size - cell*count)/2);
+    ctx.fillStyle="#000";
+    for(let r=0;r<count;r++){
+      for(let c=0;c<count;c++){
+        if(q.isDark(r,c)) ctx.fillRect(margin + c*cell, margin + r*cell, cell, cell);
+      }
+    }
+    return canvas.toDataURL("image/png");
+  };
+})();
+</script>
 
-  const takeA = Number(size.dims[a.dimKey] ?? 0);
-  const takeB = Number(size.dims[b.dimKey] ?? 0);
+<script>
+const WELD_GAP_MM = 3;
+const SR_WARNING_FROM_INCH = 8;
 
-  const weldA = a.weldGap ? DATA.weldGapMM : 0;
-  const weldB = b.weldGap ? DATA.weldGapMM : 0;
+/* ===== Your Stainless 316 S10 table (exact as you pasted) ===== */
+const DATA = {
+  '1/2"':  { id:15,  od:21.3,  flangeA:null, elbowSR:null, elbowLR:38,  teeD:25,  teeE:50,  elbow45:16 },
+  '3/4"':  { id:20,  od:26.9,  flangeA:null, elbowSR:null, elbowLR:38,  teeD:29,  teeE:58,  elbow45:19 },
+  '1"':    { id:25,  od:33.7,  flangeA:null, elbowSR:25,   elbowLR:38,  teeD:38,  teeE:76,  elbow45:22 },
+  '1 1/4"':{ id:32,  od:42.4,  flangeA:null, elbowSR:32,   elbowLR:48,  teeD:48,  teeE:96,  elbow45:25 },
+  '1 1/2"':{ id:40,  od:48.3,  flangeA:null, elbowSR:38,   elbowLR:57,  teeD:57,  teeE:114, elbow45:29 },
+  '2"':    { id:50,  od:60.3,  flangeA:null, elbowSR:61,   elbowLR:76,  teeD:64,  teeE:128, elbow45:35 },
+  '2 1/2"':{ id:65,  od:76.1,  flangeA:20,   elbowSR:64,   elbowLR:95,  teeD:76,  teeE:152, elbow45:44 },
+  '3"':    { id:80,  od:88.9,  flangeA:20,   elbowSR:76,   elbowLR:114, teeD:86,  teeE:172, elbow45:51 },
+  '4"':    { id:100, od:114.3, flangeA:20,   elbowSR:102,  elbowLR:152, teeD:105, teeE:210, elbow45:64 },
+  '5"':    { id:125, od:139.7, flangeA:20,   elbowSR:127,  elbowLR:190, teeD:124, teeE:248, elbow45:79 },
+  '6"':    { id:150, od:168.3, flangeA:20,   elbowSR:152,  elbowLR:229, teeD:143, teeE:286, elbow45:95 },
+  '8"':    { id:200, od:219.1, flangeA:25,   elbowSR:203,  elbowLR:305, teeD:178, teeE:356, elbow45:127 },
+  '10"':   { id:250, od:273,   flangeA:25,   elbowSR:254,  elbowLR:381, teeD:216, teeE:432, elbow45:159 },
+  '12"':   { id:300, od:323.9, flangeA:25,   elbowSR:305,  elbowLR:457, teeD:254, teeE:508, elbow45:190 },
+  '14"':   { id:350, od:355.6, flangeA:25,   elbowSR:356,  elbowLR:533, teeD:279, teeE:558, elbow45:222 },
+  '16"':   { id:400, od:406.4, flangeA:25,   elbowSR:406,  elbowLR:610, teeD:305, teeE:610, elbow45:254 },
+  '18"':   { id:450, od:457,   flangeA:25,   elbowSR:457,  elbowLR:686, teeD:343, teeE:686, elbow45:286 },
+  '20"':   { id:500, od:508,   flangeA:25,   elbowSR:508,  elbowLR:762, teeD:381, teeE:762, elbow45:318 }
+};
 
-  const cut = ctc - (takeA + takeB) - (weldA + weldB);
+const FITTINGS = [
+  { key:"flangeA", label:"Flange (A)", weld:false },
+  { key:"elbowSR", label:"90° Elbow – Short Radius (SR)", weld:true },
+  { key:"elbowLR", label:"90° Elbow – Long Radius (LR)", weld:true },
+  { key:"teeD",    label:"Tee (D)", weld:true },
+  { key:"teeE",    label:"Tee (E)", weld:true },
+  { key:"elbow45", label:"45° Elbow (F)", weld:true }
+];
 
-  els.cutLen.textContent = (Math.round(cut * 10) / 10).toString();
-  els.breakdown.textContent =
-    `CTC ${ctc} − (A ${takeA} + B ${takeB}) − (Weld ${weldA}+${weldB}) = ${Math.round(cut*10)/10} mm`;
+const sizeSel   = document.getElementById("size");
+const endA      = document.getElementById("endA");
+const endB      = document.getElementById("endB");
+const ctcEl     = document.getElementById("ctc");
+const notesEl   = document.getElementById("notes");
+const cutEl     = document.getElementById("cut");
+const formulaEl = document.getElementById("formula");
+const metaEl    = document.getElementById("meta");
+const warnEl    = document.getElementById("warn");
+const toast     = document.getElementById("toast");
+const qrHint    = document.getElementById("qrHint");
+const openSlipA = document.getElementById("openSlip");
+const qrImg     = document.getElementById("qrImg");
+
+let lastCopyText = "";
+let lastShareText = "";
+
+function showWarn(msg, urgent=false){
+  warnEl.style.display="block";
+  warnEl.textContent=msg;
+  warnEl.classList.toggle("urgent", !!urgent);
 }
+function clearWarn(){ warnEl.style.display="none"; warnEl.textContent=""; warnEl.classList.remove("urgent"); }
+function showToast(msg){ toast.style.display="block"; toast.textContent=msg; setTimeout(()=>toast.style.display="none",1200); }
 
-function copyCut(){
-  const val = els.cutLen.textContent;
-  if(!val || val === "—") return;
-  navigator.clipboard.writeText(val + " mm").catch(()=>{});
+function getBaseUrl(){
+  const url = new URL(window.location.href);
+  url.hash=""; url.search="";
+  url.pathname = url.pathname.split("/").slice(0,-1).join("/") + "/";
+  return url.toString();
 }
+function slipUrl(){ return getBaseUrl() + "stainless-316-slip.html"; }
 
-function openSlip(){
-  if(!ensureData()) return;
+function inchValue(sizeLabel){
+  const s = sizeLabel.replace('"','').trim();
+  if (s.includes(' ')) {
+    const [whole, frac] = s.split(' ');
+    const [n,d] = frac.split('/');
+    return Number(whole) + (Number(n)/Number(d));
+  }
+  if (s.includes('/')) {
+    const [n,d] = s.split('/');
+    return Number(n)/Number(d);
+  }
+  return Number(s);
+}
+function weldGapFor(key){ return key === "flangeA" ? 0 : WELD_GAP_MM; }
 
-  const size = getSelectedSize();
-  const ctc = Number(els.ctc.value);
-  const fitA = getFitting(els.fitA.value);
-  const fitB = getFitting(els.fitB.value);
-
-  const takeA = Number(size.dims[fitA.dimKey] ?? 0);
-  const takeB = Number(size.dims[fitB.dimKey] ?? 0);
-  const weldA = fitA.weldGap ? DATA.weldGapMM : 0;
-  const weldB = fitB.weldGap ? DATA.weldGapMM : 0;
-
-  const cut = ctc - (takeA + takeB) - (weldA + weldB);
-
-  const params = new URLSearchParams({
-    material: "SS316-S10",
-    size: size.label,
-    ctc: String(ctc),
-    endA: fitA.label,
-    endB: fitB.label,
-    takeA: String(takeA),
-    takeB: String(takeB),
-    weldA: String(weldA),
-    weldB: String(weldB),
-    cut: String(Math.round(cut*10)/10)
+function buildSizeOptions(){
+  sizeSel.innerHTML="";
+  Object.keys(DATA).forEach(sz=>{
+    const r=DATA[sz];
+    const opt=document.createElement("option");
+    opt.value=sz;
+    opt.textContent=`${sz}  •  ID ${r.id}mm  •  OD ${r.od}mm`;
+    sizeSel.appendChild(opt);
   });
+  if (!DATA[sizeSel.value]) sizeSel.value='2"';
+}
+function buildFittings(){
+  const row = DATA[sizeSel.value];
+  const prevA = endA.value || "elbowLR";
+  const prevB = endB.value || "elbowLR";
+  endA.innerHTML=""; endB.innerHTML="";
+  FITTINGS.forEach(f=>{
+    const val = row[f.key];
+    const isNA = (val == null);
+    const label = isNA ? `${f.label} — N/A for this size` : f.label;
+    const oa=document.createElement("option");
+    oa.value=f.key; oa.textContent=label; if (isNA) oa.disabled=true;
+    endA.appendChild(oa);
+    const ob=document.createElement("option");
+    ob.value=f.key; ob.textContent=label; if (isNA) ob.disabled=true;
+    endB.appendChild(ob);
+  });
+  endA.value = (row[prevA]==null) ? (row.elbowLR!=null ? "elbowLR" : "teeD") : prevA;
+  endB.value = (row[prevB]==null) ? (row.elbowLR!=null ? "elbowLR" : "teeE") : prevB;
+}
 
-  window.open("stainless-316-slip.html?" + params.toString(), "_blank");
+function saveSlipPayload(payload){
+  sessionStorage.setItem("grove_ss316_slip_payload", JSON.stringify(payload));
 }
 
 function resetAll(){
-  els.ctc.value = "";
-  if(els.pipeSize.options.length) els.pipeSize.selectedIndex = 0;
-  if(els.fitA.options.length) els.fitA.selectedIndex = 0;
-  if(els.fitB.options.length) els.fitB.selectedIndex = 0;
-  compute();
+  sizeSel.value='2"';
+  buildFittings();
+  ctcEl.value="";
+  notesEl.value="";
+  sessionStorage.removeItem("grove_ss316_slip_payload");
+  updateLive();
 }
 
-populate();
-compute();
+/* Safari copy */
+function copyTextSafe(text){
+  try{
+    const ta=document.createElement("textarea");
+    ta.value=text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    return true;
+  }catch(e){ return false; }
+}
+function copyResult(){
+  if(!lastCopyText){ showToast("Nothing to copy yet"); return; }
+  showToast(copyTextSafe(lastCopyText) ? "Copied ✅" : "Copy blocked");
+}
+function copySlipLink(){
+  const url = slipUrl();
+  showToast(copyTextSafe(url) ? "Slip link copied ✅" : "Copy blocked");
+}
+function openSlipNow(){ window.open("stainless-316-slip.html", "_blank"); }
+function printSlip(){ window.open("stainless-316-slip.html", "_blank"); }
 
-["change","input"].forEach(evt=>{
-  els.pipeSize.addEventListener(evt, compute);
-  els.fitA.addEventListener(evt, compute);
-  els.fitB.addEventListener(evt, compute);
-  els.ctc.addEventListener(evt, compute);
-});
+/* Share Slip */
+async function shareSlip(){
+  if(!lastShareText){
+    showToast("Enter CTC first");
+    return;
+  }
+  const url = slipUrl();
+  const payload = lastShareText + "\n\nSlip: " + url;
+
+  if (navigator.share) {
+    try{
+      await navigator.share({ title:"GROVE Cut Slip (316 S10)", text: payload });
+      showToast("Shared ✅");
+      return;
+    }catch(e){}
+  }
+  showToast(copyTextSafe(payload) ? "Slip copied ✅" : "Copy blocked");
+}
+
+function updateLive(){
+  clearWarn();
+  const size = sizeSel.value;
+  const row  = DATA[size];
+  const ctc  = Number(ctcEl.value);
+
+  const inches = inchValue(size);
+  if (inches >= SR_WARNING_FROM_INCH && (endA.value === "elbowSR" || endB.value === "elbowSR")) {
+    showWarn(`⚠️ Short Radius (SR) selected on ${size}. SR is unusual on large sizes — please confirm spec/drawing before cutting.`, true);
+  }
+
+  lastCopyText = "";
+  lastShareText = "";
+  openSlipA.href = "stainless-316-slip.html";
+  qrHint.textContent = "Enter CTC to generate slip + QR.";
+  qrImg.removeAttribute("src");
+
+  if(!ctc || ctc<=0){
+    cutEl.textContent="—";
+    formulaEl.textContent="Enter CTC to calculate.";
+    metaEl.innerHTML="";
+    return;
+  }
+
+  const offA = row[endA.value];
+  const offB = row[endB.value];
+
+  if(offA==null || offB==null){
+    cutEl.textContent="—";
+    formulaEl.textContent="Offset missing.";
+    metaEl.innerHTML="";
+    showWarn("Offset missing for this size/fitting. Choose another fitting.");
+    return;
+  }
+
+  const weldA = weldGapFor(endA.value);
+  const weldB = weldGapFor(endB.value);
+
+  const cut = ctc - ((offA+weldA) + (offB+weldB));
+  const cutTxt = cut.toFixed(1);
+
+  const endALabel = endA.options[endA.selectedIndex]?.text.replace(" — N/A for this size","") || endA.value;
+  const endBLabel = endB.options[endB.selectedIndex]?.text.replace(" — N/A for this size","") || endB.value;
+
+  cutEl.textContent = `${cutTxt} mm`;
+  formulaEl.textContent = `CTC ${ctc} − (A ${offA}${weldA?`+${weldA}`:""} + B ${offB}${weldB?`+${weldB}`:""})`;
+
+  metaEl.innerHTML = `
+    <div class="metaPill"><b>Size:</b> ${size}</div>
+    <div class="metaPill"><b>End A:</b> ${endALabel} (${offA}mm${weldA?` + weld ${weldA}mm`:""})</div>
+    <div class="metaPill"><b>End B:</b> ${endBLabel} (${offB}mm${weldB?` + weld ${weldB}mm`:""})</div>
+    <div class="metaPill"><b>ID/OD:</b> ${row.id} / ${row.od}mm</div>
+  `;
+
+  const payloadObj = {
+    mat:"Stainless 316 Schedule 10",
+    s:size, i:row.id, o:row.od,
+    a:endALabel, b:endBLabel,
+    oa:offA, ob:offB,
+    wa:weldA, wb:weldB,
+    c:ctc, cut:cutTxt,
+    n:(notesEl.value||"").trim().slice(0,160),
+    t:new Date().toISOString()
+  };
+  saveSlipPayload(payloadObj);
+
+  const shortSlip = slipUrl();
+  qrImg.src = window.__makeQRDataURL(shortSlip, 180);
+  qrHint.textContent = "QR ready. Scan → opens slip on this device.";
+  openSlipA.href = shortSlip;
+
+  lastCopyText =
+`GROVE 316 S10 Cut Length
+Size: ${size} (ID ${row.id}mm, OD ${row.od}mm)
+End A: ${endALabel} (${offA}mm${weldA?` + weld ${weldA}mm`:""})
+End B: ${endBLabel} (${offB}mm${weldB?` + weld ${weldB}mm`:""})
+CTC: ${ctc} mm
+CUT: ${cutTxt} mm`;
+
+  lastShareText =
+`GROVE CUT SLIP (316 S10)
+CUT: ${cutTxt} mm
+CTC: ${ctc} mm
+SIZE: ${size} (ID ${row.id}mm, OD ${row.od}mm)
+END A: ${endALabel} (${offA}mm${weldA?` + weld ${weldA}mm`:""})
+END B: ${endBLabel} (${offB}mm${weldB?` + weld ${weldB}mm`:""})
+NOTES: ${(payloadObj.n || "—")}`;
+}
+
+/* init */
+buildSizeOptions();
+buildFittings();
+sizeSel.addEventListener("change", ()=>{ buildFittings(); updateLive(); });
+endA.addEventListener("change", updateLive);
+endB.addEventListener("change", updateLive);
+ctcEl.addEventListener("input", updateLive);
+notesEl.addEventListener("input", updateLive);
+updateLive();
 </script>
 
 </body>
