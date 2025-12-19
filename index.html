@@ -24,8 +24,6 @@ body{
   background:var(--bg);
   overflow-x:hidden;
 }
-
-/* soft background glow */
 .bgGlow{
   position:fixed; inset:-40%;
   background:
@@ -35,12 +33,10 @@ body{
   pointer-events:none;
   z-index:-3;
 }
-
-/* center watermark */
 .wm-center{
   position:fixed;
   left:50%;
-  top:55%;
+  top:62%;
   width:min(980px, 92vw);
   transform: translate(-50%, -50%);
   pointer-events:none;
@@ -64,28 +60,40 @@ body{
   100%{transform:translate(-50%,-50%) scale(1)}
 }
 
-/* FULL HEIGHT STAGE (this is the fix) */
 .stage{
   min-height:100vh;
   display:grid;
-  grid-template-rows:auto 1fr auto;
-  padding:22px 22px 18px;
+  place-items:center;
+  padding:22px;
 }
-
-/* top row (logo left, pill right) */
-.topbar{
+.card{
+  width:min(980px, 100%);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  position:relative;
+}
+.head{
+  padding:18px 22px;
+  border-bottom:1px solid var(--line);
+  background:rgba(0,0,0,.22);
   display:flex;
-  align-items:center;
+  align-items:flex-start;
   justify-content:space-between;
-  gap:12px;
+  gap:14px;
+  flex-wrap:wrap;
 }
 .logoPlate{
   background:#fff;
   padding:10px 14px;
   border-radius:16px;
   box-shadow:0 12px 30px rgba(0,0,0,.35);
+  display:inline-flex;
+  align-items:center;
 }
-.logoPlate img{height:46px; display:block}
+.logoPlate img{height:46px;display:block}
 .pill{
   font-size:12px;
   font-weight:900;
@@ -94,93 +102,70 @@ body{
   padding:9px 12px;
   border-radius:999px;
   background:rgba(255,255,255,.03);
+  display:flex;
+  align-items:center;
+  gap:10px;
+  height:fit-content;
 }
+.dot{width:9px;height:9px;border-radius:50%;background:var(--red);box-shadow:0 0 0 5px rgba(239,42,31,.18);}
 
-/* center row: centers your card */
-.center{
-  display:grid;
-  place-items:center;
-  padding:18px 0;
-}
-
-/* card */
-.card{
-  width:min(980px, 100%);
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02));
-  box-shadow:var(--shadow);
-  overflow:hidden;
-}
-.head{
-  padding:18px 22px;
-  border-bottom:1px solid var(--line);
-  background:rgba(0,0,0,.22);
-}
+.body{padding:18px 22px 22px}
 h1{margin:0;font-size:28px;font-weight:1000}
 .sub{margin-top:6px;color:var(--muted);line-height:1.55}
-.body{
-  padding:18px 22px 22px;
+.row{
+  margin-top:16px;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
 }
-label{display:block;font-size:12px;font-weight:900;margin:10px 0 6px;color:rgba(255,255,255,.82)}
 input{
   width:100%;
-  padding:14px;
-  border-radius:14px;
+  padding:15px 16px;
+  border-radius:16px;
   border:1px solid var(--line);
   background:rgba(255,255,255,.05);
-  color:var(--text);
-  font-size:15px;
+  color:#fff;
+  font-size:16px;
   outline:none;
 }
-.row{
+.actions{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:12px;
-  margin-top:12px;
 }
-@media(max-width:740px){
-  .row{grid-template-columns:1fr}
-}
+@media(max-width:640px){.actions{grid-template-columns:1fr}}
 .btn{
-  width:100%;
   border:1px solid var(--line);
   background:rgba(255,255,255,.04);
   color:#fff;
-  font-weight:900;
-  padding:13px 14px;
-  border-radius:14px;
+  font-weight:1000;
+  padding:14px 16px;
+  border-radius:16px;
   cursor:pointer;
 }
 .btn.primary{
   border:none;
   background:linear-gradient(180deg,#ff3b30,var(--red));
 }
-.err{
-  margin-top:10px;
-  display:none;
-  padding:12px 14px;
-  border-radius:16px;
-  border:1px solid rgba(239,42,31,.40);
-  background: rgba(239,42,31,.10);
-  color: rgba(255,255,255,.85);
-  font-size:12px;
-  line-height:1.5;
-}
-
-/* footer */
+.msg{margin-top:10px;color:rgba(255,255,255,.70);font-size:12px;display:none}
 .footer{
-  text-align:center;
-  color:rgba(255,255,255,.40);
+  border-top:1px solid rgba(255,255,255,.10);
+  padding:12px 22px;
   font-size:12px;
-  padding-top:10px;
+  color:rgba(255,255,255,.45);
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+  background:rgba(0,0,0,.18);
 }
 
-/* smooth transition into next page */
+/* Premium page transition */
 .page{
   opacity:0;
   transform: translateY(6px);
-  transition: opacity 320ms ease, transform 320ms ease, filter 320ms ease;
+  transition: opacity 340ms ease, transform 340ms ease, filter 340ms ease;
+  will-change: opacity, transform, filter;
 }
 .page.is-ready{ opacity:1; transform:none; filter:none; }
 .page.is-leaving{ opacity:0; transform: translateY(10px) scale(.99); filter: blur(1px); }
@@ -196,82 +181,67 @@ input{
 </div>
 
 <div class="stage page" id="page">
-  <div class="topbar">
-    <div class="logoPlate">
-      <img src="grove-logo.png" alt="GROVE">
+  <div class="card">
+    <div class="head">
+      <div class="logoPlate"><img src="grove-logo.png" alt="GROVE"></div>
+      <div class="pill"><span class="dot"></span>Internal Tool • Access</div>
     </div>
-    <div class="pill">Internal Tool • Access</div>
-  </div>
 
-  <div class="center">
-    <div class="card">
-      <div class="head">
-        <h1>GROVE Pipe Cut Length</h1>
-        <div class="sub">Enter your access code to continue.</div>
-      </div>
+    <div class="body">
+      <h1>GROVE Pipe Cut Length</h1>
+      <div class="sub">Enter access code to continue.</div>
 
-      <div class="body">
-        <label>Access Code</label>
+      <div class="row">
         <input id="code" type="password" placeholder="Enter code" autocomplete="off" />
-
-        <div class="row">
-          <button class="btn" type="button" onclick="clearCode()">Clear</button>
-          <button class="btn primary" type="button" onclick="continueNext()">Continue</button>
+        <div class="actions">
+          <button class="btn" onclick="clearCode()">Clear</button>
+          <button class="btn primary" onclick="continueNow()">Continue</button>
         </div>
-
-        <div class="err" id="err"></div>
+        <div class="msg" id="msg">Wrong code. Try again.</div>
       </div>
     </div>
-  </div>
 
-  <div class="footer">© GROVE Services Ltd. • Internal use only</div>
+    <div class="footer">
+      <div>© GROVE Services Ltd.</div>
+      <div>Internal use only</div>
+    </div>
+  </div>
 </div>
 
 <script>
-/* smooth entry */
+/* Fade in */
 requestAnimationFrame(()=>document.getElementById("page").classList.add("is-ready"));
 
-/* IMPORTANT: set your access code here */
-const ACCESS_CODE = "1234"; // <-- change this
+/* Your access code (keep your existing value here) */
+const ACCESS_CODE = "1234"; // <-- change if your current code is different
 
-function toastError(msg){
-  const e=document.getElementById("err");
-  e.style.display="block";
-  e.textContent=msg;
-}
-function clearErr(){
-  const e=document.getElementById("err");
-  e.style.display="none";
-  e.textContent="";
-}
 function clearCode(){
   document.getElementById("code").value="";
-  clearErr();
+  document.getElementById("msg").style.display="none";
 }
+
 function leaveTo(url){
   const page=document.getElementById("page");
   page.classList.remove("is-ready");
   page.classList.add("is-leaving");
   setTimeout(()=>{ window.location.href=url; }, 260);
 }
-function continueNext(){
-  clearErr();
+
+function continueNow(){
   const v=(document.getElementById("code").value||"").trim();
-  if(!v) return toastError("Please enter access code.");
-  if(v !== ACCESS_CODE) return toastError("Incorrect code. Please try again.");
-
-  /* session gate (used by calculator.html) */
-  sessionStorage.setItem("cutcalc_ok","1");
-
-  /* go to pipe type page first */
-  leaveTo("pipe-type.html");
+  if(v === ACCESS_CODE){
+    sessionStorage.setItem("cutcalc_ok","1");
+    leaveTo("pipe-type.html");
+  }else{
+    const msg=document.getElementById("msg");
+    msg.style.display="block";
+  }
 }
 
-/* Enter key works */
+/* Enter key */
 document.getElementById("code").addEventListener("keydown",(e)=>{
-  if(e.key==="Enter") continueNext();
+  if(e.key==="Enter") continueNow();
 });
 </script>
-
 </body>
 </html>
