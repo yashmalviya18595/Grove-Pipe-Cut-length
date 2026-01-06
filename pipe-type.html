@@ -25,6 +25,8 @@ body{
   padding:24px;
   overflow-x:hidden;
 }
+
+/* background glow */
 .bgGlow{
   position:fixed; inset:-40%;
   background:
@@ -36,7 +38,7 @@ body{
 }
 .wrap{max-width:1050px;margin:0 auto;position:relative}
 
-/* Watermark breathing */
+/* watermark */
 .wm-center{
   position:absolute; left:50%; top:58%;
   width:78%; max-width:900px;
@@ -55,7 +57,7 @@ body{
   100%{transform:translate(-50%,-50%) scale(1)}
 }
 
-/* Fade */
+/* fade */
 .page{
   opacity:0;
   transform: translateY(6px);
@@ -64,25 +66,61 @@ body{
 .page.is-ready{opacity:1;transform:none}
 .page.is-leaving{opacity:0;transform: translateY(6px)}
 
+/* top bar */
 .topbar{
-  display:flex;justify-content:space-between;align-items:center;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
   margin-bottom:16px;
 }
 .logoPlate{
-  background:#fff;padding:10px 14px;border-radius:16px;
+  background:#fff;
+  padding:10px 14px;
+  border-radius:16px;
   box-shadow:0 12px 30px rgba(0,0,0,.35);
 }
 .logoPlate img{height:46px}
 
-.topRight{display:flex;gap:10px;align-items:center}
+.topRight{
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
+/* pill style */
 .pill{
-  font-size:12px;font-weight:900;
-  padding:9px 12px;border-radius:999px;
+  font-size:12px;
+  font-weight:900;
+  padding:9px 14px;
+  border-radius:999px;
   border:1px solid rgba(255,255,255,.14);
   background:rgba(255,255,255,.03);
+  color:rgba(255,255,255,.78);
+  display:flex;
+  align-items:center;
+  gap:8px;
 }
-.dot{width:9px;height:9px;border-radius:50%;background:var(--red);display:inline-block;margin-right:6px}
+.dot{
+  width:9px;height:9px;
+  border-radius:50%;
+  background:var(--red);
+  box-shadow:0 0 0 5px rgba(239,42,31,.18);
+}
 
+/* exit pill button */
+.pillBtn{
+  cursor:pointer;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+.pillBtn:hover{
+  background:rgba(239,42,31,.10);
+  border-color:rgba(239,42,31,.35);
+}
+.pillBtn:active{
+  transform: scale(.98);
+}
+
+/* card */
 .card{
   border:1px solid rgba(255,255,255,.12);
   border-radius:var(--radius);
@@ -115,9 +153,13 @@ h1{margin:0;font-size:26px}
   position:relative;
 }
 .badge{
-  position:absolute; top:14px; right:14px;
-  font-size:12px;font-weight:900;
-  padding:7px 10px;border-radius:999px;
+  position:absolute;
+  top:14px;
+  right:14px;
+  font-size:12px;
+  font-weight:900;
+  padding:7px 10px;
+  border-radius:999px;
   border:1px solid rgba(255,255,255,.14);
   background:rgba(255,255,255,.03);
 }
@@ -125,6 +167,7 @@ h1{margin:0;font-size:26px}
 .choice p{margin:0 0 14px;color:rgba(255,255,255,.66);font-size:13px}
 
 .btnPrimary{
+  width:100%;
   border:none;
   padding:14px 16px;
   border-radius:14px;
@@ -132,7 +175,6 @@ h1{margin:0;font-size:26px}
   color:#fff;
   font-weight:1000;
   cursor:pointer;
-  width:100%;
 }
 
 .footer{
@@ -140,7 +182,8 @@ h1{margin:0;font-size:26px}
   padding:14px 22px;
   font-size:12px;
   color:rgba(255,255,255,.45);
-  display:flex;justify-content:space-between;
+  display:flex;
+  justify-content:space-between;
 }
 </style>
 </head>
@@ -163,9 +206,10 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
     <div class="logoPlate">
       <img src="grove-logo.png" alt="GROVE">
     </div>
+
     <div class="topRight">
       <div class="pill"><span class="dot"></span>Pipe Type • Select</div>
-      <button class="pill" onclick="sessionStorage.clear();location.href='index.html'">Exit</button>
+      <div class="pill pillBtn" onclick="exitNow()">Exit</div>
     </div>
   </div>
 
@@ -203,11 +247,17 @@ if (sessionStorage.getItem("cutcalc_ok") !== "1") {
 </div>
 
 <script>
-requestAnimationFrame(()=>page.classList.add("is-ready"));
+const page = document.getElementById("page");
+requestAnimationFrame(()=> page.classList.add("is-ready"));
 
 function goTo(url){
   page.classList.add("is-leaving");
-  setTimeout(()=>location.href=url,260);
+  setTimeout(()=> location.href=url, 260);
+}
+
+function exitNow(){
+  sessionStorage.clear();
+  goTo("index.html");
 }
 </script>
 
